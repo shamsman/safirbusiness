@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
@@ -130,6 +131,7 @@ class UserController extends Controller
             'name'      => ['required', 'string', 'max:255'],
             'email'     => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
             'phone'     => ['nullable', 'string', 'max:30'],
+            'avatar'    => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp,svg', 'max:2048'],
             'password'  => ['nullable', 'confirmed', Password::defaults()],
         ];
 
@@ -146,6 +148,30 @@ class UserController extends Controller
             'email' => $validated['email'],
             'phone' => $validated['phone'] ?? null,
         ];
+
+        $disk = config('filesystems.default', 'gcs');
+
+        if ($request->hasFile('avatar')) {
+            if ($user->avatar) {
+                if (Storage::disk($disk)->exists($user->avatar)) {
+                    Storage::disk($disk)->delete($user->avatar);
+                }
+                if ($disk !== 'public' && Storage::disk('public')->exists($user->avatar)) {
+                    Storage::disk('public')->delete($user->avatar);
+                }
+            }
+            $updateData['avatar'] = $request->file('avatar')->store('avatars', $disk);
+        } elseif ($request->boolean('remove_avatar')) {
+            if ($user->avatar) {
+                if (Storage::disk($disk)->exists($user->avatar)) {
+                    Storage::disk($disk)->delete($user->avatar);
+                }
+                if ($disk !== 'public' && Storage::disk('public')->exists($user->avatar)) {
+                    Storage::disk('public')->delete($user->avatar);
+                }
+            }
+            $updateData['avatar'] = null;
+        }
 
         if (!empty($validated['password'])) {
             $updateData['password'] = Hash::make($validated['password']);

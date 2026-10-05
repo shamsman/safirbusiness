@@ -117,8 +117,8 @@
                     </label>
                     <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6 p-4 rounded-xl bg-slate-50 border border-slate-200">
                         <div class="h-16 w-48 rounded-xl bg-white border border-slate-200 flex items-center justify-center p-3 overflow-hidden shadow-xs">
-                            @if(setting('site_logo') && \Illuminate\Support\Facades\Storage::disk('public')->exists(setting('site_logo')))
-                                <img src="{{ \Illuminate\Support\Facades\Storage::url(setting('site_logo')) }}" alt="Logo" class="max-h-full max-w-full object-contain">
+                            @if(setting('site_logo') && media_url(setting('site_logo')))
+                                <img src="{{ media_url(setting('site_logo')) }}" alt="Logo" class="max-h-full max-w-full object-contain">
                             @else
                                 <div class="flex items-center gap-2">
                                     <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-navy-950 font-bold text-base">S</div>
@@ -148,8 +148,8 @@
                     </label>
                     <div class="flex items-center gap-4 p-4 rounded-xl bg-slate-50 border border-slate-200">
                         <div class="w-10 h-10 rounded-lg bg-white border border-slate-200 flex items-center justify-center overflow-hidden shadow-xs">
-                            @if(setting('site_favicon') && \Illuminate\Support\Facades\Storage::disk('public')->exists(setting('site_favicon')))
-                                <img src="{{ \Illuminate\Support\Facades\Storage::url(setting('site_favicon')) }}" alt="Favicon" class="w-6 h-6 object-contain">
+                            @if(setting('site_favicon') && media_url(setting('site_favicon')))
+                                <img src="{{ media_url(setting('site_favicon')) }}" alt="Favicon" class="w-6 h-6 object-contain">
                             @else
                                 <span class="text-xs font-bold text-gold-600">S</span>
                             @endif

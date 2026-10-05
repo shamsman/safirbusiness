@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DISK', 'local'),
+    'default' => env('FILESYSTEM_DISK', 'gcs'),
 
     /*
     |--------------------------------------------------------------------------
@@ -58,6 +58,19 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
             'report' => false,
+        ],
+
+        'gcs' => [
+            'driver'          => 'gcs',
+            'key_file'        => env('GCS_KEY_FILE', storage_path('safirbusiness-storage-credentials.json')),
+            'project_id'      => env('GCS_PROJECT_ID', 'extreme-flux-507815-f7'),
+            'bucket'          => env('GCS_BUCKET', 'safirbusiness-media'),
+            'path_prefix'     => env('GCS_PATH_PREFIX', ''),
+            'storage_api_uri' => env('GCS_STORAGE_API_URI', 'https://storage.googleapis.com'),
+            'apiEndpoint'     => env('GCS_API_ENDPOINT', null),
+            'visibility'      => 'public',
+            'throw'           => false,
+            'report'          => false,
         ],
 
     ],

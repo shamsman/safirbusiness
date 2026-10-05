@@ -99,8 +99,8 @@
                 
                 <!-- Logo & Emblem -->
                 <a href="{{ route_ml('home') }}" class="flex items-center gap-3.5 group shrink-0">
-                    @if(setting('site_logo') && \Illuminate\Support\Facades\Storage::disk('public')->exists(setting('site_logo')))
-                        <img src="{{ \Illuminate\Support\Facades\Storage::url(setting('site_logo')) }}" alt="{{ setting('site_name', 'Safir') }}" class="h-11 w-auto max-w-[160px] object-contain">
+                    @if(setting('site_logo') && media_url(setting('site_logo')))
+                        <img src="{{ media_url(setting('site_logo')) }}" alt="{{ setting('site_name', 'Safir') }}" class="h-11 w-auto max-w-[160px] object-contain">
                     @else
                         <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-gold-400 via-gold-500 to-gold-600 flex items-center justify-center shadow-md shadow-gold-500/10 border border-gold-300/40 group-hover:scale-105 transition-transform">
                             <svg class="w-6 h-6 text-navy-950" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -387,8 +387,8 @@
                 <div class="lg:col-span-2 space-y-4">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-navy-950 font-bold overflow-hidden shrink-0">
-                            @if(setting('site_logo') && \Illuminate\Support\Facades\Storage::disk('public')->exists(setting('site_logo')))
-                                <img src="{{ \Illuminate\Support\Facades\Storage::url(setting('site_logo')) }}" alt="Logo" class="max-h-full max-w-full object-contain">
+                            @if(setting('site_logo') && media_url(setting('site_logo')))
+                                <img src="{{ media_url(setting('site_logo')) }}" alt="Logo" class="max-h-full max-w-full object-contain">
                             @else
                                 <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <polygon points="12 2 2 7 12 12 22 7 12 2"/>

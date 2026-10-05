@@ -25,3 +25,8 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# GCS Service Account Keys
+*-service-account*.json
+*-credentials*.json
+/storage/*.json

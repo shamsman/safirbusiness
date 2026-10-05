@@ -20,9 +20,29 @@
             </a>
         </div>
 
-        <form action="{{ route('admin.users.update', $user) }}" method="POST" class="space-y-6">
+        <form action="{{ route('admin.users.update', $user) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
             @method('PUT')
+
+            <!-- Avatar Upload Section -->
+            <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-2">
+                    Profile Avatar
+                </label>
+                <div class="flex items-center gap-4 p-4 rounded-xl bg-slate-50 border border-slate-200">
+                    <img class="w-14 h-14 rounded-full object-cover ring-2 ring-gold-500/30 shrink-0" src="{{ $user->avatarUrl() }}" alt="{{ $user->name }}">
+                    <div class="space-y-2">
+                        <input type="file" name="avatar" accept="image/*" class="text-xs text-slate-600 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-gold-500/15 file:text-gold-700 hover:file:bg-gold-500/25 cursor-pointer">
+                        <p class="text-[11px] text-slate-500">Supports PNG, JPG, WebP (Max 2MB). Uploaded directly to platform media storage.</p>
+                        @if($user->avatar)
+                            <label class="inline-flex items-center gap-2 text-xs text-rose-600 cursor-pointer pt-1 font-medium">
+                                <input type="checkbox" name="remove_avatar" value="1" class="rounded border-slate-300 text-rose-600 focus:ring-rose-500">
+                                <span>Remove current avatar</span>
+                            </label>
+                        @endif
+                    </div>
+                </div>
+            </div>
 
             <!-- Name -->
             <div>

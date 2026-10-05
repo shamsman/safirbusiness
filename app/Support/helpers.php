@@ -70,3 +70,47 @@ if (!function_exists('setting')) {
     }
 }
 
+if (!function_exists('media_disk')) {
+    /**
+     * Get the configured media storage disk.
+     */
+    function media_disk(): \Illuminate\Contracts\Filesystem\Filesystem
+    {
+        return \Illuminate\Support\Facades\Storage::disk(config('filesystems.default', 'gcs'));
+    }
+}
+
+if (!function_exists('media_url')) {
+    /**
+     * Generate the public URL for an uploaded media asset.
+     */
+    function media_url(?string $path, ?string $default = null): ?string
+    {
+        if (empty($path)) {
+            return $default;
+        }
+
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return $path;
+        }
+
+        try {
+            // First check default disk (GCS)
+            if (\Illuminate\Support\Facades\Storage::exists($path)) {
+                return \Illuminate\Support\Facades\Storage::url($path);
+            }
+
+            // Fallback check on public disk for legacy local uploads
+            if (config('filesystems.default') !== 'public' && \Illuminate\Support\Facades\Storage::disk('public')->exists($path)) {
+                /** @var \Illuminate\Filesystem\FilesystemAdapter $publicDisk */
+                $publicDisk = \Illuminate\Support\Facades\Storage::disk('public');
+                return $publicDisk->url($path);
+            }
+
+            return \Illuminate\Support\Facades\Storage::url($path);
+        } catch (\Throwable $e) {
+            return $default ?: $path;
+        }
+    }
+}
+

@@ -125,19 +125,31 @@ class SettingController extends Controller
             Setting::set('footer_phone_main', $request->input('contact_phone'), 'footer');
         }
 
+        $disk = config('filesystems.default', 'gcs');
+
         // Handle Logo Upload
         if ($request->hasFile('site_logo')) {
             $oldLogo = Setting::get('site_logo');
-            if ($oldLogo && Storage::disk('public')->exists($oldLogo)) {
-                Storage::disk('public')->delete($oldLogo);
+            if ($oldLogo) {
+                if (Storage::disk($disk)->exists($oldLogo)) {
+                    Storage::disk($disk)->delete($oldLogo);
+                }
+                if ($disk !== 'public' && Storage::disk('public')->exists($oldLogo)) {
+                    Storage::disk('public')->delete($oldLogo);
+                }
             }
 
-            $path = $request->file('site_logo')->store('branding', 'public');
+            $path = $request->file('site_logo')->store('branding', $disk);
             Setting::set('site_logo', $path, 'branding', 'file');
         } elseif ($request->boolean('remove_logo')) {
             $oldLogo = Setting::get('site_logo');
-            if ($oldLogo && Storage::disk('public')->exists($oldLogo)) {
-                Storage::disk('public')->delete($oldLogo);
+            if ($oldLogo) {
+                if (Storage::disk($disk)->exists($oldLogo)) {
+                    Storage::disk($disk)->delete($oldLogo);
+                }
+                if ($disk !== 'public' && Storage::disk('public')->exists($oldLogo)) {
+                    Storage::disk('public')->delete($oldLogo);
+                }
             }
             Setting::set('site_logo', '', 'branding', 'file');
         }
@@ -145,16 +157,26 @@ class SettingController extends Controller
         // Handle Favicon Upload
         if ($request->hasFile('site_favicon')) {
             $oldFavicon = Setting::get('site_favicon');
-            if ($oldFavicon && Storage::disk('public')->exists($oldFavicon)) {
-                Storage::disk('public')->delete($oldFavicon);
+            if ($oldFavicon) {
+                if (Storage::disk($disk)->exists($oldFavicon)) {
+                    Storage::disk($disk)->delete($oldFavicon);
+                }
+                if ($disk !== 'public' && Storage::disk('public')->exists($oldFavicon)) {
+                    Storage::disk('public')->delete($oldFavicon);
+                }
             }
 
-            $path = $request->file('site_favicon')->store('branding', 'public');
+            $path = $request->file('site_favicon')->store('branding', $disk);
             Setting::set('site_favicon', $path, 'branding', 'file');
         } elseif ($request->boolean('remove_favicon')) {
             $oldFavicon = Setting::get('site_favicon');
-            if ($oldFavicon && Storage::disk('public')->exists($oldFavicon)) {
-                Storage::disk('public')->delete($oldFavicon);
+            if ($oldFavicon) {
+                if (Storage::disk($disk)->exists($oldFavicon)) {
+                    Storage::disk($disk)->delete($oldFavicon);
+                }
+                if ($disk !== 'public' && Storage::disk('public')->exists($oldFavicon)) {
+                    Storage::disk('public')->delete($oldFavicon);
+                }
             }
             Setting::set('site_favicon', '', 'branding', 'file');
         }

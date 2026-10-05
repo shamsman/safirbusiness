@@ -110,8 +110,11 @@ class User extends Authenticatable
      */
     public function avatarUrl(): string
     {
-        if ($this->avatar && Storage::disk('public')->exists($this->avatar)) {
-            return Storage::url($this->avatar);
+        if ($this->avatar) {
+            $url = media_url($this->avatar);
+            if (!empty($url)) {
+                return $url;
+            }
         }
 
         $encodedName = urlencode($this->name);
