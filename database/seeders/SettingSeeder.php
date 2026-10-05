@@ -142,6 +142,104 @@ class SettingSeeder extends Seeder
                 'group' => 'scripts',
                 'type'  => 'string',
             ],
+
+            // Footer Configuration & Legal
+            [
+                'key'   => 'footer_brand_title',
+                'value' => 'Safir Business Hub',
+                'group' => 'footer',
+                'type'  => 'string',
+            ],
+            [
+                'key'   => 'footer_badge_text',
+                'value' => 'Diplomatic & Sovereign Advisory • Ankara HQ',
+                'group' => 'footer',
+                'type'  => 'string',
+            ],
+            [
+                'key'   => 'footer_about',
+                'value' => 'Safir Business Hub is Ankara’s specialized corporate and diplomatic advisory platform, bridging economic intelligence, institutional relations, and ground execution across Türkiye.',
+                'group' => 'footer',
+                'type'  => 'text',
+            ],
+            [
+                'key'   => 'footer_signature',
+                'value' => 'Empowering Cross-Border Sovereignty & Economic Convergence',
+                'group' => 'footer',
+                'type'  => 'string',
+            ],
+            [
+                'key'   => 'footer_pillars_title',
+                'value' => 'Core Pillars',
+                'group' => 'footer',
+                'type'  => 'string',
+            ],
+            [
+                'key'   => 'footer_quick_links_title',
+                'value' => 'Quick Links',
+                'group' => 'footer',
+                'type'  => 'string',
+            ],
+            [
+                'key'   => 'footer_hq_title',
+                'value' => 'Ankara Headquarters',
+                'group' => 'footer',
+                'type'  => 'string',
+            ],
+            [
+                'key'   => 'footer_address',
+                'value' => 'Safir Diplomatic Tower, Level 14, Çankaya Diplomatic Quarter, Ankara, Republic of Türkiye',
+                'group' => 'footer',
+                'type'  => 'text',
+            ],
+            [
+                'key'   => 'footer_address_note',
+                'value' => 'Diplomatic appointments strictly by prior protocol clearance.',
+                'group' => 'footer',
+                'type'  => 'string',
+            ],
+            [
+                'key'   => 'footer_phone_main',
+                'value' => '+90 (312) 439 88 00',
+                'group' => 'footer',
+                'type'  => 'string',
+            ],
+            [
+                'key'   => 'footer_phone_embassies',
+                'value' => '+90 (312) 439 88 01',
+                'group' => 'footer',
+                'type'  => 'string',
+            ],
+            [
+                'key'   => 'footer_phone_investors',
+                'value' => '+90 (312) 439 88 02',
+                'group' => 'footer',
+                'type'  => 'string',
+            ],
+            [
+                'key'   => 'footer_copyright',
+                'value' => '© 2026 Safir Business Hub. All rights reserved.',
+                'group' => 'footer',
+                'type'  => 'string',
+            ],
+            [
+                'key'   => 'footer_privacy_text',
+                'value' => 'Privacy Policy & Data Protection',
+                'group' => 'footer',
+                'type'  => 'string',
+            ],
+            [
+                'key'   => 'footer_terms_text',
+                'value' => 'Terms of Advisory Service',
+                'group' => 'footer',
+                'type'  => 'string',
+            ],
+            [
+                'key'   => 'footer_show_social',
+                'value' => '1',
+                'group' => 'footer',
+                'type'  => 'string',
+            ],
         ];
 
         foreach ($settings as $setting) {

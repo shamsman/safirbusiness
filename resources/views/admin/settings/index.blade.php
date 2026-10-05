@@ -37,6 +37,13 @@
             <span>Social Channels</span>
         </button>
 
+        <button type="button" @click="activeTab = 'footer'"
+                :class="activeTab === 'footer' ? 'bg-gold-500/10 text-gold-700 border-gold-500/30 font-semibold' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100 border-transparent'"
+                class="px-4 py-2 rounded-xl text-xs font-semibold border transition-all flex items-center gap-2 cursor-pointer whitespace-nowrap">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path></svg>
+            <span>Footer Configuration</span>
+        </button>
+
         <button type="button" @click="activeTab = 'scripts'"
                 :class="activeTab === 'scripts' ? 'bg-gold-500/10 text-gold-700 border-gold-500/30 font-semibold' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100 border-transparent'"
                 class="px-4 py-2 rounded-xl text-xs font-semibold border transition-all flex items-center gap-2 cursor-pointer whitespace-nowrap">
@@ -276,7 +283,197 @@
             </div>
         </div>
 
-        <!-- Tab 5: Scripts & Analytics -->
+        <!-- Tab 5: Footer Configuration -->
+        <div x-show="activeTab === 'footer'" class="space-y-6" style="display: none;">
+            
+            <!-- Section 1: Brand & Philosophy Column -->
+            <div class="bg-white border border-slate-200/90 rounded-2xl p-7 shadow-sm space-y-5">
+                <div class="border-b border-slate-100 pb-3">
+                    <h3 class="text-base font-bold text-slate-900">Brand Identity & Signature (Column 1)</h3>
+                    <p class="text-xs text-slate-500">Configure brand naming, diplomatic protocol badge, overview narrative, and brand motto</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-2">
+                            Footer Brand Name
+                        </label>
+                        <input type="text" name="footer_brand_title" value="{{ old('footer_brand_title', setting('footer_brand_title', setting('site_name', 'Safir Business Hub'))) }}"
+                               placeholder="Safir Business Hub"
+                               class="w-full px-4 py-2.5 bg-slate-50/60 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-gold-500 focus:ring-1 focus:ring-gold-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-2">
+                            Protocol / Location Badge
+                        </label>
+                        <input type="text" name="footer_badge_text" value="{{ old('footer_badge_text', setting('footer_badge_text', __('safir.location_badge'))) }}"
+                               placeholder="Diplomatic & Sovereign Advisory • Ankara HQ"
+                               class="w-full px-4 py-2.5 bg-slate-50/60 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-gold-500 focus:ring-1 focus:ring-gold-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-2">
+                        Footer Overview / Bio Narrative
+                    </label>
+                    <textarea name="footer_about" rows="3"
+                              placeholder="Concise diplomatic and corporate advisory platform overview displayed in footer..."
+                              class="w-full px-4 py-2.5 bg-slate-50/60 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-gold-500 focus:ring-1 focus:ring-gold-500">{{ old('footer_about', setting('footer_about', __('safir.footer.about_text'))) }}</textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-2">
+                        Official Brand Signature / Slogan
+                    </label>
+                    <input type="text" name="footer_signature" value="{{ old('footer_signature', setting('footer_signature', __('safir.brand_signature'))) }}"
+                           placeholder="Empowering Cross-Border Sovereignty & Economic Convergence"
+                           class="w-full px-4 py-2.5 bg-slate-50/60 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-gold-500 focus:ring-1 focus:ring-gold-500">
+                    <p class="text-[11px] text-slate-500 mt-1">Rendered in elegant italic gold styling in the footer branding column.</p>
+                </div>
+
+                <div class="pt-2">
+                    <label class="inline-flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+                        <input type="hidden" name="footer_show_social" value="0">
+                        <input type="checkbox" name="footer_show_social" value="1" {{ old('footer_show_social', setting('footer_show_social', '1')) == '1' ? 'checked' : '' }}
+                               class="w-4 h-4 rounded border-slate-300 text-gold-600 focus:ring-gold-500">
+                        <span>Display Social Media Channels in Footer (LinkedIn, X, Instagram, YouTube)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Section 2: Navigation Columns Headings -->
+            <div class="bg-white border border-slate-200/90 rounded-2xl p-7 shadow-sm space-y-5">
+                <div class="border-b border-slate-100 pb-3">
+                    <h3 class="text-base font-bold text-slate-900">Navigation Titles (Columns 2 & 3)</h3>
+                    <p class="text-xs text-slate-500">Header titles for the core pillars and quick navigation columns</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-2">
+                            Column 2 Title (Pillars)
+                        </label>
+                        <input type="text" name="footer_pillars_title" value="{{ old('footer_pillars_title', setting('footer_pillars_title', __('safir.footer.services_title'))) }}"
+                               placeholder="Core Pillars"
+                               class="w-full px-4 py-2.5 bg-slate-50/60 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-gold-500 focus:ring-1 focus:ring-gold-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-2">
+                            Column 3 Title (Quick Links)
+                        </label>
+                        <input type="text" name="footer_quick_links_title" value="{{ old('footer_quick_links_title', setting('footer_quick_links_title', __('safir.footer.quick_links'))) }}"
+                               placeholder="Quick Links"
+                               class="w-full px-4 py-2.5 bg-slate-50/60 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-gold-500 focus:ring-1 focus:ring-gold-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3: Headquarters & Contact Lines -->
+            <div class="bg-white border border-slate-200/90 rounded-2xl p-7 shadow-sm space-y-5">
+                <div class="border-b border-slate-100 pb-3">
+                    <h3 class="text-base font-bold text-slate-900">Diplomatic Headquarters & Direct Touchpoints (Column 4)</h3>
+                    <p class="text-xs text-slate-500">Location address and specialized contact lines displayed in the footer</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-2">
+                            Contact Column Title
+                        </label>
+                        <input type="text" name="footer_hq_title" value="{{ old('footer_hq_title', setting('footer_hq_title', __('safir.footer.contact_title'))) }}"
+                               placeholder="Ankara Headquarters"
+                               class="w-full max-w-md px-4 py-2.5 bg-slate-50/60 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-gold-500 focus:ring-1 focus:ring-gold-500">
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-2">
+                            Headquarters Physical Address
+                        </label>
+                        <textarea name="footer_address" rows="2"
+                                  placeholder="Safir Diplomatic Tower, Level 14, Çankaya Diplomatic Quarter, Ankara..."
+                                  class="w-full px-4 py-2.5 bg-slate-50/60 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-gold-500 focus:ring-1 focus:ring-gold-500">{{ old('footer_address', setting('footer_address', setting('office_address_ankara', __('safir.contact.address')))) }}</textarea>
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-2">
+                            Protocol Access / Security Clearance Note
+                        </label>
+                        <input type="text" name="footer_address_note" value="{{ old('footer_address_note', setting('footer_address_note', __('safir.contact.address_note'))) }}"
+                               placeholder="Diplomatic appointments strictly by prior protocol clearance."
+                               class="w-full px-4 py-2.5 bg-slate-50/60 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-gold-500 focus:ring-1 focus:ring-gold-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-2">
+                            Main Phone Line
+                        </label>
+                        <input type="text" name="footer_phone_main" value="{{ old('footer_phone_main', setting('footer_phone_main', setting('contact_phone', '+90 (312) 439 88 00'))) }}"
+                               placeholder="+90 (312) 439 88 00"
+                               class="w-full px-4 py-2.5 bg-slate-50/60 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-gold-500 focus:ring-1 focus:ring-gold-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-2">
+                            Embassies Desk Line
+                        </label>
+                        <input type="text" name="footer_phone_embassies" value="{{ old('footer_phone_embassies', setting('footer_phone_embassies', '+90 312 000 00 01')) }}"
+                               placeholder="+90 (312) 439 88 01"
+                               class="w-full px-4 py-2.5 bg-slate-50/60 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-gold-500 focus:ring-1 focus:ring-gold-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-2">
+                            Investors Desk Line
+                        </label>
+                        <input type="text" name="footer_phone_investors" value="{{ old('footer_phone_investors', setting('footer_phone_investors', '+90 312 000 00 02')) }}"
+                               placeholder="+90 (312) 439 88 02"
+                               class="w-full px-4 py-2.5 bg-slate-50/60 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-gold-500 focus:ring-1 focus:ring-gold-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 4: Bottom Legal & Copyright Notice -->
+            <div class="bg-white border border-slate-200/90 rounded-2xl p-7 shadow-sm space-y-5">
+                <div class="border-b border-slate-100 pb-3">
+                    <h3 class="text-base font-bold text-slate-900">Legal, Copyright & Compliance (Bottom Bar)</h3>
+                    <p class="text-xs text-slate-500">Manage copyright ownership statement and regulatory policy links</p>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-2">
+                        Copyright Notice
+                    </label>
+                    <input type="text" name="footer_copyright" value="{{ old('footer_copyright', setting('footer_copyright', '© ' . date('Y') . ' ' . setting('site_name', 'Safir Business Hub') . '. ' . __('safir.footer.rights'))) }}"
+                           placeholder="© 2026 Safir Business Hub. All rights reserved."
+                           class="w-full px-4 py-2.5 bg-slate-50/60 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-gold-500 focus:ring-1 focus:ring-gold-500">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-2">
+                            Privacy Policy Label
+                        </label>
+                        <input type="text" name="footer_privacy_text" value="{{ old('footer_privacy_text', setting('footer_privacy_text', __('safir.footer.privacy'))) }}"
+                               placeholder="Privacy Policy & Data Protection"
+                               class="w-full px-4 py-2.5 bg-slate-50/60 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-gold-500 focus:ring-1 focus:ring-gold-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-2">
+                            Terms of Service Label
+                        </label>
+                        <input type="text" name="footer_terms_text" value="{{ old('footer_terms_text', setting('footer_terms_text', __('safir.footer.terms'))) }}"
+                               placeholder="Terms of Advisory Service"
+                               class="w-full px-4 py-2.5 bg-slate-50/60 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-gold-500 focus:ring-1 focus:ring-gold-500">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Tab 6: Scripts & Analytics -->
         <div x-show="activeTab === 'scripts'" class="space-y-6" style="display: none;">
             <div class="bg-white border border-slate-200/90 rounded-2xl p-7 shadow-sm space-y-5">
                 <div class="border-b border-slate-100 pb-3">

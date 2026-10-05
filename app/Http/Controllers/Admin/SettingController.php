@@ -50,6 +50,24 @@ class SettingController extends Controller
             'custom_footer_scripts' => ['nullable', 'string'],
             'site_logo'             => ['nullable', 'image', 'mimes:png,jpg,jpeg,svg,webp', 'max:3072'],
             'site_favicon'          => ['nullable', 'image', 'mimes:png,ico,svg', 'max:1024'],
+
+            // Footer
+            'footer_brand_title'       => ['nullable', 'string', 'max:150'],
+            'footer_badge_text'        => ['nullable', 'string', 'max:150'],
+            'footer_about'             => ['nullable', 'string'],
+            'footer_signature'         => ['nullable', 'string', 'max:255'],
+            'footer_pillars_title'     => ['nullable', 'string', 'max:100'],
+            'footer_quick_links_title' => ['nullable', 'string', 'max:100'],
+            'footer_hq_title'          => ['nullable', 'string', 'max:100'],
+            'footer_address'           => ['nullable', 'string'],
+            'footer_address_note'      => ['nullable', 'string', 'max:255'],
+            'footer_phone_main'        => ['nullable', 'string', 'max:50'],
+            'footer_phone_embassies'   => ['nullable', 'string', 'max:50'],
+            'footer_phone_investors'   => ['nullable', 'string', 'max:50'],
+            'footer_copyright'         => ['nullable', 'string', 'max:255'],
+            'footer_privacy_text'      => ['nullable', 'string', 'max:150'],
+            'footer_terms_text'        => ['nullable', 'string', 'max:150'],
+            'footer_show_social'       => ['nullable', 'in:0,1'],
         ]);
 
         // Key-to-group mapping
@@ -72,6 +90,24 @@ class SettingController extends Controller
             'google_analytics_id'   => 'scripts',
             'custom_header_scripts' => 'scripts',
             'custom_footer_scripts' => 'scripts',
+
+            // Footer settings
+            'footer_brand_title'       => 'footer',
+            'footer_badge_text'        => 'footer',
+            'footer_about'             => 'footer',
+            'footer_signature'         => 'footer',
+            'footer_pillars_title'     => 'footer',
+            'footer_quick_links_title' => 'footer',
+            'footer_hq_title'          => 'footer',
+            'footer_address'           => 'footer',
+            'footer_address_note'      => 'footer',
+            'footer_phone_main'        => 'footer',
+            'footer_phone_embassies'   => 'footer',
+            'footer_phone_investors'   => 'footer',
+            'footer_copyright'         => 'footer',
+            'footer_privacy_text'      => 'footer',
+            'footer_terms_text'        => 'footer',
+            'footer_show_social'       => 'footer',
         ];
 
         // Handle text fields

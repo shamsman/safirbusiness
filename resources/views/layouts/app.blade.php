@@ -381,34 +381,66 @@
                 <!-- Col 1: Brand & Philosophy (2 cols wide on desktop) -->
                 <div class="lg:col-span-2 space-y-4">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-navy-950 font-bold">
-                            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polygon points="12 2 2 7 12 12 22 7 12 2"/>
-                                <polyline points="2 17 12 22 22 17"/>
-                                <polyline points="2 12 12 17 22 12"/>
-                            </svg>
+                        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-navy-950 font-bold overflow-hidden shrink-0">
+                            @if(setting('site_logo') && \Illuminate\Support\Facades\Storage::disk('public')->exists(setting('site_logo')))
+                                <img src="{{ \Illuminate\Support\Facades\Storage::url(setting('site_logo')) }}" alt="Logo" class="max-h-full max-w-full object-contain">
+                            @else
+                                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                                    <polyline points="2 17 12 22 22 17"/>
+                                    <polyline points="2 12 12 17 22 12"/>
+                                </svg>
+                            @endif
                         </div>
                         <div>
-                            <div class="text-base font-extrabold text-slate-100 tracking-wider">SAFIR BUSINESS HUB</div>
-                            <div class="text-[10px] text-gold-400 tracking-wider uppercase font-semibold">{{ __('safir.location_badge') }}</div>
+                            <div class="text-base font-extrabold text-slate-100 tracking-wider uppercase">{{ setting('footer_brand_title', setting('site_name', 'SAFIR BUSINESS HUB')) }}</div>
+                            <div class="text-[10px] text-gold-400 tracking-wider uppercase font-semibold">{{ setting('footer_badge_text', __('safir.location_badge')) }}</div>
                         </div>
                     </div>
                     
                     <p class="text-slate-300 text-sm leading-relaxed">
-                        {{ __('safir.footer.about_text') }}
+                        {{ setting('footer_about', __('safir.footer.about_text')) }}
                     </p>
 
                     <!-- Memorable Brand Signature -->
+                    @if(setting('footer_signature', __('safir.brand_signature')))
                     <div class="pt-2 border-t border-white/5">
                         <div class="text-gold-400 font-bold italic text-sm">
-                            « {{ __('safir.brand_signature') }} »
+                            « {{ setting('footer_signature', __('safir.brand_signature')) }} »
                         </div>
                     </div>
+                    @endif
+
+                    <!-- Social Channels -->
+                    @if(setting('footer_show_social', '1') == '1' && (setting('social_linkedin') || setting('social_twitter') || setting('social_instagram') || setting('social_youtube')))
+                        <div class="flex items-center gap-2.5 pt-2">
+                            @if(setting('social_linkedin'))
+                                <a href="{{ setting('social_linkedin') }}" target="_blank" rel="noopener" class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 hover:border-gold-500/50 hover:bg-gold-500/10 hover:text-gold-400 flex items-center justify-center text-slate-400 transition-colors" title="LinkedIn">
+                                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+                                </a>
+                            @endif
+                            @if(setting('social_twitter'))
+                                <a href="{{ setting('social_twitter') }}" target="_blank" rel="noopener" class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 hover:border-gold-500/50 hover:bg-gold-500/10 hover:text-gold-400 flex items-center justify-center text-slate-400 transition-colors" title="X / Twitter">
+                                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                                </a>
+                            @endif
+                            @if(setting('social_instagram'))
+                                <a href="{{ setting('social_instagram') }}" target="_blank" rel="noopener" class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 hover:border-gold-500/50 hover:bg-gold-500/10 hover:text-gold-400 flex items-center justify-center text-slate-400 transition-colors" title="Instagram">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                                </a>
+                            @endif
+                            @if(setting('social_youtube'))
+                                <a href="{{ setting('social_youtube') }}" target="_blank" rel="noopener" class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 hover:border-gold-500/50 hover:bg-gold-500/10 hover:text-gold-400 flex items-center justify-center text-slate-400 transition-colors" title="YouTube">
+                                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                                </a>
+                            @endif
+                        </div>
+                    @endif
                 </div>
 
                 <!-- Col 2: The 4 Pillars -->
                 <div>
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-200 mb-4">{{ __('safir.footer.services_title') }}</h3>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-200 mb-4">{{ setting('footer_pillars_title', __('safir.footer.services_title')) }}</h3>
                     <ul class="space-y-2.5">
                         <li><a href="{{ route_ml('services.pillar', 'economy') }}" class="hover:text-gold-400 transition-colors">{{ __('safir.pillars.economy.title') }}</a></li>
                         <li><a href="{{ route_ml('services.pillar', 'relations') }}" class="hover:text-gold-400 transition-colors">{{ __('safir.pillars.relations.title') }}</a></li>
@@ -420,7 +452,7 @@
 
                 <!-- Col 3: Key Portals -->
                 <div>
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-200 mb-4">{{ __('safir.footer.quick_links') }}</h3>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-200 mb-4">{{ setting('footer_quick_links_title', __('safir.footer.quick_links')) }}</h3>
                     <ul class="space-y-2.5">
                         <li><a href="{{ route_ml('embassies') }}" class="hover:text-gold-400 transition-colors">{{ __('safir.nav.embassies') }}</a></li>
                         <li><a href="{{ route_ml('corporates') }}" class="hover:text-gold-400 transition-colors">{{ __('safir.nav.corporates') }}</a></li>
@@ -433,18 +465,26 @@
 
                 <!-- Col 4: Ankara Headquarters -->
                 <div>
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-200 mb-4">{{ __('safir.footer.contact_title') }}</h3>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-200 mb-4">{{ setting('footer_hq_title', __('safir.footer.contact_title')) }}</h3>
                     <div class="space-y-2.5 text-slate-300 text-xs">
                         <p class="leading-relaxed">
-                            {{ __('safir.contact.address') }}
+                            {{ setting('footer_address', setting('office_address_ankara', __('safir.contact.address'))) }}
                         </p>
+                        @if(setting('footer_address_note', __('safir.contact.address_note')))
                         <p class="text-[11px] text-slate-400">
-                            {{ __('safir.contact.address_note') }}
+                            {{ setting('footer_address_note', __('safir.contact.address_note')) }}
                         </p>
+                        @endif
                         <div class="pt-2 space-y-1 font-mono text-[11px]">
-                            <div>Main: <span class="text-slate-100">+90 312 000 00 00</span></div>
-                            <div>Embassies: <span class="text-gold-400">+90 312 000 00 01</span></div>
-                            <div>Investors: <span class="text-gold-400">+90 312 000 00 02</span></div>
+                            @if(setting('footer_phone_main', setting('contact_phone', '+90 312 000 00 00')))
+                            <div>Main: <span class="text-slate-100">{{ setting('footer_phone_main', setting('contact_phone', '+90 312 000 00 00')) }}</span></div>
+                            @endif
+                            @if(setting('footer_phone_embassies', '+90 312 000 00 01'))
+                            <div>Embassies: <span class="text-gold-400">{{ setting('footer_phone_embassies', '+90 312 000 00 01') }}</span></div>
+                            @endif
+                            @if(setting('footer_phone_investors', '+90 312 000 00 02'))
+                            <div>Investors: <span class="text-gold-400">{{ setting('footer_phone_investors', '+90 312 000 00 02') }}</span></div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -454,11 +494,11 @@
             <!-- Bottom Legal & Copyright -->
             <div class="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-400 text-xs">
                 <div>
-                    © {{ date('Y') }} {{ __('safir.brand_name') }}. {{ __('safir.footer.rights') }}
+                    {{ setting('footer_copyright', '© ' . date('Y') . ' ' . setting('site_name', __('safir.brand_name')) . '. ' . __('safir.footer.rights')) }}
                 </div>
                 <div class="flex items-center gap-6">
-                    <span class="hover:text-slate-300">{{ __('safir.footer.privacy') }}</span>
-                    <span class="hover:text-slate-300">{{ __('safir.footer.terms') }}</span>
+                    <span class="hover:text-slate-300">{{ setting('footer_privacy_text', __('safir.footer.privacy')) }}</span>
+                    <span class="hover:text-slate-300">{{ setting('footer_terms_text', __('safir.footer.terms')) }}</span>
                     <a href="{{ route('admin.dashboard') }}" class="hover:text-gold-400 transition-colors">Executive Portal</a>
                     <a href="/migrate.php" class="text-slate-600 hover:text-gold-500 font-mono text-[10px]" title="Live Migration Console">System Status</a>
                 </div>
