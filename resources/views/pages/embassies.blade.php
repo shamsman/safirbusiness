@@ -83,7 +83,7 @@
             <div class="bg-[#FAF9F5] p-8 sm:p-12 rounded-3xl border border-[#E2DDD3] shadow-sm">
                 <div class="text-center max-w-xl mx-auto mb-12">
                     <h3 class="text-2xl font-bold text-[#0A192F] mb-2">{{ __('safir.embassies_page.workflow_title') }}</h3>
-                    <p class="text-slate-500 text-xs">Standard operational procedure for diplomatic and sovereign engagements</p>
+                    <p class="text-slate-500 text-xs">{{ __('safir.embassies_page.workflow_subtitle') }}</p>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

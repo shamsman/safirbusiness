@@ -35,7 +35,7 @@
                             {{ __('safir.contact.form.title') }}
                         </h2>
                         <p class="text-slate-500 text-xs mb-8">
-                            All requests are handled under strict diplomatic non-disclosure standards.
+                            {{ __('safir.contact.form.nda_notice') }}
                         </p>
 
                         <!-- Error Messages -->
@@ -74,7 +74,7 @@
                                     <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
                                         {{ __('safir.contact.form.country') }} *
                                     </label>
-                                    <input type="text" name="country" required value="{{ old('country') }}" placeholder="e.g. United Arab Emirates, Saudi Arabia, Qatar, UK..."
+                                    <input type="text" name="country" required value="{{ old('country') }}" placeholder="{{ __('safir.contact.form.country_placeholder') }}"
                                            class="w-full px-4 py-3 rounded-xl bg-[#FAF9F6] border border-[#D5CFBE] focus:border-gold-600 text-slate-900 text-xs focus:outline-none transition-colors">
                                 </div>
                                 <div>
@@ -100,12 +100,12 @@
                                     </label>
                                     <select name="service_type" required 
                                             class="w-full px-4 py-3 rounded-xl bg-[#FAF9F6] border border-[#D5CFBE] focus:border-gold-600 text-slate-900 text-xs focus:outline-none transition-colors">
-                                        <option value="embassy">Embassies & Consular Support</option>
-                                        <option value="corporate">Corporate Market Entry & Roadmap</option>
-                                        <option value="b2b">B2B Matchmaking & Delegations</option>
-                                        <option value="reports">Economic Reports & Market Studies</option>
-                                        <option value="events">Conferences, Media & Protocol</option>
-                                        <option value="general">General Advisory Scoping</option>
+                                        <option value="embassy">{{ __('safir.contact.form.services.embassy') }}</option>
+                                        <option value="corporate">{{ __('safir.contact.form.services.corporate') }}</option>
+                                        <option value="b2b">{{ __('safir.contact.form.services.b2b') }}</option>
+                                        <option value="reports">{{ __('safir.contact.form.services.reports') }}</option>
+                                        <option value="events">{{ __('safir.contact.form.services.events') }}</option>
+                                        <option value="general">{{ __('safir.contact.form.services.general') }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -136,7 +136,7 @@
                             </div>
                             <div>
                                 <h3 class="text-base font-bold text-[#0A192F]">{{ __('safir.contact.hq_title') }}</h3>
-                                <span class="text-xs text-gold-700 font-semibold">Çankaya / Söğütözü Diplomatic Zone</span>
+                                <span class="text-xs text-gold-700 font-semibold">{{ __('safir.contact.diplomatic_zone') }}</span>
                             </div>
                         </div>
 
@@ -148,7 +148,7 @@
                         </p>
 
                         <div class="p-3.5 rounded-xl bg-[#FAF9F5] border border-gold-200 text-xs text-slate-700 space-y-1">
-                            <div class="font-bold text-gold-700">Hours of Operation:</div>
+                            <div class="font-bold text-gold-700">{{ __('safir.contact.hours_label') }}</div>
                             <div>{{ __('safir.contact.hours') }}</div>
                         </div>
                     </div>
@@ -156,7 +156,7 @@
                     <!-- Desks Directory -->
                     <div class="bg-white p-6 rounded-2xl border border-[#E8E4DA] shadow-sm space-y-3">
                         <h4 class="text-xs font-bold uppercase tracking-wider text-gold-700 border-b border-[#E8E4DA] pb-2">
-                            Dedicated Executive Desks
+                            {{ __('safir.contact.dedicated_desks') }}
                         </h4>
 
                         <div class="space-y-3 text-xs">
@@ -181,7 +181,7 @@
 
                     <!-- Building Access Notice -->
                     <div class="p-4 rounded-xl bg-[#FAF9F5] border border-[#E8E4DA] text-xs text-slate-600 leading-relaxed shadow-sm">
-                        <span class="text-gold-700 font-bold">Protocol Notice:</span> {{ __('safir.contact.notice') }}
+                        <span class="text-gold-700 font-bold">{{ __('safir.contact.protocol_notice') }}</span> {{ __('safir.contact.notice') }}
                     </div>
 
                 </div>

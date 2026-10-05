@@ -74,11 +74,11 @@
                 @auth
                     <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-navy-900 text-gold-300 hover:bg-navy-800 transition-all shadow-xs">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                        <span>Dashboard</span>
+                        <span>{{ __('safir.nav.dashboard') }}</span>
                     </a>
                 @else
                     <a href="{{ route('login') }}" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium text-slate-700 hover:text-gold-800 hover:bg-white/80 transition-all">
-                        <span>Executive Login</span>
+                        <span>{{ __('safir.nav.executive_login') }}</span>
                         <span class="text-slate-400">→</span>
                     </a>
                 @endauth
@@ -113,7 +113,7 @@
                             </span>
                         </div>
                         <span class="text-[11px] text-slate-500 tracking-tight font-medium">
-                            {{ setting('site_tagline', 'Ankara · Diplomatic & Corporate Advisory') }}
+                            {{ __('safir.header_tagline') }}
                         </span>
                     </div>
                 </a>
@@ -390,7 +390,7 @@
                         </div>
                         <div>
                             <div class="text-base font-extrabold text-slate-100 tracking-wider">SAFIR BUSINESS HUB</div>
-                            <div class="text-[10px] text-gold-400 tracking-wider uppercase font-semibold">Ankara · Turkey</div>
+                            <div class="text-[10px] text-gold-400 tracking-wider uppercase font-semibold">{{ __('safir.location_badge') }}</div>
                         </div>
                     </div>
                     

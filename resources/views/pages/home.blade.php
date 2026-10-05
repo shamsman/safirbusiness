@@ -61,7 +61,7 @@
                 <div class="lg:col-span-5">
                     <div class="glass-panel p-6 sm:p-8 rounded-2xl border-gold-400/40 relative shadow-xl shadow-slate-900/5">
                         <div class="text-xs font-bold uppercase tracking-wider text-gold-800 mb-6 flex items-center justify-between border-b border-slate-200/80 pb-3">
-                            <span>{{ __('safir.location_badge') }} · Advisory Matrix</span>
+                            <span>{{ __('safir.location_badge') }} · {{ __('safir.hero.advisory_matrix') }}</span>
                             <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                         </div>
 
@@ -95,10 +95,10 @@
                         <div class="mt-6 pt-5 border-t border-slate-200">
                             <div class="text-xs font-semibold text-slate-800 mb-1 flex items-center gap-1.5">
                                 <svg class="w-4 h-4 text-gold-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                                <span>{{ $latestBulletin ? $latestBulletin->issue_number : 'Weekly Intelligence' }}</span>
+                                <span>{{ $latestBulletin ? $latestBulletin->issue_number : __('safir.bulletin.weekly_intelligence') }}</span>
                             </div>
                             <p class="text-[11px] text-slate-500 line-clamp-2">
-                                {{ $latestBulletin ? $latestBulletin->getLocalized('title') : 'Stay briefed with weekly macroeconomic indicators.' }}
+                                {{ $latestBulletin ? $latestBulletin->getLocalized('title') : __('safir.bulletin.default_desc') }}
                             </p>
                             <a href="{{ route_ml('bulletin') }}" class="inline-block mt-2 text-xs font-bold text-gold-700 hover:text-gold-800 underline">
                                 {{ __('safir.nav.bulletin') }} →
@@ -205,7 +205,7 @@
                         {{ __('safir.footer.services_title') }}
                     </span>
                     <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0A192F] tracking-tight mt-3">
-                        Integrated Advisory & Execution Architecture
+                        {{ __('safir.home.advisory_architecture.title') }}
                     </h2>
                 </div>
                 <a href="{{ route_ml('services.index') }}" class="text-sm font-bold text-gold-700 hover:text-gold-800 inline-flex items-center gap-1.5 group">
@@ -221,7 +221,7 @@
                     <div>
                         <div class="flex items-center justify-between mb-4">
                             <span class="text-xs font-mono font-bold text-gold-700 px-2.5 py-1 rounded bg-gold-50 border border-gold-200">
-                                PILLAR 01
+                                {{ __('safir.home.advisory_architecture.pillar_badge', ['number' => '01']) }}
                             </span>
                             <div class="w-10 h-10 rounded-lg bg-gold-50 text-gold-700 flex items-center justify-center">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
@@ -259,7 +259,7 @@
                     <div>
                         <div class="flex items-center justify-between mb-4">
                             <span class="text-xs font-mono font-bold text-gold-700 px-2.5 py-1 rounded bg-gold-50 border border-gold-200">
-                                PILLAR 02
+                                {{ __('safir.home.advisory_architecture.pillar_badge', ['number' => '02']) }}
                             </span>
                             <div class="w-10 h-10 rounded-lg bg-gold-50 text-gold-700 flex items-center justify-center">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
@@ -297,7 +297,7 @@
                     <div>
                         <div class="flex items-center justify-between mb-4">
                             <span class="text-xs font-mono font-bold text-gold-700 px-2.5 py-1 rounded bg-gold-50 border border-gold-200">
-                                PILLAR 03
+                                {{ __('safir.home.advisory_architecture.pillar_badge', ['number' => '03']) }}
                             </span>
                             <div class="w-10 h-10 rounded-lg bg-gold-50 text-gold-700 flex items-center justify-center">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"/></svg>
@@ -325,7 +325,7 @@
                             {{ __('safir.nav.explore_services') }} →
                         </a>
                         <a href="{{ route_ml('contact') }}" class="text-xs text-slate-500 hover:text-slate-800">
-                            Consular Desk
+                            {{ __('safir.home.pillars.consular_desk_link') }}
                         </a>
                     </div>
                 </div>
@@ -335,7 +335,7 @@
                     <div>
                         <div class="flex items-center justify-between mb-4">
                             <span class="text-xs font-mono font-bold text-gold-700 px-2.5 py-1 rounded bg-gold-50 border border-gold-200">
-                                PILLAR 04
+                                {{ __('safir.home.advisory_architecture.pillar_badge', ['number' => '04']) }}
                             </span>
                             <div class="w-10 h-10 rounded-lg bg-gold-50 text-gold-700 flex items-center justify-center">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/></svg>
@@ -363,7 +363,7 @@
                             {{ __('safir.nav.explore_services') }} →
                         </a>
                         <a href="{{ route_ml('contact') }}" class="text-xs text-slate-500 hover:text-slate-800">
-                            Press Desk
+                            {{ __('safir.home.pillars.press_desk_link') }}
                         </a>
                     </div>
                 </div>
@@ -400,7 +400,7 @@
                         </p>
                     </div>
                     <div class="mt-6 pt-4 border-t border-[#E8E4DA] text-[11px] text-gold-700 font-mono">
-                        1.3B Consumers · 4h Flight
+                        {{ __('safir.why_turkey.pillars.crossroads.tag') }}
                     </div>
                 </div>
 
@@ -414,7 +414,7 @@
                         </p>
                     </div>
                     <div class="mt-6 pt-4 border-t border-[#E8E4DA] text-[11px] text-gold-700 font-mono">
-                        $1.1T+ GDP · 85M Population
+                        {{ __('safir.why_turkey.pillars.economy.tag') }}
                     </div>
                 </div>
 
@@ -428,7 +428,7 @@
                         </p>
                     </div>
                     <div class="mt-6 pt-4 border-t border-[#E8E4DA] text-[11px] text-gold-700 font-mono">
-                        TOBB · DEİK · 19 Free Zones
+                        {{ __('safir.why_turkey.pillars.institutions.tag') }}
                     </div>
                 </div>
 
@@ -442,7 +442,7 @@
                         </p>
                     </div>
                     <div class="mt-6 pt-4 border-t border-gold-300/60 text-[11px] text-gold-800 font-bold">
-                        Presence · Protocol · Trust
+                        {{ __('safir.why_turkey.pillars.execution.tag') }}
                     </div>
                 </div>
 
@@ -467,7 +467,7 @@
                     </p>
                 </div>
                 <a href="{{ route_ml('reports.index') }}" class="text-sm font-bold text-gold-700 hover:text-gold-800 inline-flex items-center gap-1.5 group">
-                    <span>View All Reports</span>
+                    <span>{{ __('safir.reports.view_all') }}</span>
                     <span class="group-hover:translate-x-1 {{ $isRtl ? 'group-hover:-translate-x-1' : '' }} transition-transform">→</span>
                 </a>
             </div>
@@ -573,7 +573,7 @@
                         {{ __('safir.contact.badge') }}
                     </span>
                     <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0A192F] tracking-tight">
-                        Located in the Heart of Turkish Decision-Making
+                        {{ __('safir.home.location.title') }}
                     </h2>
                     <p class="text-slate-600 text-sm leading-relaxed">
                         {{ __('safir.contact.subtitle') }}
@@ -595,7 +595,7 @@
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             </div>
                             <div>
-                                <div class="text-xs font-bold text-[#0A192F]">Consultation Hours</div>
+                                <div class="text-xs font-bold text-[#0A192F]">{{ __('safir.home.location.consultation_hours_title') }}</div>
                                 <div class="text-xs text-slate-600">{{ __('safir.contact.hours') }}</div>
                             </div>
                         </div>
@@ -603,7 +603,7 @@
 
                     <div class="pt-4">
                         <a href="{{ route_ml('contact') }}" class="inline-flex items-center gap-2 text-xs font-bold text-gold-700 hover:text-gold-800 underline">
-                            <span>Open Dedicated Contact & Desks Directory</span>
+                            <span>{{ __('safir.home.location.contact_desks_link') }}</span>
                             <span>→</span>
                         </a>
                     </div>
@@ -613,31 +613,31 @@
                 <div class="lg:col-span-6">
                     <div class="bg-[#FAF9F5] p-6 rounded-2xl border border-[#E8E4DA] space-y-4">
                         <div class="text-xs font-bold text-[#0A192F] uppercase tracking-wider border-b border-[#E8E4DA] pb-2 flex items-center justify-between">
-                            <span>Ankara Diplomatic Corridor Proximity</span>
-                            <span class="text-gold-700 font-mono text-[11px]">Söğütözü / Çankaya</span>
+                            <span>{{ __('safir.home.location.card.header') }}</span>
+                            <span class="text-gold-700 font-mono text-[11px]">{{ __('safir.home.location.card.district') }}</span>
                         </div>
                         
                         <div class="grid grid-cols-2 gap-3 text-xs">
                             <div class="bg-white p-3 rounded-lg border border-[#E8E4DA] shadow-sm">
-                                <div class="text-gold-700 font-bold">5–8 mins</div>
-                                <div class="text-slate-600 text-[11px]">Key Sovereign Ministries</div>
+                                <div class="text-gold-700 font-bold">{{ __('safir.home.location.card.distances.sovereign_ministries.time') }}</div>
+                                <div class="text-slate-600 text-[11px]">{{ __('safir.home.location.card.distances.sovereign_ministries.label') }}</div>
                             </div>
                             <div class="bg-white p-3 rounded-lg border border-[#E8E4DA] shadow-sm">
-                                <div class="text-gold-700 font-bold">4 mins</div>
-                                <div class="text-slate-600 text-[11px]">TOBB Central Headquarters</div>
+                                <div class="text-gold-700 font-bold">{{ __('safir.home.location.card.distances.tobb.time') }}</div>
+                                <div class="text-slate-600 text-[11px]">{{ __('safir.home.location.card.distances.tobb.label') }}</div>
                             </div>
                             <div class="bg-white p-3 rounded-lg border border-[#E8E4DA] shadow-sm">
-                                <div class="text-gold-700 font-bold">6 mins</div>
-                                <div class="text-slate-600 text-[11px]">Ankara Chamber of Commerce</div>
+                                <div class="text-gold-700 font-bold">{{ __('safir.home.location.card.distances.chamber_of_commerce.time') }}</div>
+                                <div class="text-slate-600 text-[11px]">{{ __('safir.home.location.card.distances.chamber_of_commerce.label') }}</div>
                             </div>
                             <div class="bg-white p-3 rounded-lg border border-[#E8E4DA] shadow-sm">
-                                <div class="text-gold-700 font-bold">35 mins</div>
-                                <div class="text-slate-600 text-[11px]">Esenboğa International Airport</div>
+                                <div class="text-gold-700 font-bold">{{ __('safir.home.location.card.distances.airport.time') }}</div>
+                                <div class="text-slate-600 text-[11px]">{{ __('safir.home.location.card.distances.airport.label') }}</div>
                             </div>
                         </div>
 
                         <div class="p-4 rounded-xl bg-white border border-gold-200 text-xs text-slate-600 leading-relaxed shadow-sm">
-                            <span class="text-gold-700 font-bold">Notice:</span> {{ __('safir.contact.notice') }}
+                            <span class="text-gold-700 font-bold">{{ __('safir.home.location.card.notice_label') }}</span> {{ __('safir.contact.notice') }}
                         </div>
                     </div>
                 </div>
