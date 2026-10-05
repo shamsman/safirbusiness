@@ -95,7 +95,7 @@
     <!-- Main Navigation Header -->
     <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#E8E4DA] shadow-2xs transition-all">
         <div class="max-w-7xl 2xl:max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20 gap-2 lg:gap-4">
+            <div class="flex items-center justify-between xl:justify-start xl:gap-8 2xl:gap-10 h-20">
                 
                 <!-- Logo & Emblem -->
                 <a href="{{ route_ml('home') }}" class="flex items-center gap-3 group shrink-0 min-w-0">
