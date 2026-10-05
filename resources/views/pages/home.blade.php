@@ -586,7 +586,7 @@
                             </div>
                             <div>
                                 <div class="text-xs font-bold text-[#0A192F]">{{ __('safir.contact.hq_title') }}</div>
-                                <div class="text-xs text-slate-600">{{ __('safir.contact.address') }}</div>
+                                <div class="text-xs text-slate-600">{{ site_address() }}</div>
                             </div>
                         </div>
 

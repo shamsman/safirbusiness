@@ -141,15 +141,17 @@
                         </div>
 
                         <p class="text-xs text-slate-600 leading-relaxed">
-                            {{ __('safir.contact.address') }}
+                            {{ site_address() }}
                         </p>
+                        @if(setting('footer_address_note', __('safir.contact.address_note')))
                         <p class="text-[11px] text-slate-500">
-                            {{ __('safir.contact.address_note') }}
+                            {{ setting('footer_address_note', __('safir.contact.address_note')) }}
                         </p>
+                        @endif
 
                         <div class="p-3.5 rounded-xl bg-[#FAF9F5] border border-gold-200 text-xs text-slate-700 space-y-1">
                             <div class="font-bold text-gold-700">{{ __('safir.contact.hours_label') }}</div>
-                            <div>{{ __('safir.contact.hours') }}</div>
+                            <div>{{ setting('business_hours', __('safir.contact.hours')) }}</div>
                         </div>
                     </div>
 

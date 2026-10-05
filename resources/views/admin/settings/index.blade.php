@@ -393,7 +393,7 @@
                         </label>
                         <textarea name="footer_address" rows="2"
                                   placeholder="Safir Diplomatic Tower, Level 14, Çankaya Diplomatic Quarter, Ankara..."
-                                  class="w-full px-4 py-2.5 bg-slate-50/60 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-gold-500 focus:ring-1 focus:ring-gold-500">{{ old('footer_address', setting('footer_address', setting('office_address_ankara', __('safir.contact.address')))) }}</textarea>
+                                  class="w-full px-4 py-2.5 bg-slate-50/60 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-gold-500 focus:ring-1 focus:ring-gold-500">{{ old('footer_address', setting('office_address_ankara', setting('footer_address', __('safir.contact.address')))) }}</textarea>
                     </div>
 
                     <div class="md:col-span-2">

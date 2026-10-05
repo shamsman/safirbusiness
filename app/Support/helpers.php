@@ -70,6 +70,17 @@ if (!function_exists('setting')) {
     }
 }
 
+if (!function_exists('site_address')) {
+    /**
+     * Retrieve the institutional headquarters address from settings.
+     */
+    function site_address(?string $default = null): string
+    {
+        $val = setting('office_address_ankara') ?: setting('footer_address');
+        return !empty($val) ? (string) $val : (string) ($default ?? __('safir.contact.address'));
+    }
+}
+
 if (!function_exists('media_disk')) {
     /**
      * Get the configured media storage disk.

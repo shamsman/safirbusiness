@@ -119,10 +119,23 @@ class SettingController extends Controller
         }
 
         // Keep single phone number unified across contact and footer settings
-        if ($request->filled('footer_phone_main')) {
+        if ($activeTab === 'footer' && $request->filled('footer_phone_main')) {
+            Setting::set('contact_phone', $request->input('footer_phone_main'), 'contact');
+        } elseif ($activeTab === 'contact' && $request->filled('contact_phone')) {
+            Setting::set('footer_phone_main', $request->input('contact_phone'), 'footer');
+        } elseif ($request->filled('footer_phone_main')) {
             Setting::set('contact_phone', $request->input('footer_phone_main'), 'contact');
         } elseif ($request->filled('contact_phone')) {
             Setting::set('footer_phone_main', $request->input('contact_phone'), 'footer');
+        }
+
+        // Keep headquarters address unified across contact and footer settings
+        if ($activeTab === 'contact' && $request->filled('office_address_ankara')) {
+            Setting::set('footer_address', $request->input('office_address_ankara'), 'footer');
+        } elseif ($activeTab === 'footer' && $request->filled('footer_address')) {
+            Setting::set('office_address_ankara', $request->input('footer_address'), 'contact');
+        } elseif ($request->filled('office_address_ankara')) {
+            Setting::set('footer_address', $request->input('office_address_ankara'), 'footer');
         }
 
         $disk = config('filesystems.default', 'gcs');

@@ -45,8 +45,8 @@
             <!-- Left Info: Ankara HQ & Desks -->
             <div class="flex items-center gap-4 flex-wrap justify-center sm:justify-start">
                 <span class="inline-flex items-center gap-1.5 text-gold-800 font-semibold">
-                    <svg class="w-3.5 h-3.5 text-gold-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                    {{ __('safir.location_badge') }} · Söğütözü, Çankaya
+                    <svg class="w-3.5 h-3.5 text-gold-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    <span>{{ site_address() }}</span>
                 </span>
                 <span class="hidden md:inline text-slate-300">|</span>
                 @php
@@ -474,7 +474,7 @@
                     <h3 class="text-xs font-bold uppercase tracking-wider text-slate-200 mb-4">{{ setting('footer_hq_title', __('safir.footer.contact_title')) }}</h3>
                     <div class="space-y-2.5 text-slate-300 text-xs">
                         <p class="leading-relaxed">
-                            {{ setting('footer_address', setting('office_address_ankara', __('safir.contact.address'))) }}
+                            {{ site_address() }}
                         </p>
                         @if(setting('footer_address_note', __('safir.contact.address_note')))
                         <p class="text-[11px] text-slate-400">
