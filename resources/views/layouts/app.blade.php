@@ -264,19 +264,10 @@
                     <a href="{{ route_ml('reports.index') }}" class="px-2 2xl:px-2.5 py-1.5 text-[11.5px] 2xl:text-xs font-semibold whitespace-nowrap {{ request()->routeIs('reports.*') ? 'text-gold-700 font-bold' : 'text-slate-700 hover:text-gold-700' }} transition-colors">
                         {{ __('safir.nav.reports') }}
                     </a>
-                    <a href="{{ route_ml('contact') }}" class="hidden 2xl:block px-2 2xl:px-2.5 py-1.5 text-[11.5px] 2xl:text-xs font-semibold whitespace-nowrap {{ request()->routeIs('contact') ? 'text-gold-700 font-bold' : 'text-slate-700 hover:text-gold-700' }} transition-colors">
+                    <a href="{{ route_ml('contact') }}" class="px-2 2xl:px-2.5 py-1.5 text-[11.5px] 2xl:text-xs font-semibold whitespace-nowrap {{ request()->routeIs('contact') ? 'text-gold-700 font-bold' : 'text-slate-700 hover:text-gold-700' }} transition-colors">
                         {{ __('safir.nav.contact') }}
                     </a>
                 </nav>
-
-                <!-- Primary Action CTA -->
-                <div class="hidden md:flex items-center gap-2 lg:gap-3 shrink-0">
-                    <a href="{{ route_ml('contact') }}" class="relative group inline-flex items-center gap-1.5 px-3 py-2 2xl:px-4 2xl:py-2.5 rounded-lg text-[11px] 2xl:text-xs font-bold text-navy-950 bg-gradient-to-r from-gold-400 via-gold-500 to-gold-400 hover:from-gold-300 hover:to-gold-400 shadow-sm shadow-gold-500/20 transition-all hover:scale-102 whitespace-nowrap">
-                        <span class="hidden 2xl:inline">{{ __('safir.nav.request_briefing') }}</span>
-                        <span class="2xl:hidden">{{ __('safir.nav.request_briefing_short') }}</span>
-                        <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1 {{ $isRtl ? 'rotate-180 group-hover:-translate-x-1' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                    </a>
-                </div>
 
                 <!-- Mobile Hamburger Button -->
                 <button type="button" id="mobile-menu-btn" class="xl:hidden p-2 rounded-lg text-slate-700 hover:text-gold-700 hover:bg-slate-100 focus:outline-none" aria-label="Toggle Menu">
@@ -325,12 +316,6 @@
                     <a href="{{ route_ml('corporates') }}" class="p-2 rounded-lg bg-slate-50 border border-slate-200 hover:border-gold-400 text-center">{{ __('safir.nav.corporates') }}</a>
                     <a href="{{ route_ml('reports.index') }}" class="p-2 rounded-lg bg-slate-50 border border-slate-200 hover:border-gold-400 text-center">{{ __('safir.nav.reports') }}</a>
                     <a href="{{ route_ml('contact') }}" class="p-2 rounded-lg bg-slate-50 border border-slate-200 hover:border-gold-400 text-center">{{ __('safir.nav.contact') }}</a>
-                </div>
-
-                <div class="pt-2">
-                    <a href="{{ route_ml('contact') }}" class="block text-center w-full py-3 rounded-lg font-bold text-navy-950 bg-gradient-to-r from-gold-400 to-gold-500">
-                        {{ __('safir.nav.request_briefing') }}
-                    </a>
                 </div>
             </div>
         </div>
