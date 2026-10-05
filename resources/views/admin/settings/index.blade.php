@@ -405,31 +405,14 @@
                                class="w-full px-4 py-2.5 bg-slate-50/60 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-gold-500 focus:ring-1 focus:ring-gold-500">
                     </div>
 
-                    <div>
+                    <div class="md:col-span-2">
                         <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-2">
-                            Main Phone Line
+                            Official Phone Line
                         </label>
-                        <input type="text" name="footer_phone_main" value="{{ old('footer_phone_main', setting('footer_phone_main', setting('contact_phone', '+90 (312) 439 88 00'))) }}"
-                               placeholder="+90 (312) 439 88 00"
+                        <input type="text" name="footer_phone_main" value="{{ old('footer_phone_main', setting('footer_phone_main', setting('contact_phone', '+90 501 241 43 84'))) }}"
+                               placeholder="+90 501 241 43 84"
                                class="w-full px-4 py-2.5 bg-slate-50/60 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-gold-500 focus:ring-1 focus:ring-gold-500">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-2">
-                            Embassies Desk Line
-                        </label>
-                        <input type="text" name="footer_phone_embassies" value="{{ old('footer_phone_embassies', setting('footer_phone_embassies', '+90 312 000 00 01')) }}"
-                               placeholder="+90 (312) 439 88 01"
-                               class="w-full px-4 py-2.5 bg-slate-50/60 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-gold-500 focus:ring-1 focus:ring-gold-500">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-2">
-                            Investors Desk Line
-                        </label>
-                        <input type="text" name="footer_phone_investors" value="{{ old('footer_phone_investors', setting('footer_phone_investors', '+90 312 000 00 02')) }}"
-                               placeholder="+90 (312) 439 88 02"
-                               class="w-full px-4 py-2.5 bg-slate-50/60 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-gold-500 focus:ring-1 focus:ring-gold-500">
+                        <p class="text-[11px] text-slate-500 mt-1.5">Official phone touchpoint displayed across website footer, navigation header, and contact directory.</p>
                     </div>
                 </div>
             </div>

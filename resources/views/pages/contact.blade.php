@@ -160,21 +160,28 @@
                         </h4>
 
                         <div class="space-y-3 text-xs">
+                            @php
+                                $contactPagePhone = setting('contact_phone', setting('footer_phone_main', '+90 501 241 43 84'));
+                            @endphp
+                            @if($contactPagePhone)
                             <div class="flex items-center justify-between border-b border-[#F0ECE1] pb-2">
                                 <span class="text-slate-600">{{ __('safir.contact.desks.main') }}</span>
-                                <span class="font-mono text-[#0A192F] font-semibold">+90 312 000 00 00</span>
+                                <a href="tel:{{ preg_replace('/[^0-9+]/', '', $contactPagePhone) }}" class="font-mono text-gold-700 hover:text-gold-800 font-semibold">{{ $contactPagePhone }}</a>
                             </div>
+                            @endif
+                            @if(setting('contact_whatsapp'))
                             <div class="flex items-center justify-between border-b border-[#F0ECE1] pb-2">
-                                <span class="text-slate-600">{{ __('safir.contact.desks.embassies') }}</span>
-                                <span class="font-mono text-gold-700 font-semibold">+90 312 000 00 01</span>
+                                <span class="text-slate-600">WhatsApp Desk</span>
+                                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', setting('contact_whatsapp')) }}" target="_blank" rel="noopener noreferrer" class="font-mono text-emerald-600 hover:text-emerald-700 font-semibold">{{ setting('contact_whatsapp') }}</a>
                             </div>
+                            @endif
                             <div class="flex items-center justify-between border-b border-[#F0ECE1] pb-2">
-                                <span class="text-slate-600">{{ __('safir.contact.desks.investors') }}</span>
-                                <span class="font-mono text-gold-700 font-semibold">+90 312 000 00 02</span>
+                                <span class="text-slate-600">General Inquiries</span>
+                                <a href="mailto:{{ setting('contact_email', 'hello@safirbusinesshub.com') }}" class="font-mono text-slate-700 hover:text-gold-700">{{ setting('contact_email', 'hello@safirbusinesshub.com') }}</a>
                             </div>
                             <div class="flex items-center justify-between">
                                 <span class="text-slate-600">{{ __('safir.contact.desks.media') }}</span>
-                                <span class="font-mono text-slate-600">press@safirbusinesshub.com</span>
+                                <a href="mailto:{{ setting('support_email', 'press@safirbusinesshub.com') }}" class="font-mono text-slate-700 hover:text-gold-700">{{ setting('support_email', 'press@safirbusinesshub.com') }}</a>
                             </div>
                         </div>
                     </div>

@@ -68,7 +68,7 @@ class SettingSeeder extends Seeder
             ],
             [
                 'key'   => 'contact_phone',
-                'value' => '+90 (312) 439 88 00',
+                'value' => '+90 501 241 43 84',
                 'group' => 'contact',
                 'type'  => 'string',
             ],
@@ -200,19 +200,7 @@ class SettingSeeder extends Seeder
             ],
             [
                 'key'   => 'footer_phone_main',
-                'value' => '+90 (312) 439 88 00',
-                'group' => 'footer',
-                'type'  => 'string',
-            ],
-            [
-                'key'   => 'footer_phone_embassies',
-                'value' => '+90 (312) 439 88 01',
-                'group' => 'footer',
-                'type'  => 'string',
-            ],
-            [
-                'key'   => 'footer_phone_investors',
-                'value' => '+90 (312) 439 88 02',
+                'value' => '+90 501 241 43 84',
                 'group' => 'footer',
                 'type'  => 'string',
             ],

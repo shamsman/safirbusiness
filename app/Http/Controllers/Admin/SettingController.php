@@ -118,6 +118,13 @@ class SettingController extends Controller
             }
         }
 
+        // Keep single phone number unified across contact and footer settings
+        if ($request->filled('footer_phone_main')) {
+            Setting::set('contact_phone', $request->input('footer_phone_main'), 'contact');
+        } elseif ($request->filled('contact_phone')) {
+            Setting::set('footer_phone_main', $request->input('contact_phone'), 'footer');
+        }
+
         // Handle Logo Upload
         if ($request->hasFile('site_logo')) {
             $oldLogo = Setting::get('site_logo');

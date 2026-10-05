@@ -11,9 +11,13 @@ use Tests\TestCase;
 
 class AdminDashboardAndAuthTest extends TestCase
 {
-    /**
-     * Test admin login with seeded credentials.
-     */
+    use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed(\Database\Seeders\DatabaseSeeder::class);
+    }
     public function test_admin_can_login_with_provided_credentials(): void
     {
         $response = $this->post('/login', [

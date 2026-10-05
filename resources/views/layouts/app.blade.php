@@ -49,10 +49,15 @@
                     {{ __('safir.location_badge') }} · Söğütözü, Çankaya
                 </span>
                 <span class="hidden md:inline text-slate-300">|</span>
-                <a href="tel:{{ preg_replace('/[^0-9+]/', '', setting('contact_phone', '+90 312 000 00 01')) }}" class="hover:text-gold-700 transition-colors hidden md:inline-flex items-center gap-1 text-slate-600">
-                    <span class="text-slate-500">{{ __('safir.contact.desks.embassies') }}:</span>
-                    <span class="font-mono text-slate-800 font-medium">{{ setting('contact_phone', '+90 312 000 00 01') }}</span>
+                @php
+                    $sitePhone = setting('contact_phone', setting('footer_phone_main', '+90 501 241 43 84'));
+                @endphp
+                @if($sitePhone)
+                <a href="tel:{{ preg_replace('/[^0-9+]/', '', $sitePhone) }}" class="hover:text-gold-700 transition-colors hidden md:inline-flex items-center gap-1.5 text-slate-600">
+                    <svg class="w-3.5 h-3.5 text-gold-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                    <span class="font-mono text-slate-800 font-medium">{{ $sitePhone }}</span>
                 </a>
+                @endif
                 <span class="hidden lg:inline text-slate-300">|</span>
                 <a href="mailto:{{ setting('contact_email', 'hello@safirbusinesshub.com') }}" class="hover:text-gold-700 transition-colors hidden lg:inline-flex items-center gap-1 font-mono text-slate-600">
                     {{ setting('contact_email', 'hello@safirbusinesshub.com') }}
@@ -475,17 +480,17 @@
                             {{ setting('footer_address_note', __('safir.contact.address_note')) }}
                         </p>
                         @endif
-                        <div class="pt-2 space-y-1 font-mono text-[11px]">
-                            @if(setting('footer_phone_main', setting('contact_phone', '+90 312 000 00 00')))
-                            <div>Main: <span class="text-slate-100">{{ setting('footer_phone_main', setting('contact_phone', '+90 312 000 00 00')) }}</span></div>
-                            @endif
-                            @if(setting('footer_phone_embassies', '+90 312 000 00 01'))
-                            <div>Embassies: <span class="text-gold-400">{{ setting('footer_phone_embassies', '+90 312 000 00 01') }}</span></div>
-                            @endif
-                            @if(setting('footer_phone_investors', '+90 312 000 00 02'))
-                            <div>Investors: <span class="text-gold-400">{{ setting('footer_phone_investors', '+90 312 000 00 02') }}</span></div>
-                            @endif
+                        @php
+                            $footerPhone = setting('footer_phone_main', setting('contact_phone', '+90 501 241 43 84'));
+                        @endphp
+                        @if($footerPhone)
+                        <div class="pt-2">
+                            <a href="tel:{{ preg_replace('/[^0-9+]/', '', $footerPhone) }}" class="inline-flex items-center gap-2 font-mono text-xs text-gold-400 hover:text-gold-300 transition-colors">
+                                <svg class="w-3.5 h-3.5 text-gold-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                                <span>{{ $footerPhone }}</span>
+                            </a>
                         </div>
+                        @endif
                     </div>
                 </div>
 
