@@ -30,6 +30,7 @@ return [
         'about' => 'من نحن',
         'contact' => 'اتصل بنا',
         'request_briefing' => 'اطلب إحاطة دبلوماسية',
+        'request_briefing_short' => 'طلب إحاطة',
         'explore_services' => 'استكشف ركائزنا',
         'switch_lang' => 'اللغة',
         'dashboard' => 'لوحة التحكم',

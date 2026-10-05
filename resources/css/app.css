@@ -32,6 +32,8 @@
 html {
     scroll-behavior: smooth;
     color-scheme: light;
+    max-width: 100%;
+    overflow-x: clip;
 }
 
 body {
@@ -39,6 +41,8 @@ body {
     color: #0A192F;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    max-width: 100%;
+    overflow-x: clip;
 }
 
 [dir="rtl"] {

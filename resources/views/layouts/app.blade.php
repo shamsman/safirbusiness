@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ $currentLocale }}" dir="{{ $isRtl ? 'rtl' : 'ltr' }}" class="scroll-smooth">
+<html lang="{{ $currentLocale }}" dir="{{ $isRtl ? 'rtl' : 'ltr' }}" class="scroll-smooth overflow-x-clip">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,11 +37,11 @@
 
     @stack('styles')
 </head>
-<body class="bg-[#FAF9F6] text-[#0A192F] min-h-screen flex flex-col font-sans selection:bg-gold-500/25 selection:text-[#0A192F]">
+<body class="bg-[#FAF9F6] text-[#0A192F] min-h-screen flex flex-col font-sans selection:bg-gold-500/25 selection:text-[#0A192F] overflow-x-clip w-full">
 
     <!-- Top Diplomatic & Executive Bar -->
     <div class="bg-[#F4F3EE] border-b border-[#E2DDD3] text-xs text-slate-600 py-2.5 px-4 sm:px-8">
-        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+        <div class="max-w-7xl 2xl:max-w-[1480px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
             <!-- Left Info: Ankara HQ & Desks -->
             <div class="flex items-center gap-4 flex-wrap justify-center sm:justify-start">
                 <span class="inline-flex items-center gap-1.5 text-gold-800 font-semibold">
@@ -94,45 +94,45 @@
     <!-- Main Navigation Header -->
     <!-- Main Navigation Header -->
     <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#E8E4DA] shadow-2xs transition-all">
-        <div class="max-w-7xl mx-auto px-4 sm:px-8">
-            <div class="flex items-center justify-between h-20">
+        <div class="max-w-7xl 2xl:max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20 gap-2 lg:gap-4">
                 
                 <!-- Logo & Emblem -->
-                <a href="{{ route_ml('home') }}" class="flex items-center gap-3.5 group shrink-0">
+                <a href="{{ route_ml('home') }}" class="flex items-center gap-3 group shrink-0 min-w-0">
                     @if(setting('site_logo') && media_url(setting('site_logo')))
-                        <img src="{{ media_url(setting('site_logo')) }}" alt="{{ setting('site_name', 'Safir') }}" class="h-11 w-auto max-w-[160px] object-contain">
+                        <img src="{{ media_url(setting('site_logo')) }}" alt="{{ setting('site_name', 'Safir') }}" class="h-10 lg:h-11 w-auto max-w-[160px] object-contain shrink-0">
                     @else
-                        <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-gold-400 via-gold-500 to-gold-600 flex items-center justify-center shadow-md shadow-gold-500/10 border border-gold-300/40 group-hover:scale-105 transition-transform">
-                            <svg class="w-6 h-6 text-navy-950" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <div class="w-10 h-10 lg:w-11 lg:h-11 rounded-xl bg-gradient-to-br from-gold-400 via-gold-500 to-gold-600 flex items-center justify-center shadow-md shadow-gold-500/10 border border-gold-300/40 group-hover:scale-105 transition-transform shrink-0">
+                            <svg class="w-5 h-5 lg:w-6 lg:h-6 text-navy-950" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <polygon points="12 2 2 7 12 12 22 7 12 2"/>
                                 <polyline points="2 17 12 22 22 17"/>
                                 <polyline points="2 12 12 17 22 12"/>
                             </svg>
                         </div>
                     @endif
-                    <div class="flex flex-col">
-                        <div class="font-extrabold text-lg tracking-wider text-[#0A192F] uppercase flex items-center gap-2">
+                    <div class="flex flex-col min-w-0">
+                        <div class="font-extrabold text-base lg:text-lg tracking-wider text-[#0A192F] uppercase flex items-center gap-2">
                             <span>{{ setting('site_name') ? explode(' ', setting('site_name'))[0] : 'SAFIR' }}</span>
-                            <span class="text-[11px] px-2 py-0.5 rounded bg-gold-50 text-gold-700 border border-gold-300 font-semibold tracking-normal normal-case">
+                            <span class="text-[10.5px] lg:text-[11px] px-2 py-0.5 rounded bg-gold-50 text-gold-700 border border-gold-300 font-semibold tracking-normal normal-case shrink-0">
                                 {{ setting('site_name') && count(explode(' ', setting('site_name'))) > 1 ? implode(' ', array_slice(explode(' ', setting('site_name')), 1)) : 'Business Hub' }}
                             </span>
                         </div>
-                        <span class="text-[11px] text-slate-500 tracking-tight font-medium">
+                        <span class="hidden 2xl:block text-[11px] text-slate-500 tracking-tight font-medium truncate max-w-[260px]">
                             {{ __('safir.header_tagline') }}
                         </span>
                     </div>
                 </a>
 
                 <!-- Desktop Mega Navigation: refined text-xs font-semibold, single line, no large text wrapping -->
-                <nav class="hidden xl:flex items-center gap-0.5">
+                <nav class="hidden xl:flex items-center gap-0.5 2xl:gap-1">
                     
                     <!-- 1. Economy & Knowledge Dropdown -->
                     <div class="relative group" id="dropdown-economy">
-                        <button type="button" class="flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:text-gold-700 group-hover:text-gold-700 whitespace-nowrap transition-colors">
+                        <button type="button" class="flex items-center gap-1 px-2 2xl:px-2.5 py-1.5 text-[11.5px] 2xl:text-xs font-semibold text-slate-700 hover:text-gold-700 group-hover:text-gold-700 whitespace-nowrap transition-colors">
                             <span>{{ __('safir.nav.economy') }}</span>
                             <svg class="w-3.5 h-3.5 transition-transform group-hover:rotate-180 text-gold-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </button>
-                        <div class="absolute {{ $isRtl ? 'right-0' : 'left-0' }} top-full w-80 pt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 z-50">
+                        <div class="absolute {{ $isRtl ? 'right-0' : 'left-0' }} top-full w-80 max-w-[calc(100vw-2rem)] pt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 z-50">
                             <div class="bg-white border border-[#E2DDD3] rounded-xl p-3 shadow-xl shadow-slate-900/10">
                                 <div class="px-3 py-2 border-b border-[#EFECE6] mb-2">
                                     <div class="text-[11px] font-bold text-gold-700 uppercase tracking-wider">{{ __('safir.pillars.economy.title') }}</div>
@@ -162,11 +162,11 @@
 
                     <!-- 2. Relations & Business Dropdown -->
                     <div class="relative group" id="dropdown-relations">
-                        <button type="button" class="flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:text-gold-700 group-hover:text-gold-700 whitespace-nowrap transition-colors">
+                        <button type="button" class="flex items-center gap-1 px-2 2xl:px-2.5 py-1.5 text-[11.5px] 2xl:text-xs font-semibold text-slate-700 hover:text-gold-700 group-hover:text-gold-700 whitespace-nowrap transition-colors">
                             <span>{{ __('safir.nav.relations') }}</span>
                             <svg class="w-3.5 h-3.5 transition-transform group-hover:rotate-180 text-gold-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </button>
-                        <div class="absolute {{ $isRtl ? 'right-0' : 'left-0' }} top-full w-84 pt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 z-50">
+                        <div class="absolute {{ $isRtl ? 'right-0' : 'left-0' }} top-full w-84 max-w-[calc(100vw-2rem)] pt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 z-50">
                             <div class="bg-white border border-[#E2DDD3] rounded-xl p-3 shadow-xl shadow-slate-900/10">
                                 <div class="px-3 py-2 border-b border-[#EFECE6] mb-2">
                                     <div class="text-[11px] font-bold text-gold-700 uppercase tracking-wider">{{ __('safir.pillars.relations.title') }}</div>
@@ -196,11 +196,11 @@
 
                     <!-- 3. Conferences & Events Dropdown -->
                     <div class="relative group" id="dropdown-events">
-                        <button type="button" class="flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:text-gold-700 group-hover:text-gold-700 whitespace-nowrap transition-colors">
+                        <button type="button" class="flex items-center gap-1 px-2 2xl:px-2.5 py-1.5 text-[11.5px] 2xl:text-xs font-semibold text-slate-700 hover:text-gold-700 group-hover:text-gold-700 whitespace-nowrap transition-colors">
                             <span>{{ __('safir.nav.events') }}</span>
                             <svg class="w-3.5 h-3.5 transition-transform group-hover:rotate-180 text-gold-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </button>
-                        <div class="absolute {{ $isRtl ? 'right-0' : 'left-0' }} top-full w-84 pt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 z-50">
+                        <div class="absolute {{ $isRtl ? 'right-0' : 'left-0' }} top-full w-84 max-w-[calc(100vw-2rem)] pt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 z-50">
                             <div class="bg-white border border-[#E2DDD3] rounded-xl p-3 shadow-xl shadow-slate-900/10">
                                 <div class="px-3 py-2 border-b border-[#EFECE6] mb-2">
                                     <div class="text-[11px] font-bold text-gold-700 uppercase tracking-wider">{{ __('safir.pillars.events.title') }}</div>
@@ -226,11 +226,11 @@
 
                     <!-- 4. Media & Community Dropdown -->
                     <div class="relative group" id="dropdown-community">
-                        <button type="button" class="flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:text-gold-700 group-hover:text-gold-700 whitespace-nowrap transition-colors">
+                        <button type="button" class="flex items-center gap-1 px-2 2xl:px-2.5 py-1.5 text-[11.5px] 2xl:text-xs font-semibold text-slate-700 hover:text-gold-700 group-hover:text-gold-700 whitespace-nowrap transition-colors">
                             <span>{{ __('safir.nav.community') }}</span>
                             <svg class="w-3.5 h-3.5 transition-transform group-hover:rotate-180 text-gold-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </button>
-                        <div class="absolute {{ $isRtl ? 'right-0' : 'left-0' }} top-full w-84 pt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 z-50">
+                        <div class="absolute {{ $isRtl ? 'right-0' : 'left-0' }} top-full w-84 max-w-[calc(100vw-2rem)] pt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 z-50">
                             <div class="bg-white border border-[#E2DDD3] rounded-xl p-3 shadow-xl shadow-slate-900/10">
                                 <div class="px-3 py-2 border-b border-[#EFECE6] mb-2">
                                     <div class="text-[11px] font-bold text-gold-700 uppercase tracking-wider">{{ __('safir.pillars.community.title') }}</div>
@@ -255,24 +255,25 @@
                     </div>
 
                     <!-- Direct Portals with Clean, Compact Typography -->
-                    <a href="{{ route_ml('embassies') }}" class="px-2.5 py-1.5 text-xs font-semibold whitespace-nowrap {{ request()->routeIs('embassies') ? 'text-gold-700 font-bold' : 'text-slate-700 hover:text-gold-700' }} transition-colors">
+                    <a href="{{ route_ml('embassies') }}" class="px-2 2xl:px-2.5 py-1.5 text-[11.5px] 2xl:text-xs font-semibold whitespace-nowrap {{ request()->routeIs('embassies') ? 'text-gold-700 font-bold' : 'text-slate-700 hover:text-gold-700' }} transition-colors">
                         {{ __('safir.nav.embassies') }}
                     </a>
-                    <a href="{{ route_ml('corporates') }}" class="px-2.5 py-1.5 text-xs font-semibold whitespace-nowrap {{ request()->routeIs('corporates') ? 'text-gold-700 font-bold' : 'text-slate-700 hover:text-gold-700' }} transition-colors">
+                    <a href="{{ route_ml('corporates') }}" class="px-2 2xl:px-2.5 py-1.5 text-[11.5px] 2xl:text-xs font-semibold whitespace-nowrap {{ request()->routeIs('corporates') ? 'text-gold-700 font-bold' : 'text-slate-700 hover:text-gold-700' }} transition-colors">
                         {{ __('safir.nav.corporates') }}
                     </a>
-                    <a href="{{ route_ml('reports.index') }}" class="px-2.5 py-1.5 text-xs font-semibold whitespace-nowrap {{ request()->routeIs('reports.*') ? 'text-gold-700 font-bold' : 'text-slate-700 hover:text-gold-700' }} transition-colors">
+                    <a href="{{ route_ml('reports.index') }}" class="px-2 2xl:px-2.5 py-1.5 text-[11.5px] 2xl:text-xs font-semibold whitespace-nowrap {{ request()->routeIs('reports.*') ? 'text-gold-700 font-bold' : 'text-slate-700 hover:text-gold-700' }} transition-colors">
                         {{ __('safir.nav.reports') }}
                     </a>
-                    <a href="{{ route_ml('contact') }}" class="px-2.5 py-1.5 text-xs font-semibold whitespace-nowrap {{ request()->routeIs('contact') ? 'text-gold-700 font-bold' : 'text-slate-700 hover:text-gold-700' }} transition-colors">
+                    <a href="{{ route_ml('contact') }}" class="hidden 2xl:block px-2 2xl:px-2.5 py-1.5 text-[11.5px] 2xl:text-xs font-semibold whitespace-nowrap {{ request()->routeIs('contact') ? 'text-gold-700 font-bold' : 'text-slate-700 hover:text-gold-700' }} transition-colors">
                         {{ __('safir.nav.contact') }}
                     </a>
                 </nav>
 
                 <!-- Primary Action CTA -->
-                <div class="hidden md:flex items-center gap-3 shrink-0">
-                    <a href="{{ route_ml('contact') }}" class="relative group inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold text-navy-950 bg-gradient-to-r from-gold-400 via-gold-500 to-gold-400 hover:from-gold-300 hover:to-gold-400 shadow-sm shadow-gold-500/20 transition-all hover:scale-102 whitespace-nowrap">
-                        <span>{{ __('safir.nav.request_briefing') }}</span>
+                <div class="hidden md:flex items-center gap-2 lg:gap-3 shrink-0">
+                    <a href="{{ route_ml('contact') }}" class="relative group inline-flex items-center gap-1.5 px-3 py-2 2xl:px-4 2xl:py-2.5 rounded-lg text-[11px] 2xl:text-xs font-bold text-navy-950 bg-gradient-to-r from-gold-400 via-gold-500 to-gold-400 hover:from-gold-300 hover:to-gold-400 shadow-sm shadow-gold-500/20 transition-all hover:scale-102 whitespace-nowrap">
+                        <span class="hidden 2xl:inline">{{ __('safir.nav.request_briefing') }}</span>
+                        <span class="2xl:hidden">{{ __('safir.nav.request_briefing_short') }}</span>
                         <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1 {{ $isRtl ? 'rotate-180 group-hover:-translate-x-1' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                     </a>
                 </div>

@@ -30,6 +30,7 @@ return [
         'about' => 'About Us',
         'contact' => 'Contact Us',
         'request_briefing' => 'Request Diplomatic Briefing',
+        'request_briefing_short' => 'Request Briefing',
         'explore_services' => 'Explore Our Pillars',
         'switch_lang' => 'Language',
         'dashboard' => 'Dashboard',

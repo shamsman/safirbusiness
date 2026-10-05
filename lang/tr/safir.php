@@ -30,6 +30,7 @@ return [
         'about' => 'Hakkımızda',
         'contact' => 'İletişim',
         'request_briefing' => 'Diplomatik Brifing Talep Edin',
+        'request_briefing_short' => 'Brifing Talep Edin',
         'explore_services' => 'Sütunlarımızı Keşfedin',
         'switch_lang' => 'Dil',
         'dashboard' => 'Yönetim Paneli',
