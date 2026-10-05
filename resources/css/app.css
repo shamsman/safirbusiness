@@ -1,0 +1,90 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
+
+@theme {
+    --color-navy-950: #050B14;
+    --color-navy-900: #0A192F;
+    --color-navy-850: #0D1F38;
+    --color-navy-800: #112240;
+    --color-navy-700: #1E293B;
+    --color-navy-600: #334155;
+    
+    --color-gold-300: #F3E5AB;
+    --color-gold-400: #DFBD69;
+    --color-gold-500: #C5A059;
+    --color-gold-600: #A88438;
+    --color-gold-700: #8C6A24;
+    
+    --color-slate-50: #F8FAFC;
+    --color-slate-100: #F1F5F9;
+    --color-slate-200: #E2E8F0;
+    --color-slate-300: #CBD5E1;
+    --color-slate-400: #94A3B8;
+
+    --font-arabic: 'Tajawal', 'Cairo', system-ui, sans-serif;
+    --font-latin: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+/* Custom Base Styles */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #0A192F;
+    color: #F8FAFC;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+[dir="rtl"] {
+    font-family: var(--font-arabic);
+}
+
+[dir="ltr"] {
+    font-family: var(--font-latin);
+}
+
+/* Gold Gradient Effects */
+.gold-gradient-text {
+    background: linear-gradient(135deg, #DFBD69 0%, #C5A059 50%, #F5E6BE 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.gold-gradient-bg {
+    background: linear-gradient(135deg, #C5A059 0%, #A88438 100%);
+}
+
+.gold-border {
+    border-color: rgba(197, 160, 89, 0.25);
+}
+
+.gold-border-glow:hover {
+    border-color: rgba(197, 160, 89, 0.6);
+    box-shadow: 0 0 25px rgba(197, 160, 89, 0.15);
+}
+
+/* Luxury Card Glass Effect */
+.glass-panel {
+    background: rgba(17, 34, 64, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(197, 160, 89, 0.15);
+}
+
+.glass-panel-light {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Subtle pattern overlay */
+.bg-embassy-pattern {
+    background-image: radial-gradient(rgba(197, 160, 89, 0.08) 1px, transparent 1px);
+    background-size: 32px 32px;
+}
