@@ -22,6 +22,19 @@
     <!-- Compiled Vite Assets -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+    @if(setting('google_analytics_id'))
+        <!-- Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ setting('google_analytics_id') }}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '{{ setting('google_analytics_id') }}');
+        </script>
+    @endif
+
+    {!! setting('custom_header_scripts', '') !!}
+
     @stack('styles')
 </head>
 <body class="bg-[#FAF9F6] text-[#0A192F] min-h-screen flex flex-col font-sans selection:bg-gold-500/25 selection:text-[#0A192F]">
@@ -36,13 +49,13 @@
                     {{ __('safir.location_badge') }} · Söğütözü, Çankaya
                 </span>
                 <span class="hidden md:inline text-slate-300">|</span>
-                <a href="tel:+903120000001" class="hover:text-gold-700 transition-colors hidden md:inline-flex items-center gap-1 text-slate-600">
+                <a href="tel:{{ preg_replace('/[^0-9+]/', '', setting('contact_phone', '+90 312 000 00 01')) }}" class="hover:text-gold-700 transition-colors hidden md:inline-flex items-center gap-1 text-slate-600">
                     <span class="text-slate-500">{{ __('safir.contact.desks.embassies') }}:</span>
-                    <span class="font-mono text-slate-800 font-medium">+90 312 000 00 01</span>
+                    <span class="font-mono text-slate-800 font-medium">{{ setting('contact_phone', '+90 312 000 00 01') }}</span>
                 </a>
                 <span class="hidden lg:inline text-slate-300">|</span>
-                <a href="mailto:hello@safirbusinesshub.com" class="hover:text-gold-700 transition-colors hidden lg:inline-flex items-center gap-1 font-mono text-slate-600">
-                    hello@safirbusinesshub.com
+                <a href="mailto:{{ setting('contact_email', 'hello@safirbusinesshub.com') }}" class="hover:text-gold-700 transition-colors hidden lg:inline-flex items-center gap-1 font-mono text-slate-600">
+                    {{ setting('contact_email', 'hello@safirbusinesshub.com') }}
                 </a>
             </div>
 
@@ -56,6 +69,19 @@
                         </a>
                     @endforeach
                 </div>
+
+                <!-- Executive Portal / Login Link -->
+                @auth
+                    <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-navy-900 text-gold-300 hover:bg-navy-800 transition-all shadow-xs">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span>Dashboard</span>
+                    </a>
+                @else
+                    <a href="{{ route('login') }}" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium text-slate-700 hover:text-gold-800 hover:bg-white/80 transition-all">
+                        <span>Executive Login</span>
+                        <span class="text-slate-400">→</span>
+                    </a>
+                @endauth
             </div>
         </div>
     </div>
@@ -68,22 +94,26 @@
                 
                 <!-- Logo & Emblem -->
                 <a href="{{ route_ml('home') }}" class="flex items-center gap-3.5 group shrink-0">
-                    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-gold-400 via-gold-500 to-gold-600 flex items-center justify-center shadow-md shadow-gold-500/10 border border-gold-300/40 group-hover:scale-105 transition-transform">
-                        <svg class="w-6 h-6 text-navy-950" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polygon points="12 2 2 7 12 12 22 7 12 2"/>
-                            <polyline points="2 17 12 22 22 17"/>
-                            <polyline points="2 12 12 17 22 12"/>
-                        </svg>
-                    </div>
+                    @if(setting('site_logo') && \Illuminate\Support\Facades\Storage::disk('public')->exists(setting('site_logo')))
+                        <img src="{{ \Illuminate\Support\Facades\Storage::url(setting('site_logo')) }}" alt="{{ setting('site_name', 'Safir') }}" class="h-11 w-auto max-w-[160px] object-contain">
+                    @else
+                        <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-gold-400 via-gold-500 to-gold-600 flex items-center justify-center shadow-md shadow-gold-500/10 border border-gold-300/40 group-hover:scale-105 transition-transform">
+                            <svg class="w-6 h-6 text-navy-950" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                                <polyline points="2 17 12 22 22 17"/>
+                                <polyline points="2 12 12 17 22 12"/>
+                            </svg>
+                        </div>
+                    @endif
                     <div class="flex flex-col">
                         <div class="font-extrabold text-lg tracking-wider text-[#0A192F] uppercase flex items-center gap-2">
-                            <span>SAFIR</span>
+                            <span>{{ setting('site_name') ? explode(' ', setting('site_name'))[0] : 'SAFIR' }}</span>
                             <span class="text-[11px] px-2 py-0.5 rounded bg-gold-50 text-gold-700 border border-gold-300 font-semibold tracking-normal normal-case">
-                                Business Hub
+                                {{ setting('site_name') && count(explode(' ', setting('site_name'))) > 1 ? implode(' ', array_slice(explode(' ', setting('site_name')), 1)) : 'Business Hub' }}
                             </span>
                         </div>
                         <span class="text-[11px] text-slate-500 tracking-tight font-medium">
-                            Ankara · Diplomatic & Corporate Advisory
+                            {{ setting('site_tagline', 'Ankara · Diplomatic & Corporate Advisory') }}
                         </span>
                     </div>
                 </a>
@@ -429,6 +459,7 @@
                 <div class="flex items-center gap-6">
                     <span class="hover:text-slate-300">{{ __('safir.footer.privacy') }}</span>
                     <span class="hover:text-slate-300">{{ __('safir.footer.terms') }}</span>
+                    <a href="{{ route('admin.dashboard') }}" class="hover:text-gold-400 transition-colors">Executive Portal</a>
                     <a href="/migrate.php" class="text-slate-600 hover:text-gold-500 font-mono text-[10px]" title="Live Migration Console">System Status</a>
                 </div>
             </div>
@@ -494,5 +525,6 @@
         });
     </script>
     @stack('scripts')
+    {!! setting('custom_footer_scripts', '') !!}
 </body>
 </html>

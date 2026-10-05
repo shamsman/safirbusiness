@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             SafirPlatformSeeder::class,
+            AdminUserSeeder::class,
+            SettingSeeder::class,
         ]);
     }
 }

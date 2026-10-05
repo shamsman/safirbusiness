@@ -59,3 +59,14 @@ if (!function_exists('is_rtl')) {
         return app()->getLocale() === 'ar';
     }
 }
+
+if (!function_exists('setting')) {
+    /**
+     * Retrieve a website setting value by key.
+     */
+    function setting(string $key, mixed $default = null): mixed
+    {
+        return \App\Models\Setting::get($key, $default);
+    }
+}
+

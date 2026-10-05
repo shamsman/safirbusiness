@@ -26,6 +26,38 @@ Route::get('/lang/{locale}', [LocaleController::class, 'switch'])->name('locale.
 Route::post('/inquiries', [InquiryController::class, 'store'])->name('inquiries.store');
 Route::post('/subscribers', [SubscriberController::class, 'store'])->name('subscribers.store');
 
+// Authentication routes
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [\App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, 'login']);
+    Route::get('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
+    Route::post('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'register']);
+});
+
+Route::post('/logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])
+    ->name('logout')
+    ->middleware('auth');
+
+Route::get('/dashboard', function () {
+    return redirect()->route('admin.dashboard');
+})->middleware('auth')->name('dashboard');
+
+// Protected Admin Hub
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'active'])->group(function () {
+    Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+
+    // Users Module (Superadmin, Admin)
+    Route::middleware('role:superadmin,admin')->group(function () {
+        Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
+    });
+
+    // Website Settings Module (Superadmin, Admin)
+    Route::middleware('role:superadmin,admin')->group(function () {
+        Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
+        Route::post('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
+    });
+});
+
 // Multilingual Routes Group
 Route::prefix('{locale}')->where(['locale' => 'ar|en|tr'])->group(function () {
     // 1. Home
