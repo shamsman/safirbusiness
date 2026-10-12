@@ -96,9 +96,11 @@ Route::prefix('{locale}')->where(['locale' => 'ar|en|tr'])->group(function () {
 
     // 6. About & Ecosystem
     Route::get('/about', [LandingController::class, 'about'])->name('about');
+    Route::get('/about-us', [LandingController::class, 'about'])->name('about.alias');
 
     // 7. Contact Us & Ankara Office
     Route::get('/contact', [LandingController::class, 'contact'])->name('contact');
+    Route::get('/contact-us', [LandingController::class, 'contact'])->name('contact.alias');
 
     // 8. Dynamic Pages
     Route::get('/page/{slug}', [\App\Http\Controllers\PageController::class, 'show'])->name('pages.show');

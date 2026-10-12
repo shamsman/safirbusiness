@@ -15,7 +15,7 @@ class PageController extends Controller
     {
         $page = Page::published()->where('slug', $slug)->firstOrFail();
 
-        if ($page->template === 'about' || $slug === 'about') {
+        if ($page->template === 'about' || $slug === 'about' || $slug === 'about-us') {
             return view('pages.about', compact('page'));
         }
 

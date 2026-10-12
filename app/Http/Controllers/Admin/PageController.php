@@ -82,6 +82,19 @@ class PageController extends Controller
 
         $page->update($validated);
 
+        if ($page->template === 'about' || in_array($page->slug, ['about', 'about-us'], true)) {
+            // Synchronize any sister 'about' page so both 'about' and 'about-us' slugs share identical blocks/content
+            Page::whereIn('slug', ['about', 'about-us'])
+                ->where('id', '!=', $page->id)
+                ->update([
+                    'template' => 'about',
+                    'blocks' => $validated['blocks'] ?? $page->blocks,
+                    'title' => $validated['title'] ?? $page->title,
+                    'summary' => $validated['summary'] ?? $page->summary,
+                    'content' => $validated['content'] ?? $page->content,
+                ]);
+        }
+
         return redirect()
             ->route('admin.pages.index')
             ->with('status', "Page '{$page->title_text}' updated successfully.");
@@ -121,7 +134,7 @@ class PageController extends Controller
     {
         $request->validate([
             'slug' => ['nullable', 'string', 'max:100', 'alpha_dash'],
-            'template' => ['required', 'string', 'in:default,about'],
+            'template' => ['required', 'string', 'in:default,about,embassies,corporates,contact'],
             'title_en' => ['required', 'string', 'max:255'],
             'title_ar' => ['nullable', 'string', 'max:255'],
             'title_tr' => ['nullable', 'string', 'max:255'],
@@ -158,7 +171,7 @@ class PageController extends Controller
             if (json_last_error() === JSON_ERROR_NONE) {
                 $blocks = $decoded;
             }
-        } elseif ($request->has('founder1_name') || $request->has('founder2_name')) {
+        } elseif ($request->input('template') === 'about' || $request->has('founder1_name') || $request->has('founder2_name')) {
             // Reconstruct founders array if provided via dedicated founder inputs
             $blocks = [
                 'founders' => [

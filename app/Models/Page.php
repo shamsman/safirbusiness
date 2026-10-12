@@ -65,21 +65,43 @@ class Page extends Model
     }
 
     /**
+     * Resolve the canonical About page record.
+     */
+    public static function about(): ?self
+    {
+        return static::published()
+            ->where(function ($q) {
+                $q->whereIn('slug', ['about', 'about-us'])
+                  ->orWhere('template', 'about');
+            })
+            ->orderByRaw("
+                CASE 
+                    WHEN slug = 'about' THEN 1
+                    WHEN slug = 'about-us' THEN 2
+                    WHEN template = 'about' THEN 3
+                    ELSE 4
+                END
+            ")
+            ->orderBy('id', 'asc')
+            ->first();
+    }
+
+    /**
      * Generate localized public URL.
      */
     public function url(?string $locale = null): string
     {
         $locale = $locale ?: app()->getLocale();
-        if ($this->slug === 'about' || $this->slug === 'about-us') {
+        if ($this->slug === 'about' || $this->slug === 'about-us' || $this->template === 'about') {
             return route_ml('about');
         }
-        if ($this->slug === 'embassies') {
+        if ($this->slug === 'embassies' || $this->template === 'embassies') {
             return route_ml('embassies');
         }
-        if ($this->slug === 'corporates') {
+        if ($this->slug === 'corporates' || $this->template === 'corporates') {
             return route_ml('corporates');
         }
-        if ($this->slug === 'contact' || $this->slug === 'contact-us') {
+        if ($this->slug === 'contact' || $this->slug === 'contact-us' || $this->template === 'contact') {
             return route_ml('contact');
         }
         if ($this->slug === 'reports') {

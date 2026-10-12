@@ -11,7 +11,12 @@ class LandingController extends Controller
 {
     public function embassies()
     {
-        $page = \App\Models\Page::published()->where('slug', 'embassies')->first();
+        $page = \App\Models\Page::published()
+            ->where(function ($q) {
+                $q->where('slug', 'embassies')
+                  ->orWhere('template', 'embassies');
+            })
+            ->first();
 
         $diplomaticServices = Service::where('pillar_key', 'relations')
             ->orWhere('slug', 'consular-support-services')
@@ -27,7 +32,12 @@ class LandingController extends Controller
 
     public function corporates()
     {
-        $page = \App\Models\Page::published()->where('slug', 'corporates')->first();
+        $page = \App\Models\Page::published()
+            ->where(function ($q) {
+                $q->where('slug', 'corporates')
+                  ->orWhere('template', 'corporates');
+            })
+            ->first();
 
         $corporateServices = Service::where('pillar_key', 'relations')
             ->orWhere('pillar_key', 'economy')
@@ -66,14 +76,19 @@ class LandingController extends Controller
 
     public function about()
     {
-        $page = \App\Models\Page::published()->where('slug', 'about')->first();
+        $page = \App\Models\Page::about();
 
         return view('pages.about', compact('page'));
     }
 
     public function contact()
     {
-        $page = \App\Models\Page::published()->where('slug', 'contact')->first();
+        $page = \App\Models\Page::published()
+            ->where(function ($q) {
+                $q->whereIn('slug', ['contact', 'contact-us'])
+                  ->orWhere('template', 'contact');
+            })
+            ->first();
 
         return view('pages.contact', compact('page'));
     }

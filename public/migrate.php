@@ -57,6 +57,29 @@ if ($action) {
                 $kernel->call('db:seed', ['--class' => 'Database\\Seeders\\PageAndMenuSeeder', '--force' => true]);
                 echo $kernel->output();
                 $status = 'success';
+            } elseif ($action === 'sync_about') {
+                echo "Synchronizing About pages in database...\n";
+                echo str_repeat('-', 50) . "\n";
+                $p1 = \App\Models\Page::find(1);
+                if ($p1) {
+                    echo "Found Page 1 (slug: {$p1->slug}, template: {$p1->template})\n";
+                    $p1->update(['template' => 'about']);
+                    $other = \App\Models\Page::where('slug', 'about')->where('id', '!=', 1)->first();
+                    if ($other && !empty($p1->blocks['founders'])) {
+                        $other->update([
+                            'template' => 'about',
+                            'blocks' => $p1->blocks,
+                        ]);
+                        echo "Synchronized blocks to sister 'about' page (ID: {$other->id})\n";
+                    } elseif ($other && empty($p1->blocks['founders']) && !empty($other->blocks['founders'])) {
+                        $p1->update([
+                            'blocks' => $other->blocks,
+                        ]);
+                        echo "Synchronized blocks from 'about' page (ID: {$other->id}) to Page 1\n";
+                    }
+                }
+                echo "Sync completed successfully.\n";
+                $status = 'success';
             } else {
                 echo "Error: Unknown action '{$action}'.";
                 $status = 'error';
@@ -292,6 +315,9 @@ if ($action) {
                     </button>
                     <button type="submit" name="action" value="seed_menus" class="btn btn-outline" style="border-color: rgba(212, 175, 55, 0.4); color: var(--accent);">
                         ★ Sync Pages & Menus (PageAndMenuSeeder)
+                    </button>
+                    <button type="submit" name="action" value="sync_about" class="btn btn-outline" style="border-color: rgba(56, 189, 248, 0.4); color: #38BDF8;">
+                        🔄 Sync About Pages & Founders
                     </button>
                 </div>
             </div>

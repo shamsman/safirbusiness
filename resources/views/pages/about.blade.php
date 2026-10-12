@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @php
+    if (!isset($page) || empty($page->blocks['founders'])) {
+        $resolvedAbout = \App\Models\Page::about();
+        if ($resolvedAbout) {
+            $page = $resolvedAbout;
+        }
+    }
     $pageTitle = isset($page) && $page->title_text ? $page->title_text : __('safir.nav.about');
     $pageDesc = isset($page) && $page->meta_description_text ? $page->meta_description_text : __('safir.philosophy');
     $founders = isset($page) && !empty($page->blocks['founders']) ? $page->blocks['founders'] : [
