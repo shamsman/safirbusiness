@@ -11,6 +11,8 @@ class LandingController extends Controller
 {
     public function embassies()
     {
+        $page = \App\Models\Page::published()->where('slug', 'embassies')->first();
+
         $diplomaticServices = Service::where('pillar_key', 'relations')
             ->orWhere('slug', 'consular-support-services')
             ->orWhere('slug', 'conferences-official-events')
@@ -20,11 +22,13 @@ class LandingController extends Controller
             ->take(3)
             ->get();
 
-        return view('pages.embassies', compact('diplomaticServices', 'diplomaticReports'));
+        return view('pages.embassies', compact('page', 'diplomaticServices', 'diplomaticReports'));
     }
 
     public function corporates()
     {
+        $page = \App\Models\Page::published()->where('slug', 'corporates')->first();
+
         $corporateServices = Service::where('pillar_key', 'relations')
             ->orWhere('pillar_key', 'economy')
             ->get();
@@ -33,7 +37,7 @@ class LandingController extends Controller
             ->take(3)
             ->get();
 
-        return view('pages.corporates', compact('corporateServices', 'corporateReports'));
+        return view('pages.corporates', compact('page', 'corporateServices', 'corporateReports'));
     }
 
     public function services(?string $locale = null, ?string $pillar = null)
@@ -69,6 +73,8 @@ class LandingController extends Controller
 
     public function contact()
     {
-        return view('pages.contact');
+        $page = \App\Models\Page::published()->where('slug', 'contact')->first();
+
+        return view('pages.contact', compact('page'));
     }
 }

@@ -15,8 +15,20 @@ class PageController extends Controller
     {
         $page = Page::published()->where('slug', $slug)->firstOrFail();
 
-        if ($page->template === 'about') {
+        if ($page->template === 'about' || $slug === 'about') {
             return view('pages.about', compact('page'));
+        }
+
+        if ($page->template === 'embassies' || $slug === 'embassies') {
+            return app(LandingController::class)->embassies();
+        }
+
+        if ($page->template === 'corporates' || $slug === 'corporates') {
+            return app(LandingController::class)->corporates();
+        }
+
+        if ($page->template === 'contact' || $slug === 'contact') {
+            return app(LandingController::class)->contact();
         }
 
         return view('pages.show', compact('page'));

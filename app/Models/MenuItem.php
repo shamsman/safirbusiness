@@ -64,8 +64,11 @@ class MenuItem extends Model
     {
         $locale = $locale ?: app()->getLocale();
 
-        if ($this->type === 'page' && $this->page) {
-            return $this->page->url($locale);
+        if ($this->type === 'page') {
+            $page = $this->page ?: ($this->page_id ? Page::find($this->page_id) : null);
+            if ($page) {
+                return $page->url($locale);
+            }
         }
 
         if ($this->type === 'route' && $this->route_name) {
@@ -88,5 +91,68 @@ class MenuItem extends Model
         }
 
         return '#';
+    }
+
+    /**
+     * Determine if this menu item or any of its children corresponds to the current page.
+     */
+    public function isActive(?string $locale = null): bool
+    {
+        $locale = $locale ?: app()->getLocale();
+
+        if ($this->type === 'page') {
+            $page = $this->page ?: ($this->page_id ? Page::find($this->page_id) : null);
+            if ($page) {
+                if (request()->routeIs('pages.show') && request()->route('slug') === $page->slug) {
+                    return true;
+                }
+                if ($page->slug === 'about' && request()->routeIs('about')) {
+                    return true;
+                }
+                if ($page->slug === 'embassies' && request()->routeIs('embassies')) {
+                    return true;
+                }
+                if ($page->slug === 'corporates' && request()->routeIs('corporates')) {
+                    return true;
+                }
+                if (($page->slug === 'contact' || $page->slug === 'contact-us') && request()->routeIs('contact')) {
+                    return true;
+                }
+                if ($page->slug === 'reports' && request()->routeIs('reports.*')) {
+                    return true;
+                }
+                if ($page->slug === 'bulletin' && request()->routeIs('bulletin')) {
+                    return true;
+                }
+                if ($page->slug === 'services' && request()->routeIs('services.*')) {
+                    return true;
+                }
+            }
+        }
+
+        if ($this->type === 'route' && $this->route_name) {
+            if (request()->routeIs($this->route_name) || request()->routeIs($this->route_name . '.*')) {
+                return true;
+            }
+        }
+
+        if (!empty($this->url) && $this->url !== '#' && $this->url !== '/') {
+            $targetUrl = $this->resolveUrl($locale);
+            $currentUrl = request()->url();
+            if (rtrim($currentUrl, '/') === rtrim($targetUrl, '/')) {
+                return true;
+            }
+        }
+
+        // Check if any child item is active
+        if ($this->relationLoaded('children') && $this->children->isNotEmpty()) {
+            foreach ($this->children as $child) {
+                if ($child->isActive($locale)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

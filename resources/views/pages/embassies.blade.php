@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', __('safir.embassies_page.title') . ' — ' . __('safir.brand_name'))
-@section('meta_description', __('safir.embassies_page.subtitle'))
+@section('title', !empty($page?->meta_title_text) ? $page->meta_title_text : (!empty($page?->title_text) ? $page->title_text . ' — ' . __('safir.brand_name') : __('safir.embassies_page.title') . ' — ' . __('safir.brand_name')))
+@section('meta_description', !empty($page?->meta_description_text) ? $page->meta_description_text : (!empty($page?->summary_text) ? $page->summary_text : __('safir.embassies_page.subtitle')))
 
 @section('content')
 
@@ -15,14 +15,20 @@
                     {{ __('safir.embassies_page.badge') }}
                 </span>
                 <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A192F] tracking-tight leading-tight">
-                    {{ __('safir.embassies_page.title') }}
+                    {{ !empty($page?->title_text) ? $page->title_text : __('safir.embassies_page.title') }}
                 </h1>
                 <p class="text-slate-600 text-base sm:text-lg leading-relaxed">
-                    {{ __('safir.embassies_page.subtitle') }}
+                    {{ !empty($page?->summary_text) ? $page->summary_text : __('safir.embassies_page.subtitle') }}
                 </p>
-                <div class="pt-2 text-sm text-slate-500 leading-relaxed border-t border-gold-200">
-                    {{ __('safir.embassies_page.lead') }}
-                </div>
+                @if(!empty($page?->content_html))
+                    <div class="pt-4 text-sm text-slate-700 leading-relaxed border-t border-gold-200 prose prose-slate max-w-none">
+                        {!! $page->content_html !!}
+                    </div>
+                @else
+                    <div class="pt-2 text-sm text-slate-500 leading-relaxed border-t border-gold-200">
+                        {{ __('safir.embassies_page.lead') }}
+                    </div>
+                @endif
             </div>
         </div>
     </section>

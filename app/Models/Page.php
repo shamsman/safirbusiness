@@ -73,6 +73,24 @@ class Page extends Model
         if ($this->slug === 'about' || $this->slug === 'about-us') {
             return route_ml('about');
         }
+        if ($this->slug === 'embassies') {
+            return route_ml('embassies');
+        }
+        if ($this->slug === 'corporates') {
+            return route_ml('corporates');
+        }
+        if ($this->slug === 'contact' || $this->slug === 'contact-us') {
+            return route_ml('contact');
+        }
+        if ($this->slug === 'reports') {
+            return route_ml('reports.index');
+        }
+        if ($this->slug === 'bulletin') {
+            return route_ml('bulletin');
+        }
+        if ($this->slug === 'services') {
+            return route_ml('services.index');
+        }
         return route('pages.show', ['locale' => $locale, 'slug' => $this->slug]);
     }
 }

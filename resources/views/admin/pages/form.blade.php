@@ -52,8 +52,14 @@
                     <select name="template" x-model="template" class="w-full text-xs rounded-xl border border-slate-200 p-2.5 focus:border-gold-500 focus:ring-1 focus:ring-gold-500 outline-none bg-white">
                         <option value="default">Standard Content Page</option>
                         <option value="about">About Us (Safir Hub + Founders CVs)</option>
+                        <option value="embassies">Embassies Portal</option>
+                        <option value="corporates">Corporates Portal</option>
+                        <option value="contact">Contact Us & Headquarters</option>
                     </select>
                     <p class="text-[11px] text-slate-400 mt-1" x-show="template === 'about'">Activates two-column executive CV layout for founders.</p>
+                    <p class="text-[11px] text-slate-400 mt-1" x-show="template === 'embassies'">Renders diplomatic desks, services, and macroeconomic intelligence.</p>
+                    <p class="text-[11px] text-slate-400 mt-1" x-show="template === 'corporates'">Renders corporate entry roadmap, FDI incentives, and matchmaking.</p>
+                    <p class="text-[11px] text-slate-400 mt-1" x-show="template === 'contact'">Renders Ankara HQ details, official contact channels, and inquiry form.</p>
                 </div>
 
                 <!-- Slug -->

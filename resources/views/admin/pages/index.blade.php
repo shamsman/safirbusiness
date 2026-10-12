@@ -82,8 +82,20 @@
                                 </div>
                             </td>
                             <td class="py-4 px-4">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium {{ $p->template === 'about' ? 'bg-purple-50 text-purple-700 border border-purple-200' : 'bg-slate-100 text-slate-700' }}">
-                                    {{ $p->template === 'about' ? 'About Us (Founders CVs)' : 'Standard Dynamic' }}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium {{ match($p->template) {
+                                    'about' => 'bg-purple-50 text-purple-700 border border-purple-200',
+                                    'embassies' => 'bg-blue-50 text-blue-700 border border-blue-200',
+                                    'corporates' => 'bg-amber-50 text-amber-700 border border-amber-200',
+                                    'contact' => 'bg-teal-50 text-teal-700 border border-teal-200',
+                                    default => 'bg-slate-100 text-slate-700',
+                                } }}">
+                                    {{ match($p->template) {
+                                        'about' => 'About Us (Founders CVs)',
+                                        'embassies' => 'Embassies Portal',
+                                        'corporates' => 'Corporates Portal',
+                                        'contact' => 'Contact Us',
+                                        default => 'Standard Dynamic',
+                                    } }}
                                 </span>
                             </td>
                             <td class="py-4 px-4 text-center">

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', __('safir.contact.title') . ' — ' . __('safir.brand_name'))
-@section('meta_description', __('safir.contact.subtitle'))
+@section('title', !empty($page?->meta_title_text) ? $page->meta_title_text : (!empty($page?->title_text) ? $page->title_text . ' — ' . __('safir.brand_name') : __('safir.contact.title') . ' — ' . __('safir.brand_name')))
+@section('meta_description', !empty($page?->meta_description_text) ? $page->meta_description_text : (!empty($page?->summary_text) ? $page->summary_text : __('safir.contact.subtitle')))
 @section('hide_cta', true)
 
 @section('content')
@@ -14,11 +14,16 @@
                     {{ __('safir.contact.badge') }}
                 </span>
                 <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A192F] tracking-tight leading-tight">
-                    {{ __('safir.contact.title') }}
+                    {{ !empty($page?->title_text) ? $page->title_text : __('safir.contact.title') }}
                 </h1>
                 <p class="text-slate-600 text-base sm:text-lg leading-relaxed">
-                    {{ __('safir.contact.subtitle') }}
+                    {{ !empty($page?->summary_text) ? $page->summary_text : __('safir.contact.subtitle') }}
                 </p>
+                @if(!empty($page?->content_html))
+                    <div class="pt-4 text-sm text-slate-700 leading-relaxed border-t border-gold-200 prose prose-slate max-w-none">
+                        {!! $page->content_html !!}
+                    </div>
+                @endif
             </div>
         </div>
     </section>

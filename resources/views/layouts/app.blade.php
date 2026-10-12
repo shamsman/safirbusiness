@@ -123,153 +123,65 @@
                     </div>
                 </a>
 
-                <!-- Desktop Mega Navigation: refined text-xs font-semibold, single line, no large text wrapping -->
+                @php
+                    $headerMenu = \App\Models\Menu::where('location', 'header')
+                        ->where('is_active', true)
+                        ->with(['items' => function ($q) {
+                            $q->whereNull('parent_id')
+                              ->where('is_active', true)
+                              ->orderBy('sort_order', 'asc')
+                              ->with(['children' => function ($cq) {
+                                  $cq->where('is_active', true)->orderBy('sort_order', 'asc')->with('page');
+                              }, 'page']);
+                        }])
+                        ->first();
+                @endphp
+
+                <!-- Desktop Mega Navigation: dynamic from Header Menu -->
                 <nav class="hidden xl:flex items-center gap-0.5 2xl:gap-1">
-                    
-                    <!-- 1. Economy & Knowledge Dropdown -->
-                    <div class="relative group" id="dropdown-economy">
-                        <button type="button" class="flex items-center gap-1 px-2 2xl:px-2.5 py-1.5 text-[11.5px] 2xl:text-xs font-semibold text-slate-700 hover:text-gold-700 group-hover:text-gold-700 whitespace-nowrap transition-colors">
-                            <span>{{ __('safir.nav.economy') }}</span>
-                            <svg class="w-3.5 h-3.5 transition-transform group-hover:rotate-180 text-gold-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                        </button>
-                        <div class="absolute {{ $isRtl ? 'right-0' : 'left-0' }} top-full w-80 max-w-[calc(100vw-2rem)] pt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 z-50">
-                            <div class="bg-white border border-[#E2DDD3] rounded-xl p-3 shadow-xl shadow-slate-900/10">
-                                <div class="px-3 py-2 border-b border-[#EFECE6] mb-2">
-                                    <div class="text-[11px] font-bold text-gold-700 uppercase tracking-wider">{{ __('safir.pillars.economy.title') }}</div>
-                                    <div class="text-[11px] text-slate-500">{{ __('safir.nav.economy_sub') }}</div>
+                    @if($headerMenu && $headerMenu->items->isNotEmpty())
+                        @foreach($headerMenu->items as $hItem)
+                            @if($hItem->children->isNotEmpty())
+                                <!-- Dropdown Menu Item -->
+                                <div class="relative group" id="dropdown-menu-{{ $hItem->id }}">
+                                    <button type="button" class="flex items-center gap-1 px-2 2xl:px-2.5 py-1.5 text-[11.5px] 2xl:text-xs font-semibold {{ $hItem->isActive() ? 'text-gold-700 font-bold' : 'text-slate-700 hover:text-gold-700' }} group-hover:text-gold-700 whitespace-nowrap transition-colors">
+                                        <span>{{ $hItem->labelText }}</span>
+                                        <svg class="w-3.5 h-3.5 transition-transform group-hover:rotate-180 text-gold-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                    </button>
+                                    <div class="absolute {{ $isRtl ? 'right-0' : 'left-0' }} top-full w-84 max-w-[calc(100vw-2rem)] pt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 z-50">
+                                        <div class="bg-white border border-[#E2DDD3] rounded-xl p-3 shadow-xl shadow-slate-900/10">
+                                            <div class="px-3 py-2 border-b border-[#EFECE6] mb-2 flex items-center justify-between">
+                                                <div class="text-[11px] font-bold text-gold-700 uppercase tracking-wider">{{ $hItem->labelText }}</div>
+                                                @if($hItem->resolveUrl($currentLocale) !== '#' && $hItem->resolveUrl($currentLocale) !== '')
+                                                    <a href="{{ $hItem->resolveUrl($currentLocale) }}" target="{{ $hItem->target }}" class="text-[10.5px] text-slate-400 hover:text-gold-700 font-semibold transition-colors">→ {{ __('safir.nav.services') }}</a>
+                                                @endif
+                                            </div>
+                                            <div class="space-y-1">
+                                                @foreach($hItem->children as $child)
+                                                    <a href="{{ $child->resolveUrl($currentLocale) }}" target="{{ $child->target }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs {{ $child->isActive() ? 'text-gold-800 bg-gold-50 font-bold' : 'text-slate-700 hover:bg-gold-50 hover:text-gold-800' }} transition-colors">
+                                                        <svg class="w-4 h-4 text-gold-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                                        <span>{{ $child->labelText }}</span>
+                                                    </a>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="space-y-1">
-                                    <a href="{{ route_ml('reports.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-slate-700 hover:bg-gold-50 hover:text-gold-800 transition-colors">
-                                        <svg class="w-4 h-4 text-gold-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                                        <span>{{ __('safir.pillars.economy.items.general_reports') }}</span>
-                                    </a>
-                                    <a href="{{ route_ml('reports.index', ['category' => 'macro_markets']) }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-slate-700 hover:bg-gold-50 hover:text-gold-800 transition-colors">
-                                        <svg class="w-4 h-4 text-gold-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                                        <span>{{ __('safir.pillars.economy.items.market_studies') }}</span>
-                                    </a>
-                                    <a href="{{ route_ml('reports.index', ['category' => 'diplomacy']) }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-slate-700 hover:bg-gold-50 hover:text-gold-800 transition-colors">
-                                        <svg class="w-4 h-4 text-gold-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-                                        <span>{{ __('safir.pillars.economy.items.political_reports') }}</span>
-                                    </a>
-                                    <a href="{{ route_ml('bulletin') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-gold-700 font-semibold bg-gold-50 hover:bg-gold-100 transition-colors">
-                                        <svg class="w-4 h-4 text-gold-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
-                                        <span>{{ __('safir.pillars.economy.items.weekly_bulletin') }}</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 2. Relations & Business Dropdown -->
-                    <div class="relative group" id="dropdown-relations">
-                        <button type="button" class="flex items-center gap-1 px-2 2xl:px-2.5 py-1.5 text-[11.5px] 2xl:text-xs font-semibold text-slate-700 hover:text-gold-700 group-hover:text-gold-700 whitespace-nowrap transition-colors">
-                            <span>{{ __('safir.nav.relations') }}</span>
-                            <svg class="w-3.5 h-3.5 transition-transform group-hover:rotate-180 text-gold-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                        </button>
-                        <div class="absolute {{ $isRtl ? 'right-0' : 'left-0' }} top-full w-84 max-w-[calc(100vw-2rem)] pt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 z-50">
-                            <div class="bg-white border border-[#E2DDD3] rounded-xl p-3 shadow-xl shadow-slate-900/10">
-                                <div class="px-3 py-2 border-b border-[#EFECE6] mb-2">
-                                    <div class="text-[11px] font-bold text-gold-700 uppercase tracking-wider">{{ __('safir.pillars.relations.title') }}</div>
-                                    <div class="text-[11px] text-slate-500">{{ __('safir.nav.relations_sub') }}</div>
-                                </div>
-                                <div class="space-y-1">
-                                    <a href="{{ route_ml('services.pillar', 'relations') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-slate-700 hover:bg-gold-50 hover:text-gold-800 transition-colors">
-                                        <svg class="w-4 h-4 text-gold-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-                                        <span>{{ __('safir.pillars.relations.items.b2b_matchmaking') }}</span>
-                                    </a>
-                                    <a href="{{ route_ml('services.pillar', 'relations') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-slate-700 hover:bg-gold-50 hover:text-gold-800 transition-colors">
-                                        <svg class="w-4 h-4 text-gold-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-                                        <span>{{ __('safir.pillars.relations.items.chambers') }}</span>
-                                    </a>
-                                    <a href="{{ route_ml('services.pillar', 'relations') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-slate-700 hover:bg-gold-50 hover:text-gold-800 transition-colors">
-                                        <svg class="w-4 h-4 text-gold-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/></svg>
-                                        <span>{{ __('safir.pillars.relations.items.government_relations') }}</span>
-                                    </a>
-                                    <a href="{{ route_ml('embassies') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-gold-700 font-semibold bg-gold-50 hover:bg-gold-100 transition-colors">
-                                        <svg class="w-4 h-4 text-gold-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"/></svg>
-                                        <span>{{ __('safir.pillars.relations.items.embassies_support') }}</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 3. Conferences & Events Dropdown -->
-                    <div class="relative group" id="dropdown-events">
-                        <button type="button" class="flex items-center gap-1 px-2 2xl:px-2.5 py-1.5 text-[11.5px] 2xl:text-xs font-semibold text-slate-700 hover:text-gold-700 group-hover:text-gold-700 whitespace-nowrap transition-colors">
-                            <span>{{ __('safir.nav.events') }}</span>
-                            <svg class="w-3.5 h-3.5 transition-transform group-hover:rotate-180 text-gold-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                        </button>
-                        <div class="absolute {{ $isRtl ? 'right-0' : 'left-0' }} top-full w-84 max-w-[calc(100vw-2rem)] pt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 z-50">
-                            <div class="bg-white border border-[#E2DDD3] rounded-xl p-3 shadow-xl shadow-slate-900/10">
-                                <div class="px-3 py-2 border-b border-[#EFECE6] mb-2">
-                                    <div class="text-[11px] font-bold text-gold-700 uppercase tracking-wider">{{ __('safir.pillars.events.title') }}</div>
-                                    <div class="text-[11px] text-slate-500">{{ __('safir.nav.events_sub') }}</div>
-                                </div>
-                                <div class="space-y-1">
-                                    <a href="{{ route_ml('services.pillar', 'events') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-slate-700 hover:bg-gold-50 hover:text-gold-800 transition-colors">
-                                        <svg class="w-4 h-4 text-gold-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"/></svg>
-                                        <span>{{ __('safir.pillars.events.items.conferences') }}</span>
-                                    </a>
-                                    <a href="{{ route_ml('services.pillar', 'events') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-slate-700 hover:bg-gold-50 hover:text-gold-800 transition-colors">
-                                        <svg class="w-4 h-4 text-gold-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                                        <span>{{ __('safir.pillars.events.items.press_conferences') }}</span>
-                                    </a>
-                                    <a href="{{ route_ml('services.pillar', 'events') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-slate-700 hover:bg-gold-50 hover:text-gold-800 transition-colors">
-                                        <svg class="w-4 h-4 text-gold-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                                        <span>{{ __('safir.pillars.events.items.consular_services') }}</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 4. Media & Community Dropdown -->
-                    <div class="relative group" id="dropdown-community">
-                        <button type="button" class="flex items-center gap-1 px-2 2xl:px-2.5 py-1.5 text-[11.5px] 2xl:text-xs font-semibold text-slate-700 hover:text-gold-700 group-hover:text-gold-700 whitespace-nowrap transition-colors">
-                            <span>{{ __('safir.nav.community') }}</span>
-                            <svg class="w-3.5 h-3.5 transition-transform group-hover:rotate-180 text-gold-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                        </button>
-                        <div class="absolute {{ $isRtl ? 'right-0' : 'left-0' }} top-full w-84 max-w-[calc(100vw-2rem)] pt-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 z-50">
-                            <div class="bg-white border border-[#E2DDD3] rounded-xl p-3 shadow-xl shadow-slate-900/10">
-                                <div class="px-3 py-2 border-b border-[#EFECE6] mb-2">
-                                    <div class="text-[11px] font-bold text-gold-700 uppercase tracking-wider">{{ __('safir.pillars.community.title') }}</div>
-                                    <div class="text-[11px] text-slate-500">{{ __('safir.nav.community_sub') }}</div>
-                                </div>
-                                <div class="space-y-1">
-                                    <a href="{{ route_ml('services.pillar', 'community') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-slate-700 hover:bg-gold-50 hover:text-gold-800 transition-colors">
-                                        <svg class="w-4 h-4 text-gold-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/></svg>
-                                        <span>{{ __('safir.pillars.community.items.media_relations') }}</span>
-                                    </a>
-                                    <a href="{{ route_ml('services.pillar', 'community') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-slate-700 hover:bg-gold-50 hover:text-gold-800 transition-colors">
-                                        <svg class="w-4 h-4 text-gold-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-                                        <span>{{ __('safir.pillars.community.items.civil_society') }}</span>
-                                    </a>
-                                    <a href="{{ route_ml('services.pillar', 'community') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-slate-700 hover:bg-gold-50 hover:text-gold-800 transition-colors">
-                                        <svg class="w-4 h-4 text-gold-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-                                        <span>{{ __('safir.pillars.community.items.charitable_initiatives') }}</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Direct Portals with Clean, Compact Typography -->
-                    <a href="{{ route_ml('embassies') }}" class="px-2 2xl:px-2.5 py-1.5 text-[11.5px] 2xl:text-xs font-semibold whitespace-nowrap {{ request()->routeIs('embassies') ? 'text-gold-700 font-bold' : 'text-slate-700 hover:text-gold-700' }} transition-colors">
-                        {{ __('safir.nav.embassies') }}
-                    </a>
-                    <a href="{{ route_ml('corporates') }}" class="px-2 2xl:px-2.5 py-1.5 text-[11.5px] 2xl:text-xs font-semibold whitespace-nowrap {{ request()->routeIs('corporates') ? 'text-gold-700 font-bold' : 'text-slate-700 hover:text-gold-700' }} transition-colors">
-                        {{ __('safir.nav.corporates') }}
-                    </a>
-                    <a href="{{ route_ml('reports.index') }}" class="px-2 2xl:px-2.5 py-1.5 text-[11.5px] 2xl:text-xs font-semibold whitespace-nowrap {{ request()->routeIs('reports.*') ? 'text-gold-700 font-bold' : 'text-slate-700 hover:text-gold-700' }} transition-colors">
-                        {{ __('safir.nav.reports') }}
-                    </a>
-                    <a href="{{ route_ml('about') }}" class="px-2 2xl:px-2.5 py-1.5 text-[11.5px] 2xl:text-xs font-semibold whitespace-nowrap {{ request()->routeIs('about') ? 'text-gold-700 font-bold' : 'text-slate-700 hover:text-gold-700' }} transition-colors">
-                        {{ __('safir.nav.about') }}
-                    </a>
-                    <a href="{{ route_ml('contact') }}" class="px-2 2xl:px-2.5 py-1.5 text-[11.5px] 2xl:text-xs font-semibold whitespace-nowrap {{ request()->routeIs('contact') ? 'text-gold-700 font-bold' : 'text-slate-700 hover:text-gold-700' }} transition-colors">
-                        {{ __('safir.nav.contact') }}
-                    </a>
+                            @else
+                                <!-- Direct Navigation Link -->
+                                <a href="{{ $hItem->resolveUrl($currentLocale) }}" target="{{ $hItem->target }}" class="px-2 2xl:px-2.5 py-1.5 text-[11.5px] 2xl:text-xs font-semibold whitespace-nowrap {{ $hItem->isActive() ? 'text-gold-700 font-bold' : 'text-slate-700 hover:text-gold-700' }} transition-colors">
+                                    {{ $hItem->labelText }}
+                                </a>
+                            @endif
+                        @endforeach
+                    @else
+                        <!-- Fallback Static Navigation -->
+                        <a href="{{ route_ml('embassies') }}" class="px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:text-gold-700">{{ __('safir.nav.embassies') }}</a>
+                        <a href="{{ route_ml('corporates') }}" class="px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:text-gold-700">{{ __('safir.nav.corporates') }}</a>
+                        <a href="{{ route_ml('reports.index') }}" class="px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:text-gold-700">{{ __('safir.nav.reports') }}</a>
+                        <a href="{{ route_ml('about') }}" class="px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:text-gold-700">{{ __('safir.nav.about') }}</a>
+                        <a href="{{ route_ml('contact') }}" class="px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:text-gold-700">{{ __('safir.nav.contact') }}</a>
+                    @endif
                 </nav>
 
                 <!-- Mobile Hamburger Button -->
@@ -282,45 +194,43 @@
         <!-- Mobile Drawer Menu -->
         <div id="mobile-menu" class="hidden xl:hidden bg-white border-b border-[#E2DDD3] px-6 py-6 shadow-xl transition-all">
             <div class="space-y-4">
-                <div class="border-b border-slate-200 pb-4">
-                    <div class="text-xs font-bold text-gold-700 uppercase tracking-wider mb-2">{{ __('safir.pillars.economy.title') }}</div>
-                    <div class="grid grid-cols-1 gap-2 text-xs text-slate-700">
-                        <a href="{{ route_ml('reports.index') }}" class="hover:text-gold-700">· {{ __('safir.pillars.economy.items.general_reports') }}</a>
-                        <a href="{{ route_ml('bulletin') }}" class="text-gold-700 font-medium">· {{ __('safir.pillars.economy.items.weekly_bulletin') }}</a>
-                    </div>
-                </div>
+                @if($headerMenu && $headerMenu->items->isNotEmpty())
+                    @foreach($headerMenu->items as $hItem)
+                        @if($hItem->children->isNotEmpty())
+                            <div class="border-b border-slate-200 pb-4">
+                                <div class="text-xs font-bold text-gold-700 uppercase tracking-wider mb-2">{{ $hItem->labelText }}</div>
+                                <div class="grid grid-cols-1 gap-2 text-xs text-slate-700">
+                                    @foreach($hItem->children as $child)
+                                        <a href="{{ $child->resolveUrl($currentLocale) }}" target="{{ $child->target }}" class="hover:text-gold-700 {{ $child->isActive() ? 'text-gold-700 font-bold' : '' }}">
+                                            · {{ $child->labelText }}
+                                        </a>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
 
-                <div class="border-b border-slate-200 pb-4">
-                    <div class="text-xs font-bold text-gold-700 uppercase tracking-wider mb-2">{{ __('safir.pillars.relations.title') }}</div>
-                    <div class="grid grid-cols-1 gap-2 text-xs text-slate-700">
-                        <a href="{{ route_ml('services.pillar', 'relations') }}" class="hover:text-gold-700">· {{ __('safir.pillars.relations.items.b2b_matchmaking') }}</a>
-                        <a href="{{ route_ml('embassies') }}" class="hover:text-gold-700">· {{ __('safir.pillars.relations.items.embassies_support') }}</a>
+                    @php
+                        $directMobileItems = $headerMenu->items->filter(fn($i) => $i->children->isEmpty());
+                    @endphp
+                    @if($directMobileItems->isNotEmpty())
+                        <div class="grid grid-cols-2 gap-3 pt-2 text-xs font-semibold text-slate-800">
+                            @foreach($directMobileItems as $mItem)
+                                <a href="{{ $mItem->resolveUrl($currentLocale) }}" target="{{ $mItem->target }}" class="p-2 rounded-lg bg-slate-50 border border-slate-200 hover:border-gold-400 text-center {{ $mItem->isActive() ? 'text-gold-700 font-bold border-gold-300' : '' }} {{ $loop->last && $loop->count % 2 !== 0 ? 'col-span-2' : '' }}">
+                                    {{ $mItem->labelText }}
+                                </a>
+                            @endforeach
+                        </div>
+                    @endif
+                @else
+                    <div class="grid grid-cols-2 gap-3 pt-2 text-xs font-semibold text-slate-800">
+                        <a href="{{ route_ml('embassies') }}" class="p-2 rounded-lg bg-slate-50 border border-slate-200 hover:border-gold-400 text-center">{{ __('safir.nav.embassies') }}</a>
+                        <a href="{{ route_ml('corporates') }}" class="p-2 rounded-lg bg-slate-50 border border-slate-200 hover:border-gold-400 text-center">{{ __('safir.nav.corporates') }}</a>
+                        <a href="{{ route_ml('reports.index') }}" class="p-2 rounded-lg bg-slate-50 border border-slate-200 hover:border-gold-400 text-center">{{ __('safir.nav.reports') }}</a>
+                        <a href="{{ route_ml('about') }}" class="p-2 rounded-lg bg-slate-50 border border-slate-200 hover:border-gold-400 text-center text-gold-700 font-bold">{{ __('safir.nav.about') }}</a>
+                        <a href="{{ route_ml('contact') }}" class="col-span-2 p-2 rounded-lg bg-slate-50 border border-slate-200 hover:border-gold-400 text-center">{{ __('safir.nav.contact') }}</a>
                     </div>
-                </div>
-
-                <div class="border-b border-slate-200 pb-4">
-                    <div class="text-xs font-bold text-gold-700 uppercase tracking-wider mb-2">{{ __('safir.pillars.events.title') }}</div>
-                    <div class="grid grid-cols-1 gap-2 text-xs text-slate-700">
-                        <a href="{{ route_ml('services.pillar', 'events') }}" class="hover:text-gold-700">· {{ __('safir.pillars.events.items.conferences') }}</a>
-                        <a href="{{ route_ml('services.pillar', 'events') }}" class="hover:text-gold-700">· {{ __('safir.pillars.events.items.consular_services') }}</a>
-                    </div>
-                </div>
-
-                <div class="border-b border-slate-200 pb-4">
-                    <div class="text-xs font-bold text-gold-700 uppercase tracking-wider mb-2">{{ __('safir.pillars.community.title') }}</div>
-                    <div class="grid grid-cols-1 gap-2 text-xs text-slate-700">
-                        <a href="{{ route_ml('services.pillar', 'community') }}" class="hover:text-gold-700">· {{ __('safir.pillars.community.items.media_relations') }}</a>
-                        <a href="{{ route_ml('services.pillar', 'community') }}" class="hover:text-gold-700">· {{ __('safir.pillars.community.items.civil_society') }}</a>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-3 pt-2 text-xs font-semibold text-slate-800">
-                    <a href="{{ route_ml('embassies') }}" class="p-2 rounded-lg bg-slate-50 border border-slate-200 hover:border-gold-400 text-center">{{ __('safir.nav.embassies') }}</a>
-                    <a href="{{ route_ml('corporates') }}" class="p-2 rounded-lg bg-slate-50 border border-slate-200 hover:border-gold-400 text-center">{{ __('safir.nav.corporates') }}</a>
-                    <a href="{{ route_ml('reports.index') }}" class="p-2 rounded-lg bg-slate-50 border border-slate-200 hover:border-gold-400 text-center">{{ __('safir.nav.reports') }}</a>
-                    <a href="{{ route_ml('about') }}" class="p-2 rounded-lg bg-slate-50 border border-slate-200 hover:border-gold-400 text-center text-gold-700 font-bold">{{ __('safir.nav.about') }}</a>
-                    <a href="{{ route_ml('contact') }}" class="col-span-2 p-2 rounded-lg bg-slate-50 border border-slate-200 hover:border-gold-400 text-center">{{ __('safir.nav.contact') }}</a>
-                </div>
+                @endif
             </div>
         </div>
     </header>
@@ -437,11 +347,24 @@
                 <div>
                     <h3 class="text-xs font-bold uppercase tracking-wider text-slate-200 mb-4">{{ setting('footer_pillars_title', __('safir.footer.services_title')) }}</h3>
                     <ul class="space-y-2.5">
-                        <li><a href="{{ route_ml('services.pillar', 'economy') }}" class="hover:text-gold-400 transition-colors">{{ __('safir.pillars.economy.title') }}</a></li>
-                        <li><a href="{{ route_ml('services.pillar', 'relations') }}" class="hover:text-gold-400 transition-colors">{{ __('safir.pillars.relations.title') }}</a></li>
-                        <li><a href="{{ route_ml('services.pillar', 'events') }}" class="hover:text-gold-400 transition-colors">{{ __('safir.pillars.events.title') }}</a></li>
-                        <li><a href="{{ route_ml('services.pillar', 'community') }}" class="hover:text-gold-400 transition-colors">{{ __('safir.pillars.community.title') }}</a></li>
-                        <li><a href="{{ route_ml('services.index') }}" class="text-gold-400 font-semibold hover:underline">→ {{ __('safir.nav.services') }}</a></li>
+                        @php
+                            $footerPillarsMenu = \App\Models\Menu::where('location', 'footer_pillars')->where('is_active', true)->with('items')->first();
+                        @endphp
+                        @if($footerPillarsMenu && $footerPillarsMenu->items->isNotEmpty())
+                            @foreach($footerPillarsMenu->items->where('is_active', true) as $pItem)
+                                <li>
+                                    <a href="{{ $pItem->resolveUrl($currentLocale) }}" target="{{ $pItem->target }}" class="hover:text-gold-400 transition-colors">
+                                        {{ $pItem->labelText }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        @else
+                            <li><a href="{{ route_ml('services.pillar', 'economy') }}" class="hover:text-gold-400 transition-colors">{{ __('safir.pillars.economy.title') }}</a></li>
+                            <li><a href="{{ route_ml('services.pillar', 'relations') }}" class="hover:text-gold-400 transition-colors">{{ __('safir.pillars.relations.title') }}</a></li>
+                            <li><a href="{{ route_ml('services.pillar', 'events') }}" class="hover:text-gold-400 transition-colors">{{ __('safir.pillars.events.title') }}</a></li>
+                            <li><a href="{{ route_ml('services.pillar', 'community') }}" class="hover:text-gold-400 transition-colors">{{ __('safir.pillars.community.title') }}</a></li>
+                            <li><a href="{{ route_ml('services.index') }}" class="text-gold-400 font-semibold hover:underline">→ {{ __('safir.nav.services') }}</a></li>
+                        @endif
                     </ul>
                 </div>
 

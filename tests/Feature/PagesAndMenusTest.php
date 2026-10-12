@@ -135,4 +135,73 @@ class PagesAndMenusTest extends TestCase
         $delResponse->assertRedirect();
         $this->assertDatabaseMissing('menu_items', ['id' => $item->id]);
     }
+
+    public function test_all_platform_pages_and_menus_render_dynamically(): void
+    {
+        // 1. Home page renders dynamic header menu items
+        $response = $this->get('/en');
+        $response->assertStatus(200);
+        $response->assertSee('Economy & Knowledge');
+        $response->assertSee('General Reports');
+        $response->assertSee('Market Studies');
+        $response->assertSee('Embassies');
+        $response->assertSee('Corporates');
+        $response->assertSee('About Us');
+        $response->assertSee('Contact Us');
+
+        // 2. Embassies page renders with editable page content
+        $embassiesResp = $this->get('/en/embassies');
+        $embassiesResp->assertStatus(200);
+        $embassiesResp->assertSee('Diplomatic & Embassies Portal');
+
+        // 3. Corporates page renders with editable page content
+        $corporatesResp = $this->get('/en/corporates');
+        $corporatesResp->assertStatus(200);
+        $corporatesResp->assertSee('Corporate Market Entry & FDI');
+
+        // 4. Contact page renders with editable page content
+        $contactResp = $this->get('/en/contact');
+        $contactResp->assertStatus(200);
+        $contactResp->assertSee('Contact Ankara Headquarters');
+
+        // 5. Updating Page content immediately reflects on the public view
+        $embassiesPage = Page::where('slug', 'embassies')->first();
+        $this->assertNotNull($embassiesPage);
+        $embassiesPage->update([
+            'title' => [
+                'en' => 'Custom Executive Diplomatic Gateway',
+                'ar' => 'بوابة السفارات الدبلوماسية المخصصة',
+                'tr' => 'Özel Diplomatik Kapı',
+            ],
+        ]);
+
+        $updatedResp = $this->get('/en/embassies');
+        $updatedResp->assertStatus(200);
+        $updatedResp->assertSee('Custom Executive Diplomatic Gateway');
+    }
+
+    public function test_admin_can_add_hierarchical_menu_item_linked_to_page(): void
+    {
+        $admin = $this->getAdminUser();
+        $headerMenu = Menu::where('location', 'header')->first();
+        $parentItem = $headerMenu->items()->whereNull('parent_id')->first();
+        $targetPage = Page::where('slug', 'market-studies')->first();
+
+        $response = $this->actingAs($admin)->post(route('admin.menus.items.store', $headerMenu), [
+            'label_en' => 'Bespoke Sector Briefing',
+            'type' => 'page',
+            'page_id' => $targetPage->id,
+            'parent_id' => $parentItem->id,
+            'target' => '_self',
+            'is_active' => 1,
+        ]);
+
+        $response->assertRedirect();
+        $this->assertDatabaseHas('menu_items', [
+            'menu_id' => $headerMenu->id,
+            'parent_id' => $parentItem->id,
+            'page_id' => $targetPage->id,
+            'type' => 'page',
+        ]);
+    }
 }

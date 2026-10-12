@@ -8,7 +8,7 @@
 <div class="space-y-6" x-data="{
     showAddItemModal: false,
     editModalOpen: false,
-    editItem: { id: null, label_en: '', label_ar: '', label_tr: '', type: 'url', url: '', page_id: '', route_name: '', target: '_self', is_active: true, parent_id: '' },
+    editItem: { id: null, label_en: '', label_ar: '', label_tr: '', type: 'url', url: '', page_id: '', route_name: '', target: '_self', is_active: true, parent_id: '', sort_order: 0 },
     openEdit(item) {
         this.editItem = {
             id: item.id,
@@ -21,7 +21,8 @@
             route_name: item.route_name || '',
             target: item.target || '_self',
             is_active: item.is_active,
-            parent_id: item.parent_id || ''
+            parent_id: item.parent_id || '',
+            sort_order: item.sort_order || 0
         };
         this.editModalOpen = true;
     }
@@ -181,6 +182,16 @@
                     </div>
 
                     <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Parent Item (Optional — creates a sub-item)</label>
+                        <select name="parent_id" class="w-full text-xs rounded-xl border border-slate-200 p-2.5 outline-none focus:border-gold-500 bg-white">
+                            <option value="">-- None (Top-level Menu Item) --</option>
+                            @foreach($rootItems as $ri)
+                                <option value="{{ $ri->id }}">{{ $ri->getLocalized('label', 'en') }} (Top Level)</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1">Link Destination Type</label>
                         <select name="type" x-model="itemType" class="w-full text-xs rounded-xl border border-slate-200 p-2.5 outline-none focus:border-gold-500 bg-white">
                             <option value="page">Dynamic Page</option>
@@ -282,6 +293,16 @@
                     </div>
 
                     <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Parent Item (Optional — creates a sub-item)</label>
+                        <select name="parent_id" x-model="editItem.parent_id" class="w-full text-xs rounded-xl border border-slate-200 p-2.5 outline-none focus:border-gold-500 bg-white">
+                            <option value="">-- None (Top-level Menu Item) --</option>
+                            @foreach($rootItems as $ri)
+                                <option value="{{ $ri->id }}" x-show="editItem.id != {{ $ri->id }}">{{ $ri->getLocalized('label', 'en') }} (Top Level)</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1">Link Destination Type</label>
                         <select name="type" x-model="editItem.type" class="w-full text-xs rounded-xl border border-slate-200 p-2.5 outline-none focus:border-gold-500 bg-white">
                             <option value="page">Dynamic Page</option>
@@ -317,6 +338,10 @@
                                 <option value="_self">Same Tab (_self)</option>
                                 <option value="_blank">New Tab (_blank)</option>
                             </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Sort Order</label>
+                            <input type="number" name="sort_order" x-model="editItem.sort_order" min="0" class="w-full text-xs rounded-xl border border-slate-200 p-2.5 outline-none">
                         </div>
                     </div>
 
