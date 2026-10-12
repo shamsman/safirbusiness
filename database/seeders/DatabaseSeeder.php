@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             SafirPlatformSeeder::class,
             AdminUserSeeder::class,
             SettingSeeder::class,
+            PageAndMenuSeeder::class,
         ]);
     }
 }

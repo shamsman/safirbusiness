@@ -95,6 +95,24 @@
                     <span>User Management</span>
                 </a>
 
+                <!-- Pages Management Module -->
+                <a href="{{ route('admin.pages.index') }}" 
+                   class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all {{ request()->routeIs('admin.pages.*') ? 'bg-gold-500/10 text-gold-700 border border-gold-500/30 font-semibold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                    <svg class="w-5 h-5 {{ request()->routeIs('admin.pages.*') ? 'text-gold-600' : 'text-slate-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <span>Pages Management</span>
+                </a>
+
+                <!-- Navigation Menus Module -->
+                <a href="{{ route('admin.menus.index') }}" 
+                   class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all {{ request()->routeIs('admin.menus.*') ? 'bg-gold-500/10 text-gold-700 border border-gold-500/30 font-semibold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                    <svg class="w-5 h-5 {{ request()->routeIs('admin.menus.*') ? 'text-gold-600' : 'text-slate-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
+                    </svg>
+                    <span>Navigation Menus</span>
+                </a>
+
                 <!-- Website Settings Module -->
                 <a href="{{ route('admin.settings.index') }}" 
                    class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all {{ request()->routeIs('admin.settings.*') ? 'bg-gold-500/10 text-gold-700 border border-gold-500/30 font-semibold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">

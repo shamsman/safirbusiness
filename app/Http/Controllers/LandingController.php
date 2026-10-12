@@ -62,7 +62,9 @@ class LandingController extends Controller
 
     public function about()
     {
-        return view('pages.about');
+        $page = \App\Models\Page::published()->where('slug', 'about')->first();
+
+        return view('pages.about', compact('page'));
     }
 
     public function contact()

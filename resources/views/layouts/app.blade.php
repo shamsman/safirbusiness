@@ -264,6 +264,9 @@
                     <a href="{{ route_ml('reports.index') }}" class="px-2 2xl:px-2.5 py-1.5 text-[11.5px] 2xl:text-xs font-semibold whitespace-nowrap {{ request()->routeIs('reports.*') ? 'text-gold-700 font-bold' : 'text-slate-700 hover:text-gold-700' }} transition-colors">
                         {{ __('safir.nav.reports') }}
                     </a>
+                    <a href="{{ route_ml('about') }}" class="px-2 2xl:px-2.5 py-1.5 text-[11.5px] 2xl:text-xs font-semibold whitespace-nowrap {{ request()->routeIs('about') ? 'text-gold-700 font-bold' : 'text-slate-700 hover:text-gold-700' }} transition-colors">
+                        {{ __('safir.nav.about') }}
+                    </a>
                     <a href="{{ route_ml('contact') }}" class="px-2 2xl:px-2.5 py-1.5 text-[11.5px] 2xl:text-xs font-semibold whitespace-nowrap {{ request()->routeIs('contact') ? 'text-gold-700 font-bold' : 'text-slate-700 hover:text-gold-700' }} transition-colors">
                         {{ __('safir.nav.contact') }}
                     </a>
@@ -315,7 +318,8 @@
                     <a href="{{ route_ml('embassies') }}" class="p-2 rounded-lg bg-slate-50 border border-slate-200 hover:border-gold-400 text-center">{{ __('safir.nav.embassies') }}</a>
                     <a href="{{ route_ml('corporates') }}" class="p-2 rounded-lg bg-slate-50 border border-slate-200 hover:border-gold-400 text-center">{{ __('safir.nav.corporates') }}</a>
                     <a href="{{ route_ml('reports.index') }}" class="p-2 rounded-lg bg-slate-50 border border-slate-200 hover:border-gold-400 text-center">{{ __('safir.nav.reports') }}</a>
-                    <a href="{{ route_ml('contact') }}" class="p-2 rounded-lg bg-slate-50 border border-slate-200 hover:border-gold-400 text-center">{{ __('safir.nav.contact') }}</a>
+                    <a href="{{ route_ml('about') }}" class="p-2 rounded-lg bg-slate-50 border border-slate-200 hover:border-gold-400 text-center text-gold-700 font-bold">{{ __('safir.nav.about') }}</a>
+                    <a href="{{ route_ml('contact') }}" class="col-span-2 p-2 rounded-lg bg-slate-50 border border-slate-200 hover:border-gold-400 text-center">{{ __('safir.nav.contact') }}</a>
                 </div>
             </div>
         </div>
@@ -445,12 +449,25 @@
                 <div>
                     <h3 class="text-xs font-bold uppercase tracking-wider text-slate-200 mb-4">{{ setting('footer_quick_links_title', __('safir.footer.quick_links')) }}</h3>
                     <ul class="space-y-2.5">
-                        <li><a href="{{ route_ml('embassies') }}" class="hover:text-gold-400 transition-colors">{{ __('safir.nav.embassies') }}</a></li>
-                        <li><a href="{{ route_ml('corporates') }}" class="hover:text-gold-400 transition-colors">{{ __('safir.nav.corporates') }}</a></li>
-                        <li><a href="{{ route_ml('reports.index') }}" class="hover:text-gold-400 transition-colors">{{ __('safir.nav.reports') }}</a></li>
-                        <li><a href="{{ route_ml('bulletin') }}" class="hover:text-gold-400 transition-colors">{{ __('safir.nav.bulletin') }}</a></li>
-                        <li><a href="{{ route_ml('about') }}" class="hover:text-gold-400 transition-colors">{{ __('safir.nav.about') }}</a></li>
-                        <li><a href="{{ route_ml('contact') }}" class="hover:text-gold-400 transition-colors">{{ __('safir.nav.contact') }}</a></li>
+                        @php
+                            $footerQuickMenu = \App\Models\Menu::where('location', 'footer_quick_links')->where('is_active', true)->with('items')->first();
+                        @endphp
+                        @if($footerQuickMenu && $footerQuickMenu->items->isNotEmpty())
+                            @foreach($footerQuickMenu->items->where('is_active', true) as $fItem)
+                                <li>
+                                    <a href="{{ $fItem->resolveUrl($currentLocale) }}" target="{{ $fItem->target }}" class="hover:text-gold-400 transition-colors">
+                                        {{ $fItem->labelText }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        @else
+                            <li><a href="{{ route_ml('embassies') }}" class="hover:text-gold-400 transition-colors">{{ __('safir.nav.embassies') }}</a></li>
+                            <li><a href="{{ route_ml('corporates') }}" class="hover:text-gold-400 transition-colors">{{ __('safir.nav.corporates') }}</a></li>
+                            <li><a href="{{ route_ml('reports.index') }}" class="hover:text-gold-400 transition-colors">{{ __('safir.nav.reports') }}</a></li>
+                            <li><a href="{{ route_ml('bulletin') }}" class="hover:text-gold-400 transition-colors">{{ __('safir.nav.bulletin') }}</a></li>
+                            <li><a href="{{ route_ml('about') }}" class="hover:text-gold-400 transition-colors">{{ __('safir.nav.about') }}</a></li>
+                            <li><a href="{{ route_ml('contact') }}" class="hover:text-gold-400 transition-colors">{{ __('safir.nav.contact') }}</a></li>
+                        @endif
                     </ul>
                 </div>
 

@@ -56,6 +56,21 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'active'])->group(fu
         Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
         Route::post('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
     });
+
+    // Pages Module (Superadmin, Admin)
+    Route::middleware('role:superadmin,admin')->group(function () {
+        Route::resource('pages', \App\Http\Controllers\Admin\PageController::class);
+        Route::patch('/pages/{page}/toggle', [\App\Http\Controllers\Admin\PageController::class, 'toggle'])->name('pages.toggle');
+    });
+
+    // Menus Module (Superadmin, Admin)
+    Route::middleware('role:superadmin,admin')->group(function () {
+        Route::resource('menus', \App\Http\Controllers\Admin\MenuController::class);
+        Route::post('/menus/{menu}/items', [\App\Http\Controllers\Admin\MenuItemController::class, 'store'])->name('menus.items.store');
+        Route::put('/menus/{menu}/items/{item}', [\App\Http\Controllers\Admin\MenuItemController::class, 'update'])->name('menus.items.update');
+        Route::delete('/menus/{menu}/items/{item}', [\App\Http\Controllers\Admin\MenuItemController::class, 'destroy'])->name('menus.items.destroy');
+        Route::post('/menus/{menu}/reorder', [\App\Http\Controllers\Admin\MenuItemController::class, 'reorder'])->name('menus.reorder');
+    });
 });
 
 // Multilingual Routes Group
@@ -84,4 +99,7 @@ Route::prefix('{locale}')->where(['locale' => 'ar|en|tr'])->group(function () {
 
     // 7. Contact Us & Ankara Office
     Route::get('/contact', [LandingController::class, 'contact'])->name('contact');
+
+    // 8. Dynamic Pages
+    Route::get('/page/{slug}', [\App\Http\Controllers\PageController::class, 'show'])->name('pages.show');
 });
