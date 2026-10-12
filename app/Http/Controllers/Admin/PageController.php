@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Page;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -78,7 +79,7 @@ class PageController extends Controller
      */
     public function update(Request $request, Page $page): RedirectResponse
     {
-        $validated = $this->validatePage($request, $page->id);
+        $validated = $this->validatePage($request, $page);
 
         $page->update($validated);
 
@@ -130,8 +131,11 @@ class PageController extends Controller
     /**
      * Validate page request data and assemble multilingual arrays.
      */
-    protected function validatePage(Request $request, ?int $pageId = null): array
+    protected function validatePage(Request $request, Page|int|null $existingPage = null): array
     {
+        $pageId = $existingPage instanceof Page ? $existingPage->id : $existingPage;
+        $pageModel = $existingPage instanceof Page ? $existingPage : ($pageId ? Page::find($pageId) : null);
+
         $request->validate([
             'slug' => ['nullable', 'string', 'max:100', 'alpha_dash'],
             'template' => ['required', 'string', 'in:default,about,embassies,corporates,contact'],
@@ -152,6 +156,10 @@ class PageController extends Controller
             'meta_description_tr' => ['nullable', 'string', 'max:500'],
             'is_published' => ['nullable', 'boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
+            'founder1_photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp,svg', 'max:5120'],
+            'founder2_photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp,svg', 'max:5120'],
+            'remove_founder1_photo' => ['nullable', 'boolean'],
+            'remove_founder2_photo' => ['nullable', 'boolean'],
         ]);
 
         $rawSlug = $request->input('slug') ?: $request->input('title_en');
@@ -171,71 +179,129 @@ class PageController extends Controller
             if (json_last_error() === JSON_ERROR_NONE) {
                 $blocks = $decoded;
             }
-        } elseif ($request->input('template') === 'about' || $request->has('founder1_name') || $request->has('founder2_name')) {
-            // Reconstruct founders array if provided via dedicated founder inputs
+        } elseif ($request->input('template') === 'about' || in_array($slug, ['about', 'about-us'], true) || $request->has('founder1_name') || $request->has('founder2_name')) {
+            $disk = config('filesystems.default', 'gcs');
+            $existingFounders = $pageModel?->blocks['founders'] ?? [];
+            $existingF1 = $existingFounders[0] ?? [];
+            $existingF2 = $existingFounders[1] ?? [];
+
+            // Founder 1 photo handling
+            $f1Photo = $existingF1['photo'] ?? null;
+            if ($request->hasFile('founder1_photo')) {
+                if ($f1Photo) {
+                    if (Storage::disk($disk)->exists($f1Photo)) {
+                        Storage::disk($disk)->delete($f1Photo);
+                    }
+                    if ($disk !== 'public' && Storage::disk('public')->exists($f1Photo)) {
+                        Storage::disk('public')->delete($f1Photo);
+                    }
+                }
+                $f1Photo = $request->file('founder1_photo')->store('founders', $disk);
+            } elseif ($request->boolean('remove_founder1_photo')) {
+                if ($f1Photo) {
+                    if (Storage::disk($disk)->exists($f1Photo)) {
+                        Storage::disk($disk)->delete($f1Photo);
+                    }
+                    if ($disk !== 'public' && Storage::disk('public')->exists($f1Photo)) {
+                        Storage::disk('public')->delete($f1Photo);
+                    }
+                }
+                $f1Photo = null;
+            }
+
+            // Founder 2 photo handling
+            $f2Photo = $existingF2['photo'] ?? null;
+            if ($request->hasFile('founder2_photo')) {
+                if ($f2Photo) {
+                    if (Storage::disk($disk)->exists($f2Photo)) {
+                        Storage::disk($disk)->delete($f2Photo);
+                    }
+                    if ($disk !== 'public' && Storage::disk('public')->exists($f2Photo)) {
+                        Storage::disk('public')->delete($f2Photo);
+                    }
+                }
+                $f2Photo = $request->file('founder2_photo')->store('founders', $disk);
+            } elseif ($request->boolean('remove_founder2_photo')) {
+                if ($f2Photo) {
+                    if (Storage::disk($disk)->exists($f2Photo)) {
+                        Storage::disk($disk)->delete($f2Photo);
+                    }
+                    if ($disk !== 'public' && Storage::disk('public')->exists($f2Photo)) {
+                        Storage::disk('public')->delete($f2Photo);
+                    }
+                }
+                $f2Photo = null;
+            }
+
+            $parseLines = fn(string $field, mixed $fallback): array => $request->has($field)
+                ? array_values(array_filter(array_map('trim', explode("\n", (string) $request->input($field)))))
+                : (is_array($fallback) ? $fallback : []);
+
             $blocks = [
                 'founders' => [
                     [
                         'id' => 'founder-1',
-                        'name' => $request->input('founder1_name'),
+                        'name' => $request->input('founder1_name') ?: ($existingF1['name'] ?? ''),
+                        'photo' => $f1Photo,
                         'role' => [
-                            'en' => $request->input('founder1_role_en'),
-                            'ar' => $request->input('founder1_role_ar'),
-                            'tr' => $request->input('founder1_role_tr'),
+                            'en' => $request->input('founder1_role_en') ?: ($existingF1['role']['en'] ?? ''),
+                            'ar' => $request->input('founder1_role_ar') ?: ($existingF1['role']['ar'] ?? ''),
+                            'tr' => $request->input('founder1_role_tr') ?: ($existingF1['role']['tr'] ?? ''),
                         ],
                         'badge' => [
-                            'en' => $request->input('founder1_badge_en'),
-                            'ar' => $request->input('founder1_badge_ar'),
-                            'tr' => $request->input('founder1_badge_tr'),
+                            'en' => $request->input('founder1_badge_en') ?: (is_array($existingF1['badge'] ?? null) ? ($existingF1['badge']['en'] ?? '') : ($existingF1['badge'] ?? 'Diplomatic Advisory')),
+                            'ar' => $request->input('founder1_badge_ar') ?: (is_array($existingF1['badge'] ?? null) ? ($existingF1['badge']['ar'] ?? '') : ''),
+                            'tr' => $request->input('founder1_badge_tr') ?: (is_array($existingF1['badge'] ?? null) ? ($existingF1['badge']['tr'] ?? '') : ''),
                         ],
                         'bio' => [
-                            'en' => $request->input('founder1_bio_en'),
-                            'ar' => $request->input('founder1_bio_ar'),
-                            'tr' => $request->input('founder1_bio_tr'),
+                            'en' => $request->input('founder1_bio_en') ?: ($existingF1['bio']['en'] ?? ''),
+                            'ar' => $request->input('founder1_bio_ar') ?: ($existingF1['bio']['ar'] ?? ''),
+                            'tr' => $request->input('founder1_bio_tr') ?: ($existingF1['bio']['tr'] ?? ''),
                         ],
                         'highlights' => [
-                            'en' => array_filter(array_map('trim', explode("\n", (string) $request->input('founder1_highlights_en')))),
-                            'ar' => array_filter(array_map('trim', explode("\n", (string) $request->input('founder1_highlights_ar')))),
-                            'tr' => array_filter(array_map('trim', explode("\n", (string) $request->input('founder1_highlights_tr')))),
+                            'en' => $parseLines('founder1_highlights_en', $existingF1['highlights']['en'] ?? []),
+                            'ar' => $parseLines('founder1_highlights_ar', $existingF1['highlights']['ar'] ?? []),
+                            'tr' => $parseLines('founder1_highlights_tr', $existingF1['highlights']['tr'] ?? []),
                         ],
                         'education' => [
-                            'en' => array_filter(array_map('trim', explode("\n", (string) $request->input('founder1_education_en')))),
-                            'ar' => array_filter(array_map('trim', explode("\n", (string) $request->input('founder1_education_ar')))),
-                            'tr' => array_filter(array_map('trim', explode("\n", (string) $request->input('founder1_education_tr')))),
+                            'en' => $parseLines('founder1_education_en', $existingF1['education']['en'] ?? []),
+                            'ar' => $parseLines('founder1_education_ar', $existingF1['education']['ar'] ?? []),
+                            'tr' => $parseLines('founder1_education_tr', $existingF1['education']['tr'] ?? []),
                         ],
-                        'linkedin' => $request->input('founder1_linkedin'),
-                        'email' => $request->input('founder1_email'),
+                        'linkedin' => $request->input('founder1_linkedin', $existingF1['linkedin'] ?? ''),
+                        'email' => $request->input('founder1_email', $existingF1['email'] ?? ''),
                     ],
                     [
                         'id' => 'founder-2',
-                        'name' => $request->input('founder2_name'),
+                        'name' => $request->input('founder2_name') ?: ($existingF2['name'] ?? ''),
+                        'photo' => $f2Photo,
                         'role' => [
-                            'en' => $request->input('founder2_role_en'),
-                            'ar' => $request->input('founder2_role_ar'),
-                            'tr' => $request->input('founder2_role_tr'),
+                            'en' => $request->input('founder2_role_en') ?: ($existingF2['role']['en'] ?? ''),
+                            'ar' => $request->input('founder2_role_ar') ?: ($existingF2['role']['ar'] ?? ''),
+                            'tr' => $request->input('founder2_role_tr') ?: ($existingF2['role']['tr'] ?? ''),
                         ],
                         'badge' => [
-                            'en' => $request->input('founder2_badge_en'),
-                            'ar' => $request->input('founder2_badge_ar'),
-                            'tr' => $request->input('founder2_badge_tr'),
+                            'en' => $request->input('founder2_badge_en') ?: (is_array($existingF2['badge'] ?? null) ? ($existingF2['badge']['en'] ?? '') : ($existingF2['badge'] ?? 'Cross-Border Investment')),
+                            'ar' => $request->input('founder2_badge_ar') ?: (is_array($existingF2['badge'] ?? null) ? ($existingF2['badge']['ar'] ?? '') : ''),
+                            'tr' => $request->input('founder2_badge_tr') ?: (is_array($existingF2['badge'] ?? null) ? ($existingF2['badge']['tr'] ?? '') : ''),
                         ],
                         'bio' => [
-                            'en' => $request->input('founder2_bio_en'),
-                            'ar' => $request->input('founder2_bio_ar'),
-                            'tr' => $request->input('founder2_bio_tr'),
+                            'en' => $request->input('founder2_bio_en') ?: ($existingF2['bio']['en'] ?? ''),
+                            'ar' => $request->input('founder2_bio_ar') ?: ($existingF2['bio']['ar'] ?? ''),
+                            'tr' => $request->input('founder2_bio_tr') ?: ($existingF2['bio']['tr'] ?? ''),
                         ],
                         'highlights' => [
-                            'en' => array_filter(array_map('trim', explode("\n", (string) $request->input('founder2_highlights_en')))),
-                            'ar' => array_filter(array_map('trim', explode("\n", (string) $request->input('founder2_highlights_ar')))),
-                            'tr' => array_filter(array_map('trim', explode("\n", (string) $request->input('founder2_highlights_tr')))),
+                            'en' => $parseLines('founder2_highlights_en', $existingF2['highlights']['en'] ?? []),
+                            'ar' => $parseLines('founder2_highlights_ar', $existingF2['highlights']['ar'] ?? []),
+                            'tr' => $parseLines('founder2_highlights_tr', $existingF2['highlights']['tr'] ?? []),
                         ],
                         'education' => [
-                            'en' => array_filter(array_map('trim', explode("\n", (string) $request->input('founder2_education_en')))),
-                            'ar' => array_filter(array_map('trim', explode("\n", (string) $request->input('founder2_education_ar')))),
-                            'tr' => array_filter(array_map('trim', explode("\n", (string) $request->input('founder2_education_tr')))),
+                            'en' => $parseLines('founder2_education_en', $existingF2['education']['en'] ?? []),
+                            'ar' => $parseLines('founder2_education_ar', $existingF2['education']['ar'] ?? []),
+                            'tr' => $parseLines('founder2_education_tr', $existingF2['education']['tr'] ?? []),
                         ],
-                        'linkedin' => $request->input('founder2_linkedin'),
-                        'email' => $request->input('founder2_email'),
+                        'linkedin' => $request->input('founder2_linkedin', $existingF2['linkedin'] ?? ''),
+                        'email' => $request->input('founder2_email', $existingF2['email'] ?? ''),
                     ],
                 ],
             ];

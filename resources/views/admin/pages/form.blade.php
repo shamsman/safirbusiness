@@ -32,7 +32,7 @@
         @endif
     </div>
 
-    <form method="POST" action="{{ $page->exists ? route('admin.pages.update', $page) : route('admin.pages.store') }}" class="space-y-6">
+    <form method="POST" action="{{ $page->exists ? route('admin.pages.update', $page) : route('admin.pages.store') }}" enctype="multipart/form-data" class="space-y-6">
         @csrf
         @if($page->exists)
             @method('PUT')
@@ -177,15 +177,15 @@
             $f2 = $page->blocks['founders'][1] ?? [];
         @endphp
 
-        <!-- Card 3: Founders CVs Two Columns (Appears when Template is 'about') -->
-        <div x-show="template === 'about'" class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/90 shadow-2xs space-y-6">
+        <!-- Card 3: Founders CVs Two Columns (Appears when Template is 'about' or slug is about/about-us) -->
+        <div x-show="template === 'about' || slug === 'about' || slug === 'about-us'" class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/90 shadow-2xs space-y-6">
             <div class="border-b border-slate-100 pb-4 flex items-center justify-between">
                 <div>
                     <h3 class="text-sm font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2">
                         <span class="w-2.5 h-2.5 rounded-full bg-gold-500"></span>
-                        <span>Founders Leadership CVs (Two Columns)</span>
+                        <span>Founders Leadership CVs & Focus Areas (Two Columns)</span>
                     </h3>
-                    <p class="text-xs text-slate-500">Configure biographical and credential profiles for the two founding leaders.</p>
+                    <p class="text-xs text-slate-500">Configure portraits, executive focus badges, and biographical credentials for the founding leaders.</p>
                 </div>
                 <span class="text-xs font-bold px-2.5 py-1 rounded bg-gold-50 text-gold-800 border border-gold-200">
                     2 Column Layout
@@ -194,11 +194,58 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 
-                <!-- Column 1: Founder 1 CV -->
+                <!-- Column 1: Founder 1 Profile -->
                 <div class="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-4">
                     <div class="flex items-center gap-2 pb-3 border-b border-slate-200 font-bold text-xs uppercase tracking-wider text-slate-800">
                         <span class="w-6 h-6 rounded-full bg-navy-950 text-gold-400 flex items-center justify-center font-bold text-xs">1</span>
-                        <span>Founder 1 Profile (Diplomatic / Governance)</span>
+                        <span>Founder 1 Profile</span>
+                    </div>
+
+                    <!-- Founder 1 Photo Upload & Preview -->
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-1.5">Executive Photo / Portrait</label>
+                        @if(!empty($f1['photo']))
+                            <div class="flex items-center gap-3 p-3 bg-white rounded-xl border border-slate-200 mb-2">
+                                <img src="{{ media_url($f1['photo']) }}" alt="{{ $f1['name'] ?? 'Founder 1' }}" class="w-14 h-14 rounded-xl object-cover ring-2 ring-gold-500/30">
+                                <div class="space-y-1">
+                                    <label class="inline-flex items-center gap-2 text-xs font-semibold text-rose-600 hover:text-rose-700 cursor-pointer">
+                                        <input type="checkbox" name="remove_founder1_photo" value="1" class="rounded border-slate-300 text-rose-600 focus:ring-rose-500">
+                                        <span>Remove current photo</span>
+                                    </label>
+                                    <p class="text-[10px] text-slate-400">If removed, the letter monogram will display.</p>
+                                </div>
+                            </div>
+                        @endif
+                        <input type="file" name="founder1_photo" accept="image/*" class="w-full text-xs text-slate-600 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-gold-500/15 file:text-gold-700 hover:file:bg-gold-500/25 cursor-pointer">
+                        <p class="text-[10px] text-slate-400 mt-1">Recommended: Square portrait (JPG, PNG, WebP up to 5MB).</p>
+                        @error('founder1_photo')
+                            <p class="text-rose-500 text-[11px] mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Focus Area Badge (e.g. Diplomatic Advisory) -->
+                    <div class="p-3.5 bg-amber-50/60 rounded-xl border border-amber-200/70 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-[11px] font-bold text-[#0A192F]">
+                                Focus Area / Specialty Badge (e.g. Diplomatic Advisory)
+                            </label>
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-gold-100 text-gold-900 border border-gold-300">Pill Header</span>
+                        </div>
+                        <p class="text-[10px] text-slate-500 leading-tight">Displayed in the gold pill badge right above the founder's name on the website.</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
+                            <div>
+                                <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">English (EN)</label>
+                                <input type="text" name="founder1_badge_en" placeholder="Diplomatic Advisory" value="{{ old('founder1_badge_en', is_array($f1['badge'] ?? null) ? ($f1['badge']['en'] ?? 'Diplomatic Advisory') : ($f1['badge'] ?? 'Diplomatic Advisory')) }}" class="w-full text-xs rounded-xl border border-slate-200 p-2 bg-white">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">العربية (AR)</label>
+                                <input type="text" name="founder1_badge_ar" placeholder="الاستشارات الدبلوماسية" dir="rtl" value="{{ old('founder1_badge_ar', is_array($f1['badge'] ?? null) ? ($f1['badge']['ar'] ?? 'الاستشارات الدبلوماسية') : '') }}" class="w-full text-xs rounded-xl border border-slate-200 p-2 bg-white">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">Türkçe (TR)</label>
+                                <input type="text" name="founder1_badge_tr" placeholder="Diplomatik Danışmanlık" value="{{ old('founder1_badge_tr', is_array($f1['badge'] ?? null) ? ($f1['badge']['tr'] ?? 'Diplomatik Danışmanlık') : '') }}" class="w-full text-xs rounded-xl border border-slate-200 p-2 bg-white">
+                            </div>
+                        </div>
                     </div>
 
                     <div>
@@ -218,15 +265,6 @@
                         <div>
                             <label class="block text-[10px] font-bold text-slate-600 mb-1">Role (TR)</label>
                             <input type="text" name="founder1_role_tr" value="{{ old('founder1_role_tr', $f1['role']['tr'] ?? 'Kurucu Ortak ve Başkan') }}" class="w-full text-xs rounded-xl border border-slate-200 p-2 bg-white">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-700 mb-1">Executive Badge (EN / AR / TR)</label>
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                            <input type="text" name="founder1_badge_en" placeholder="Badge EN" value="{{ old('founder1_badge_en', $f1['badge']['en'] ?? 'Diplomatic Advisory') }}" class="text-xs rounded-xl border border-slate-200 p-2 bg-white">
-                            <input type="text" name="founder1_badge_ar" placeholder="Badge AR" value="{{ old('founder1_badge_ar', $f1['badge']['ar'] ?? 'الاستشارات الدبلوماسية') }}" class="text-xs rounded-xl border border-slate-200 p-2 bg-white">
-                            <input type="text" name="founder1_badge_tr" placeholder="Badge TR" value="{{ old('founder1_badge_tr', $f1['badge']['tr'] ?? 'Diplomatik Danışmanlık') }}" class="text-xs rounded-xl border border-slate-200 p-2 bg-white">
                         </div>
                     </div>
 
@@ -262,11 +300,58 @@
                     </div>
                 </div>
 
-                <!-- Column 2: Founder 2 CV -->
+                <!-- Column 2: Founder 2 Profile -->
                 <div class="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-4">
                     <div class="flex items-center gap-2 pb-3 border-b border-slate-200 font-bold text-xs uppercase tracking-wider text-slate-800">
                         <span class="w-6 h-6 rounded-full bg-gold-600 text-navy-950 flex items-center justify-center font-bold text-xs">2</span>
-                        <span>Founder 2 Profile (Corporate / Investment)</span>
+                        <span>Founder 2 Profile</span>
+                    </div>
+
+                    <!-- Founder 2 Photo Upload & Preview -->
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-1.5">Executive Photo / Portrait</label>
+                        @if(!empty($f2['photo']))
+                            <div class="flex items-center gap-3 p-3 bg-white rounded-xl border border-slate-200 mb-2">
+                                <img src="{{ media_url($f2['photo']) }}" alt="{{ $f2['name'] ?? 'Founder 2' }}" class="w-14 h-14 rounded-xl object-cover ring-2 ring-gold-500/30">
+                                <div class="space-y-1">
+                                    <label class="inline-flex items-center gap-2 text-xs font-semibold text-rose-600 hover:text-rose-700 cursor-pointer">
+                                        <input type="checkbox" name="remove_founder2_photo" value="1" class="rounded border-slate-300 text-rose-600 focus:ring-rose-500">
+                                        <span>Remove current photo</span>
+                                    </label>
+                                    <p class="text-[10px] text-slate-400">If removed, the letter monogram will display.</p>
+                                </div>
+                            </div>
+                        @endif
+                        <input type="file" name="founder2_photo" accept="image/*" class="w-full text-xs text-slate-600 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-gold-500/15 file:text-gold-700 hover:file:bg-gold-500/25 cursor-pointer">
+                        <p class="text-[10px] text-slate-400 mt-1">Recommended: Square portrait (JPG, PNG, WebP up to 5MB).</p>
+                        @error('founder2_photo')
+                            <p class="text-rose-500 text-[11px] mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Focus Area Badge (e.g. Cross-Border Investment) -->
+                    <div class="p-3.5 bg-amber-50/60 rounded-xl border border-amber-200/70 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-[11px] font-bold text-[#0A192F]">
+                                Focus Area / Specialty Badge (e.g. Cross-Border Investment)
+                            </label>
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-gold-100 text-gold-900 border border-gold-300">Pill Header</span>
+                        </div>
+                        <p class="text-[10px] text-slate-500 leading-tight">Displayed in the gold pill badge right above the founder's name on the website.</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
+                            <div>
+                                <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">English (EN)</label>
+                                <input type="text" name="founder2_badge_en" placeholder="Cross-Border Investment" value="{{ old('founder2_badge_en', is_array($f2['badge'] ?? null) ? ($f2['badge']['en'] ?? 'Cross-Border Investment') : ($f2['badge'] ?? 'Cross-Border Investment')) }}" class="w-full text-xs rounded-xl border border-slate-200 p-2 bg-white">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">العربية (AR)</label>
+                                <input type="text" name="founder2_badge_ar" placeholder="الاستثمار الدولي" dir="rtl" value="{{ old('founder2_badge_ar', is_array($f2['badge'] ?? null) ? ($f2['badge']['ar'] ?? 'الاستثمار الدولي') : '') }}" class="w-full text-xs rounded-xl border border-slate-200 p-2 bg-white">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">Türkçe (TR)</label>
+                                <input type="text" name="founder2_badge_tr" placeholder="Sınır Ötesi Yatırımlar" value="{{ old('founder2_badge_tr', is_array($f2['badge'] ?? null) ? ($f2['badge']['tr'] ?? 'Sınır Ötesi Yatırımlar') : '') }}" class="w-full text-xs rounded-xl border border-slate-200 p-2 bg-white">
+                            </div>
+                        </div>
                     </div>
 
                     <div>
@@ -286,15 +371,6 @@
                         <div>
                             <label class="block text-[10px] font-bold text-slate-600 mb-1">Role (TR)</label>
                             <input type="text" name="founder2_role_tr" value="{{ old('founder2_role_tr', $f2['role']['tr'] ?? 'Kurucu Ortak ve Genel Müdür') }}" class="w-full text-xs rounded-xl border border-slate-200 p-2 bg-white">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-700 mb-1">Executive Badge (EN / AR / TR)</label>
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                            <input type="text" name="founder2_badge_en" placeholder="Badge EN" value="{{ old('founder2_badge_en', $f2['badge']['en'] ?? 'Cross-Border Investment') }}" class="text-xs rounded-xl border border-slate-200 p-2 bg-white">
-                            <input type="text" name="founder2_badge_ar" placeholder="Badge AR" value="{{ old('founder2_badge_ar', $f2['badge']['ar'] ?? 'الاستثمار الدولي') }}" class="text-xs rounded-xl border border-slate-200 p-2 bg-white">
-                            <input type="text" name="founder2_badge_tr" placeholder="Badge TR" value="{{ old('founder2_badge_tr', $f2['badge']['tr'] ?? 'Sınır Ötesi Yatırımlar') }}" class="text-xs rounded-xl border border-slate-200 p-2 bg-white">
                         </div>
                     </div>
 

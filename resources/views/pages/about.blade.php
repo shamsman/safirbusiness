@@ -245,16 +245,22 @@
                 @foreach($founders as $index => $founder)
                     @php
                         $loc = app()->getLocale();
-                        $fRole = is_array($founder['role'] ?? null) ? ($founder['role'][$loc] ?? ($founder['role']['en'] ?? 'Co-Founder')) : ($founder['role'] ?? 'Co-Founder');
-                        $fBadge = is_array($founder['badge'] ?? null) ? ($founder['badge'][$loc] ?? ($founder['badge']['en'] ?? 'Executive')) : ($founder['badge'] ?? 'Executive');
-                        $fBio = is_array($founder['bio'] ?? null) ? ($founder['bio'][$loc] ?? ($founder['bio']['en'] ?? '')) : ($founder['bio'] ?? '');
+                        $fRole = is_array($founder['role'] ?? null) 
+                            ? (filled($founder['role'][$loc] ?? null) ? $founder['role'][$loc] : (filled($founder['role']['en'] ?? null) ? $founder['role']['en'] : 'Co-Founder')) 
+                            : ($founder['role'] ?? 'Co-Founder');
+                        $fBadge = is_array($founder['badge'] ?? null) 
+                            ? (filled($founder['badge'][$loc] ?? null) ? $founder['badge'][$loc] : (filled($founder['badge']['en'] ?? null) ? $founder['badge']['en'] : 'Executive')) 
+                            : (filled($founder['badge'] ?? null) ? $founder['badge'] : 'Executive');
+                        $fBio = is_array($founder['bio'] ?? null) 
+                            ? (filled($founder['bio'][$loc] ?? null) ? $founder['bio'][$loc] : (filled($founder['bio']['en'] ?? null) ? $founder['bio']['en'] : '')) 
+                            : ($founder['bio'] ?? '');
                         
                         $fHighlights = is_array($founder['highlights'] ?? null) 
-                            ? (isset($founder['highlights'][$loc]) ? $founder['highlights'][$loc] : ($founder['highlights']['en'] ?? $founder['highlights'])) 
+                            ? (!empty($founder['highlights'][$loc]) ? $founder['highlights'][$loc] : ($founder['highlights']['en'] ?? $founder['highlights'])) 
                             : [];
                         
                         $fEducation = is_array($founder['education'] ?? null) 
-                            ? (isset($founder['education'][$loc]) ? $founder['education'][$loc] : ($founder['education']['en'] ?? $founder['education'])) 
+                            ? (!empty($founder['education'][$loc]) ? $founder['education'][$loc] : ($founder['education']['en'] ?? $founder['education'])) 
                             : [];
                     @endphp
 
@@ -268,8 +274,12 @@
                             <!-- Header / Portrait & Name -->
                             <div class="flex flex-col sm:flex-row sm:items-center gap-5">
                                 <!-- Monogram / Photo Ring -->
-                                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-[#0A192F] via-[#122A4E] to-[#0A192F] text-gold-400 ring-4 ring-gold-500/20 shadow-md flex items-center justify-center font-serif text-3xl font-extrabold shrink-0 group-hover:scale-105 transition-transform">
-                                    {{ Str::substr($founder['name'] ?? 'S', 0, 1) }}
+                                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-[#0A192F] via-[#122A4E] to-[#0A192F] text-gold-400 ring-4 ring-gold-500/20 shadow-md flex items-center justify-center overflow-hidden shrink-0 group-hover:scale-105 transition-transform">
+                                    @if(!empty($founder['photo']))
+                                        <img src="{{ media_url($founder['photo']) }}" alt="{{ $founder['name'] ?? 'Founder' }}" class="w-full h-full object-cover">
+                                    @else
+                                        <span class="font-serif text-3xl font-extrabold">{{ Str::substr($founder['name'] ?? 'S', 0, 1) }}</span>
+                                    @endif
                                 </div>
 
                                 <div class="space-y-1 min-w-0">
