@@ -296,8 +296,12 @@
                             </div>
 
                             <!-- Executive Biography -->
-                            <div class="text-slate-600 text-xs sm:text-sm leading-relaxed border-t border-slate-100 pt-5">
-                                {{ $fBio }}
+                            <div class="text-slate-600 text-xs sm:text-sm leading-relaxed border-t border-slate-100 pt-5 prose prose-slate prose-sm max-w-none prose-p:mb-2 prose-headings:text-[#0A192F] prose-a:text-gold-700">
+                                @if(strip_tags($fBio) === $fBio)
+                                    {!! nl2br(e($fBio)) !!}
+                                @else
+                                    {!! $fBio !!}
+                                @endif
                             </div>
 
                             <!-- Key Track Record & Highlights -->

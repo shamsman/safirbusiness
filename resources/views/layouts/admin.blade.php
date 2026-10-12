@@ -18,6 +18,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
 
     {!! setting('custom_header_scripts', '') !!}
+    @stack('styles')
 </head>
 <body class="h-full bg-[#FAF9F6] text-slate-800 antialiased font-sans selection:bg-gold-500/25 selection:text-navy-950 flex" x-data="{ mobileSidebarOpen: false }">
 
@@ -224,5 +225,6 @@
     </div>
 
     {!! setting('custom_footer_scripts', '') !!}
+    @stack('scripts')
 </body>
 </html>

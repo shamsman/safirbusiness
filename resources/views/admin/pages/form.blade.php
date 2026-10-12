@@ -101,13 +101,13 @@
 
                 <!-- Language Tabs Switcher -->
                 <div class="inline-flex items-center bg-slate-100 p-1 rounded-xl gap-1">
-                    <button type="button" @click="currentLocaleTab = 'en'" :class="currentLocaleTab === 'en' ? 'bg-white text-navy-950 font-bold shadow-xs' : 'text-slate-600 hover:text-slate-900'" class="px-3.5 py-1.5 rounded-lg text-xs transition-all">
+                    <button type="button" @click="currentLocaleTab = 'en'; $nextTick(() => window.dispatchEvent(new Event('resize')))" :class="currentLocaleTab === 'en' ? 'bg-white text-navy-950 font-bold shadow-xs' : 'text-slate-600 hover:text-slate-900'" class="px-3.5 py-1.5 rounded-lg text-xs transition-all">
                         🇬🇧 English (EN)
                     </button>
-                    <button type="button" @click="currentLocaleTab = 'ar'" :class="currentLocaleTab === 'ar' ? 'bg-white text-navy-950 font-bold shadow-xs' : 'text-slate-600 hover:text-slate-900'" class="px-3.5 py-1.5 rounded-lg text-xs transition-all">
+                    <button type="button" @click="currentLocaleTab = 'ar'; $nextTick(() => window.dispatchEvent(new Event('resize')))" :class="currentLocaleTab === 'ar' ? 'bg-white text-navy-950 font-bold shadow-xs' : 'text-slate-600 hover:text-slate-900'" class="px-3.5 py-1.5 rounded-lg text-xs transition-all">
                         🇸🇦 العربية (AR)
                     </button>
-                    <button type="button" @click="currentLocaleTab = 'tr'" :class="currentLocaleTab === 'tr' ? 'bg-white text-navy-950 font-bold shadow-xs' : 'text-slate-600 hover:text-slate-900'" class="px-3.5 py-1.5 rounded-lg text-xs transition-all">
+                    <button type="button" @click="currentLocaleTab = 'tr'; $nextTick(() => window.dispatchEvent(new Event('resize')))" :class="currentLocaleTab === 'tr' ? 'bg-white text-navy-950 font-bold shadow-xs' : 'text-slate-600 hover:text-slate-900'" class="px-3.5 py-1.5 rounded-lg text-xs transition-all">
                         🇹🇷 Türkçe (TR)
                     </button>
                 </div>
@@ -127,28 +127,36 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Main Rich Content / Body HTML (English)</label>
-                    <textarea name="content_en" rows="8" class="w-full text-xs font-mono rounded-xl border border-slate-200 p-3 focus:border-gold-500 focus:ring-1 focus:ring-gold-500 outline-none leading-relaxed">{{ old('content_en', $page->getLocalized('content', 'en')) }}</textarea>
-                    <p class="text-[11px] text-slate-400 mt-1">Accepts standard text or HTML paragraphs (<code>&lt;p&gt;</code>, <code>&lt;h3&gt;</code>, <code>&lt;ul&gt;</code>).</p>
+                    <x-rich-editor name="content_en"
+                                   label="Main Rich Content / Body HTML (English)"
+                                   :value="old('content_en', $page->getLocalized('content', 'en'))"
+                                   minHeight="220px"
+                                   placeholder="Compose formatted English content..."
+                                   help="Use the toolbar to format headers, lists, links, or switch to HTML Source for raw markup editing." />
                 </div>
             </div>
 
             <!-- Arabic Fields Tab -->
-            <div x-show="currentLocaleTab === 'ar'" class="space-y-4" dir="rtl">
-                <div>
+            <div x-show="currentLocaleTab === 'ar'" class="space-y-4">
+                <div dir="rtl">
                     <label class="block text-xs font-bold text-slate-700 mb-1.5">عنوان الصفحة (بالعربية)</label>
                     <input type="text" name="title_ar" value="{{ old('title_ar', $page->getLocalized('title', 'ar')) }}"
                            class="w-full text-xs rounded-xl border border-slate-200 p-3 focus:border-gold-500 focus:ring-1 focus:ring-gold-500 outline-none">
                 </div>
 
-                <div>
+                <div dir="rtl">
                     <label class="block text-xs font-bold text-slate-700 mb-1.5">الملخص التنفيذي (بالعربية)</label>
                     <textarea name="summary_ar" rows="3" class="w-full text-xs rounded-xl border border-slate-200 p-3 focus:border-gold-500 focus:ring-1 focus:ring-gold-500 outline-none">{{ old('summary_ar', $page->getLocalized('summary', 'ar')) }}</textarea>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5">المحتوى الرئيسي / نصوص الفقرات (بالعربية)</label>
-                    <textarea name="content_ar" rows="8" class="w-full text-xs rounded-xl border border-slate-200 p-3 focus:border-gold-500 focus:ring-1 focus:ring-gold-500 outline-none leading-relaxed">{{ old('content_ar', $page->getLocalized('content', 'ar')) }}</textarea>
+                    <x-rich-editor name="content_ar"
+                                   label="المحتوى الرئيسي / نصوص الفقرات (بالعربية)"
+                                   :value="old('content_ar', $page->getLocalized('content', 'ar'))"
+                                   dir="rtl"
+                                   minHeight="220px"
+                                   placeholder="اكتب المحتوى المؤسسي المنسق باللغة العربية..."
+                                   help="استخدم شريط الأدوات لتنسيق العناوين والقوائم، أو اضغط على HTML Source للتعديل المباشر على الأكواد." />
                 </div>
             </div>
 
@@ -166,8 +174,12 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Ana İçerik / Gövde (Türkçe)</label>
-                    <textarea name="content_tr" rows="8" class="w-full text-xs rounded-xl border border-slate-200 p-3 focus:border-gold-500 focus:ring-1 focus:ring-gold-500 outline-none leading-relaxed">{{ old('content_tr', $page->getLocalized('content', 'tr')) }}</textarea>
+                    <x-rich-editor name="content_tr"
+                                   label="Ana İçerik / Gövde (Türkçe)"
+                                   :value="old('content_tr', $page->getLocalized('content', 'tr'))"
+                                   minHeight="220px"
+                                   placeholder="Türkçe zengin kurumsal içerik yazın..."
+                                   help="Başlıklar, listeler ve bağlantılar için araç çubuğunu kullanın veya doğrudan HTML Source moduna geçin." />
                 </div>
             </div>
         </div>
@@ -269,13 +281,20 @@
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-700 mb-1">Executive Biography (English)</label>
-                        <textarea name="founder1_bio_en" rows="3" class="w-full text-xs rounded-xl border border-slate-200 p-2.5 bg-white">{{ old('founder1_bio_en', $f1['bio']['en'] ?? '') }}</textarea>
+                        <x-rich-editor name="founder1_bio_en"
+                                       label="Executive Biography (English)"
+                                       :value="old('founder1_bio_en', $f1['bio']['en'] ?? '')"
+                                       minHeight="140px"
+                                       placeholder="Executive biography, credentials, and achievements in English..." />
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-700 mb-1">Executive Biography (Arabic)</label>
-                        <textarea name="founder1_bio_ar" rows="3" dir="rtl" class="w-full text-xs rounded-xl border border-slate-200 p-2.5 bg-white">{{ old('founder1_bio_ar', $f1['bio']['ar'] ?? '') }}</textarea>
+                        <x-rich-editor name="founder1_bio_ar"
+                                       label="Executive Biography (Arabic) / السيرة الذاتية التنفيذية"
+                                       :value="old('founder1_bio_ar', $f1['bio']['ar'] ?? '')"
+                                       dir="rtl"
+                                       minHeight="140px"
+                                       placeholder="اكتب السيرة الذاتية والخبرات والمناصب القيادية بالعربية..." />
                     </div>
 
                     <div>
@@ -375,13 +394,20 @@
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-700 mb-1">Executive Biography (English)</label>
-                        <textarea name="founder2_bio_en" rows="3" class="w-full text-xs rounded-xl border border-slate-200 p-2.5 bg-white">{{ old('founder2_bio_en', $f2['bio']['en'] ?? '') }}</textarea>
+                        <x-rich-editor name="founder2_bio_en"
+                                       label="Executive Biography (English)"
+                                       :value="old('founder2_bio_en', $f2['bio']['en'] ?? '')"
+                                       minHeight="140px"
+                                       placeholder="Executive biography, credentials, and achievements in English..." />
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-700 mb-1">Executive Biography (Arabic)</label>
-                        <textarea name="founder2_bio_ar" rows="3" dir="rtl" class="w-full text-xs rounded-xl border border-slate-200 p-2.5 bg-white">{{ old('founder2_bio_ar', $f2['bio']['ar'] ?? '') }}</textarea>
+                        <x-rich-editor name="founder2_bio_ar"
+                                       label="Executive Biography (Arabic) / السيرة الذاتية التنفيذية"
+                                       :value="old('founder2_bio_ar', $f2['bio']['ar'] ?? '')"
+                                       dir="rtl"
+                                       minHeight="140px"
+                                       placeholder="اكتب السيرة الذاتية والخبرات والمناصب القيادية بالعربية..." />
                     </div>
 
                     <div>
