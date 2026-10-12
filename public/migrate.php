@@ -51,6 +51,12 @@ if ($action) {
                 $kernel->call('optimize:clear');
                 echo $kernel->output();
                 $status = 'success';
+            } elseif ($action === 'seed_menus') {
+                echo "Running: php artisan db:seed --class=Database\\\\Seeders\\\\PageAndMenuSeeder --force\n";
+                echo str_repeat('-', 50) . "\n";
+                $kernel->call('db:seed', ['--class' => 'Database\\Seeders\\PageAndMenuSeeder', '--force' => true]);
+                echo $kernel->output();
+                $status = 'success';
             } else {
                 echo "Error: Unknown action '{$action}'.";
                 $status = 'error';
@@ -283,6 +289,9 @@ if ($action) {
                     </button>
                     <button type="submit" name="action" value="optimize" class="btn btn-outline">
                         ⚡ Clear Caches (optimize:clear)
+                    </button>
+                    <button type="submit" name="action" value="seed_menus" class="btn btn-outline" style="border-color: rgba(212, 175, 55, 0.4); color: var(--accent);">
+                        ★ Sync Pages & Menus (PageAndMenuSeeder)
                     </button>
                 </div>
             </div>
