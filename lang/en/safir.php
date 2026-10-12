@@ -91,7 +91,7 @@ return [
 
     // Hero Section
     'hero' => [
-        'badge' => 'Sovereign & Corporate Advisory — Ankara Headquarters',
+        'badge' => 'The First and biggest hub for Connecting Business and Diplomacy',
         'title' => 'Where Diplomacy Meets Commercial Execution.',
         'subtitle' => 'Connecting governments, corporations, and global investors to strategic opportunities across Turkey. Combining influential networks with ground-level intelligence to turn complex environments into clear, actionable outcomes.',
         'cta_contact' => 'Request Diplomatic Briefing',

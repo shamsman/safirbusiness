@@ -91,7 +91,7 @@ return [
 
     // Hero Bölümü
     'hero' => [
-        'badge' => 'Egemenlik ve Kurumsal Danışmanlık — Ankara Genel Merkez',
+        'badge' => 'İş Dünyası ve Diplomasiyi Buluşturan İlk ve En Büyük Merkez',
         'title' => 'Diplomasinin Ticari İcrayla Buluştuğu Yer.',
         'subtitle' => 'Hükümetleri, kurumları ve küresel yatırımcıları Türkiye genelindeki stratejik fırsatlarla buluşturuyoruz. Nüfuzlu ilişki ağlarını ve saha deneyimini birleştirerek karmaşık ortamları somut ticari sonuçlara dönüştürüyoruz.',
         'cta_contact' => 'Diplomatik Brifing Talep Edin',
