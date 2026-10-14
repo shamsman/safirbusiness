@@ -155,69 +155,86 @@
         </div>
     </section>
 
-    <!-- 2. Institutional Summary about Safir Hub -->
-    <section class="py-20 bg-white border-b border-[#E8E4DA] relative">
-        <div class="max-w-6xl mx-auto px-4 sm:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                
-                <!-- Left: Philosophical & Identity Statement -->
-                <div class="lg:col-span-5 space-y-6">
-                    <span class="inline-block text-xs uppercase tracking-widest text-gold-800 font-bold px-3 py-1 rounded bg-gold-50 border border-gold-200">
-                        {{ __('safir.about_page.core_philosophy_badge') }}
-                    </span>
-                    <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0A192F] tracking-tight leading-snug">
-                        {{ __('safir.tagline') }}
-                    </h2>
-                    <blockquote class="text-slate-700 text-sm sm:text-base leading-relaxed border-s-4 border-gold-500 ps-4 italic">
-                        « {{ __('safir.philosophy') }} »
-                    </blockquote>
-                    <div class="text-xs font-bold text-gold-800 uppercase tracking-wider font-mono">
+    <!-- 2. Institutional Summary & Philosophy about Safir Hub -->
+    <section class="py-20 md:py-24 bg-white border-b border-[#E8E4DA] relative">
+        <div class="max-w-5xl mx-auto px-4 sm:px-8 space-y-16">
+            
+            <!-- Block 1: OUR CORE PHILOSOPHY (First) -->
+            <div class="max-w-3xl mx-auto text-center space-y-6">
+                <span class="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-gold-800 font-bold px-4 py-1.5 rounded-full bg-gold-50 border border-gold-200 shadow-2xs">
+                    <span class="w-1.5 h-1.5 rounded-full bg-gold-600"></span>
+                    <span>{{ __('safir.about_page.core_philosophy_badge') }}</span>
+                </span>
+
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0A192F] tracking-tight leading-tight">
+                    {{ __('safir.tagline') }}
+                </h2>
+
+                <blockquote class="text-slate-700 text-base sm:text-lg lg:text-xl leading-relaxed italic max-w-2xl mx-auto">
+                    « {{ __('safir.philosophy') }} »
+                </blockquote>
+
+                <div class="flex items-center justify-center gap-3 pt-2">
+                    <span class="h-px w-10 bg-gold-400/60"></span>
+                    <span class="text-xs font-bold text-gold-800 uppercase tracking-widest font-mono">
                         {{ __('safir.brand_signature') }}
-                    </div>
+                    </span>
+                    <span class="h-px w-10 bg-gold-400/60"></span>
                 </div>
+            </div>
 
-                <!-- Right: Comprehensive Ecosystem Overview -->
-                <div class="lg:col-span-7 bg-[#FAF9F5] p-8 sm:p-10 rounded-3xl border border-[#E2DDD3] shadow-xs space-y-5 text-slate-700 text-sm leading-relaxed">
-                    <h3 class="text-lg font-bold text-[#0A192F] flex items-center gap-2">
-                        <svg class="w-5 h-5 text-gold-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-                        <span>{{ __('safir.sub_tagline') }}</span>
-                    </h3>
+            <!-- Subtle Hairline Divider -->
+            <div class="flex items-center justify-center gap-4 max-w-2xl mx-auto" aria-hidden="true">
+                <span class="h-px flex-1 bg-gradient-to-r from-transparent via-[#E2DDD3] to-transparent"></span>
+                <span class="w-2 h-2 rotate-45 bg-gold-500/60"></span>
+                <span class="h-px flex-1 bg-gradient-to-r from-transparent via-[#E2DDD3] to-transparent"></span>
+            </div>
 
-                    @if(isset($page) && $page->content_html)
-                        <div class="prose prose-sm max-w-none text-slate-700 space-y-3">
-                            {!! $page->content_html !!}
-                        </div>
-                    @else
+            <!-- Block 2: Comprehensive Ecosystem Overview (Second) -->
+            <div class="bg-[#FAF9F5] p-8 sm:p-12 rounded-3xl border border-[#E2DDD3] shadow-xs space-y-6 text-slate-700">
+                <h3 class="text-xl sm:text-2xl font-bold text-[#0A192F] flex items-center gap-3 leading-snug">
+                    <span class="p-2 rounded-xl bg-gold-500/10 text-gold-600 shrink-0">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                    </span>
+                    <span>{{ __('safir.sub_tagline') }}</span>
+                </h3>
+
+                @if(isset($page) && $page->content_html)
+                    <div class="prose prose-slate max-w-none text-slate-700 text-sm sm:text-base leading-relaxed space-y-4">
+                        {!! $page->content_html !!}
+                    </div>
+                @else
+                    <div class="space-y-4 text-sm sm:text-base leading-relaxed">
                         <p>
                             {{ __('safir.short_bio') }}
                         </p>
                         <p>
                             Safir Business Hub operates directly from the institutional capital of Türkiye, Ankara. We provide diplomatic missions, state entities, multinational enterprises, and sovereign investment authorities with end-to-end access to Turkish decision-makers, ministries, chambers of commerce, and industrial free zones.
                         </p>
-                    @endif
+                    </div>
+                @endif
 
-                    <!-- Four Pillars Checklist Pill -->
-                    <div class="grid grid-cols-2 gap-3 pt-3 border-t border-[#E8E4DA] text-xs">
-                        <div class="flex items-center gap-2 font-semibold text-[#0A192F]">
-                            <span class="w-1.5 h-1.5 rounded-full bg-gold-600"></span>
-                            <span>{{ __('safir.pillars.economy.title') }}</span>
-                        </div>
-                        <div class="flex items-center gap-2 font-semibold text-[#0A192F]">
-                            <span class="w-1.5 h-1.5 rounded-full bg-gold-600"></span>
-                            <span>{{ __('safir.pillars.relations.title') }}</span>
-                        </div>
-                        <div class="flex items-center gap-2 font-semibold text-[#0A192F]">
-                            <span class="w-1.5 h-1.5 rounded-full bg-gold-600"></span>
-                            <span>{{ __('safir.pillars.events.title') }}</span>
-                        </div>
-                        <div class="flex items-center gap-2 font-semibold text-[#0A192F]">
-                            <span class="w-1.5 h-1.5 rounded-full bg-gold-600"></span>
-                            <span>{{ __('safir.pillars.community.title') }}</span>
-                        </div>
+                <!-- Four Pillars Checklist -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-[#E8E4DA] text-xs sm:text-sm">
+                    <div class="flex items-center gap-2 font-semibold text-[#0A192F] bg-white p-3 rounded-xl border border-[#E8E4DA]">
+                        <span class="w-2 h-2 rounded-full bg-gold-600 shrink-0"></span>
+                        <span>{{ __('safir.pillars.economy.title') }}</span>
+                    </div>
+                    <div class="flex items-center gap-2 font-semibold text-[#0A192F] bg-white p-3 rounded-xl border border-[#E8E4DA]">
+                        <span class="w-2 h-2 rounded-full bg-gold-600 shrink-0"></span>
+                        <span>{{ __('safir.pillars.relations.title') }}</span>
+                    </div>
+                    <div class="flex items-center gap-2 font-semibold text-[#0A192F] bg-white p-3 rounded-xl border border-[#E8E4DA]">
+                        <span class="w-2 h-2 rounded-full bg-gold-600 shrink-0"></span>
+                        <span>{{ __('safir.pillars.events.title') }}</span>
+                    </div>
+                    <div class="flex items-center gap-2 font-semibold text-[#0A192F] bg-white p-3 rounded-xl border border-[#E8E4DA]">
+                        <span class="w-2 h-2 rounded-full bg-gold-600 shrink-0"></span>
+                        <span>{{ __('safir.pillars.community.title') }}</span>
                     </div>
                 </div>
-
             </div>
+
         </div>
     </section>
 
