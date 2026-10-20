@@ -1,2 +1,8 @@
 User-agent: *
-Disallow:
+Disallow: /admin
+Disallow: /login
+Disallow: /register
+Disallow: /dashboard
+Allow: /
+
+Sitemap: https://safirbusinesshub.com/sitemap.xml

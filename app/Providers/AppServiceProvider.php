@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Page;
+use App\Models\Report;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,6 +25,13 @@ class AppServiceProvider extends ServiceProvider
         if (config('app.env') === 'production' || request()->header('x-forwarded-proto') === 'https') {
             \Illuminate\Support\Facades\URL::forceScheme('https');
         }
+
+        // Auto-invalidate sitemap cache when content updates
+        $flushSitemap = static fn () => Cache::forget('safir_sitemap_xml');
+        Page::saved($flushSitemap);
+        Page::deleted($flushSitemap);
+        Report::saved($flushSitemap);
+        Report::deleted($flushSitemap);
 
         // Register Google Cloud Storage driver
         \Illuminate\Support\Facades\Storage::extend('gcs', function ($app, array $config) {

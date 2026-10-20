@@ -5,9 +5,14 @@ use App\Http\Controllers\InquiryController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\SubscriberController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+// XML Sitemap for Search Engines
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap.xml');
+Route::get('/sitemap', [SitemapController::class, 'index'])->name('sitemap');
 
 // Root redirect to preferred or default locale
 Route::get('/', function (Request $request) {
