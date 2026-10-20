@@ -13,6 +13,8 @@ class SitemapController extends Controller
 {
     public const LOCALES = ['ar', 'en', 'tr'];
     public const DEFAULT_LOCALE = 'en';
+    public const CANONICAL_URL = 'https://safirbusinesshub.com';
+    public const CACHE_KEY = 'safir_sitemap_xml_v3';
     public const CACHE_TTL = 3600; // 1 hour
 
     /**
@@ -21,17 +23,17 @@ class SitemapController extends Controller
     public function index(): Response
     {
         // Don't cache in local debug environment to make testing immediate
-        $cacheKey = 'safir_sitemap_xml';
-
         if (config('app.debug')) {
-            Cache::forget($cacheKey);
+            Cache::forget(self::CACHE_KEY);
         }
 
-        $xml = Cache::remember($cacheKey, self::CACHE_TTL, function () {
+        $xml = Cache::remember(self::CACHE_KEY, self::CACHE_TTL, function () {
             $entries = $this->buildEntries();
             $body = view('sitemap', ['entries' => $entries])->render();
 
-            return '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . trim($body);
+            return '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
+                . '<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>' . "\n"
+                . trim($body);
         });
 
         return response($xml, 200, [
@@ -185,22 +187,11 @@ class SitemapController extends Controller
     }
 
     /**
-     * Determine the canonical base URL (https://safirbusinesshub.com).
+     * Strictly return the canonical production domain (https://safirbusinesshub.com).
+     * Never output internal Cloud Run URLs (*.a.run.app) into the sitemap.
      */
     private function getBaseUrl(): string
     {
-        $host = request()->getHost();
-
-        // In production requests, use request scheme and host if not localhost
-        if ($host && !in_array($host, ['localhost', '127.0.0.1', '::1'], true)) {
-            return request()->getSchemeAndHttpHost();
-        }
-
-        $appUrl = config('app.url');
-        if (!empty($appUrl) && !str_contains($appUrl, 'localhost') && !str_contains($appUrl, '127.0.0.1')) {
-            return rtrim($appUrl, '/');
-        }
-
-        return 'https://safirbusinesshub.com';
+        return self::CANONICAL_URL;
     }
 }

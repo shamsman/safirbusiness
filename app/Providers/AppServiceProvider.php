@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         // Auto-invalidate sitemap cache when content updates
-        $flushSitemap = static fn () => Cache::forget('safir_sitemap_xml');
+        $flushSitemap = static fn () => Cache::forget(\App\Http\Controllers\SitemapController::CACHE_KEY);
         Page::saved($flushSitemap);
         Page::deleted($flushSitemap);
         Report::saved($flushSitemap);
